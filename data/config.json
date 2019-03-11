@@ -1,0 +1,8 @@
+{
+  "port": 2000,
+  "serverIP": "localhost",
+  "name": "minderdb",
+  "user": "admin",
+  "password": "admin",
+  "listenerPort": 15000
+}
