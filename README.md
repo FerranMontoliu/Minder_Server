@@ -47,7 +47,7 @@ OPCIONALS:
     - Registrar usuaris des de la GUI del server, amb mateixos requeriments que client.
     - Mostrar % d'acceptats vs visualitzats.
   
-  CLIENT:
+  - CLIENT:
     - Afegir camps extra al perfil: cançó preferida, llista de hobbies i opció de poder escollir Java i C++.
     - Afegir un filtre per edat.
     - Acceptar o rebutjar usuaris fent drag&drop.
