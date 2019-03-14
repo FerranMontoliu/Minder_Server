@@ -53,7 +53,7 @@ public class User {
      * @return Retorna true si és major d'edat, false sinó.
      */
     public boolean isAdult() {
-        return age < 18;
+        return age > 17;
     }
 
     /**
