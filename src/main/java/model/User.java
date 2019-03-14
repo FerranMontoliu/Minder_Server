@@ -1,5 +1,7 @@
 package model;
 
+import org.apache.commons.validator.routines.EmailValidator;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -9,6 +11,7 @@ public class User {
     private boolean premium;
     private String mail;
     private String password;
+    private String passwordConfirmation;
 
     private Image photo;
     private String description;
@@ -20,17 +23,93 @@ public class User {
     private ArrayList<User> viewed;
     private ArrayList<User> accepted;
     private ArrayList<User> match;
+    private ArrayList<User> acceptedMe;
 
     /**
      * Constructor que es crida quan es registra l'usuari.
      *
      */
-    public User(String username, int age, boolean premium, String mail, String password) {
+    public User(String username, int age, boolean premium, String mail, String password, String passwordConfirmation) {
         this.username = username;
         this.age = age;
         this.premium = premium;
         this.mail = mail;
         this.password = password;
+        this.passwordConfirmation = passwordConfirmation;
+    }
+
+    /**
+     * Funció que s'encarrega de comprovar si totes les dades introduïdes són correctes.
+     *
+     * @return Retorna true si és major totes les dades són correctes, false sinó.
+     */
+    public boolean dataIsCorrect() {
+        return !usernameEmpty() && isAdult() && mailCorrectFormat() && passwordIsCorrect();
+    }
+
+    /**
+     * Funció que s'encarrega de comprovar si l'usuari és major d'edat o no.
+     *
+     * @return Retorna true si és major d'edat, false sinó.
+     */
+    public boolean isAdult() {
+        return age < 18;
+    }
+
+    /**
+     * Funció que s'encarrega de comprovar si el format del mail és correcte o no.
+     *
+     * @return Retorna true si el format és correcte, false sinó.
+     */
+    public boolean mailCorrectFormat() {
+        EmailValidator v = EmailValidator.getInstance();
+        return v.isValid(mail);
+    }
+
+    /**
+     * Funció que s'encarrega de comprovar si el camp del nom d'usuari està buit.
+     *
+     * @return Retorna true si està buit, false sinó.
+     */
+    public boolean usernameEmpty() {
+        return username.isEmpty();
+    }
+
+    /**
+     * Funció que s'encarrega de comprovar si la password concorda amb el camp de confirmació de password.
+     *
+     * @return Retorna true si concorda i no està buit, false sinó.
+     */
+    public boolean passwordConfirm() {
+        //Si el camp de password no està buit, comprovar si coincideix:
+        if(!password.isEmpty()) {
+            return password.equals(passwordConfirmation);
+        }
+        //Si el camp de password està buit, retornar false:
+        return false;
+    }
+
+    /**
+     * Funció que s'encarrega de comprovar si el format de la password és correcte o no
+     *
+     * @return Retorna true si el format és correcte, false sinó.
+     */
+    public boolean passwordCorrectFormat() {
+        boolean hasUppercase = !password.equals(password.toLowerCase());
+        boolean hasLowercase = !password.equals(password.toUpperCase());
+        boolean hasNumber  = password.matches(".*\\d.*");
+        boolean isLongEnough = password.length() > 7;
+
+        return hasUppercase && hasLowercase && hasNumber && isLongEnough;
+    }
+
+    /**
+     * Funció que s'encarrega de comprovar si la password és correcta o no.
+     *
+     * @return Retorna true si és correcta, false sinó.
+     */
+    public boolean passwordIsCorrect() {
+        return passwordConfirm() && passwordCorrectFormat();
     }
 
     /**
