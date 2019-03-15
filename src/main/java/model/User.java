@@ -1,9 +1,13 @@
 package model;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 
 public class User {
     private String username;
@@ -236,5 +240,23 @@ public class User {
      */
     public ArrayList<User> getMatch() {
         return match;
+    }
+
+    public String imageToBase64() {
+        String s = null;
+        try {
+            s =  Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File("data/image.jpg")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
+    public void base64ToImage(String encodedString) {
+        try {
+            FileUtils.writeByteArrayToFile(new File("data/imageConverted.jpg"), Base64.getDecoder().decode(encodedString));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
