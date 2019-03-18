@@ -2,8 +2,7 @@
 Servidor del Minder
 
 TODO LIST:
-  - Arreglar paràmetres del JSON (estan ficats com a exemple els actuals per poder formatejar el JSON).
-  
+
   - Crear un thread que està escoltant peticions d'usuaris continuament per registrar-los (actiu en tot moment).
   
   - El servidor comprova durant el registre:
