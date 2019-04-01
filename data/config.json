@@ -1,6 +1,6 @@
 {
-  "port": 3306,
-  "serverIP": "localhost",
+  "port": 40000,
+  "serverIP": "127.0.0.1",
   "name": "minderdb",
   "user": "admin",
   "password": "admin",
