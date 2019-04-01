@@ -6,10 +6,11 @@ import org.apache.commons.validator.routines.EmailValidator;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Base64;
 
-public class User {
+public class User implements Serializable {
     private String username;
     private int age;
     private boolean premium;
