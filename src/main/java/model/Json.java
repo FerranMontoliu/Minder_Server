@@ -1,6 +1,7 @@
 package model;
 
 import com.google.gson.Gson;
+import network.ServerConfig;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

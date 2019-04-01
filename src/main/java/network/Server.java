@@ -1,7 +1,6 @@
 package network;
 
 import model.Json;
-import model.ServerConfig;
 import model.User;
 
 import java.io.IOException;
