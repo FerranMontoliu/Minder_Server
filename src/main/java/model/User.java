@@ -11,8 +11,11 @@ import java.util.ArrayList;
 import java.util.Base64;
 
 public class User implements Serializable {
+
+    private boolean completed;
+
     private String username;
-    private int age;
+    private String age;
     private boolean premium;
     private String mail;
     private String password;
@@ -30,11 +33,32 @@ public class User implements Serializable {
     private ArrayList<User> match;
     private ArrayList<User> acceptedMe;
 
+
+    public User(boolean completed, String username, String age, boolean premium, String mail, String password, String passwordConfirmation, Image photo, String description, boolean likesJava, boolean likesC, String favSong, ArrayList<String> hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
+        this.completed = completed;
+        this.username = username;
+        this.age = age;
+        this.premium = premium;
+        this.mail = mail;
+        this.password = password;
+        this.passwordConfirmation = passwordConfirmation;
+        this.photo = photo;
+        this.description = description;
+        this.likesJava = likesJava;
+        this.likesC = likesC;
+        this.favSong = favSong;
+        this.hobbies = hobbies;
+        this.viewed = viewed;
+        this.accepted = accepted;
+        this.match = match;
+        this.acceptedMe = acceptedMe;
+    }
+
     /**
      * Constructor que es crida quan es registra l'usuari.
      *
-     */
-    public User(String username, int age, boolean premium, String mail, String password, String passwordConfirmation) {
+     **/
+    public User(String username, String age, boolean premium, String mail, String password, String passwordConfirmation) {
         this.username = username;
         this.age = age;
         this.premium = premium;
@@ -44,77 +68,12 @@ public class User implements Serializable {
     }
 
     /**
-     * Funció que s'encarrega de comprovar si totes les dades introduïdes són correctes.
+     * Constructor que es crida quan l'usuari fa login.
      *
-     * @return Retorna true si és major totes les dades són correctes, false sinó.
-     */
-    public boolean dataIsCorrect() {
-        return !usernameEmpty() && isAdult() && mailCorrectFormat() && passwordIsCorrect();
-    }
-
-    /**
-     * Funció que s'encarrega de comprovar si l'usuari és major d'edat o no.
-     *
-     * @return Retorna true si és major d'edat, false sinó.
-     */
-    public boolean isAdult() {
-        return age > 17;
-    }
-
-    /**
-     * Funció que s'encarrega de comprovar si el format del mail és correcte o no.
-     *
-     * @return Retorna true si el format és correcte, false sinó.
-     */
-    public boolean mailCorrectFormat() {
-        EmailValidator v = EmailValidator.getInstance();
-        return v.isValid(mail);
-    }
-
-    /**
-     * Funció que s'encarrega de comprovar si el camp del nom d'usuari està buit.
-     *
-     * @return Retorna true si està buit, false sinó.
-     */
-    public boolean usernameEmpty() {
-        return username.isEmpty();
-    }
-
-    /**
-     * Funció que s'encarrega de comprovar si la password concorda amb el camp de confirmació de password.
-     *
-     * @return Retorna true si concorda i no està buit, false sinó.
-     */
-    public boolean passwordConfirm() {
-        //Si el camp de password no està buit, comprovar si coincideix:
-        if(!password.isEmpty()) {
-            return password.equals(passwordConfirmation);
-        }
-        //Si el camp de password està buit, retornar false:
-        return false;
-    }
-
-    /**
-     * Funció que s'encarrega de comprovar si el format de la password és correcte o no
-     *
-     * @return Retorna true si el format és correcte, false sinó.
-     */
-    public boolean passwordCorrectFormat() {
-        boolean hasUppercase = !password.equals(password.toLowerCase());
-        boolean hasLowercase = !password.equals(password.toUpperCase());
-        boolean hasNumber  = password.matches(".*\\d.*");
-        boolean isLongEnough = password.length() > 7;
-
-        return hasUppercase && hasLowercase && hasNumber && isLongEnough;
-    }
-
-    /**
-     * Funció que s'encarrega de comprovar si la password és correcta o no.
-     *
-     * @return Retorna true si és correcta, false sinó.
-     */
-    public boolean passwordIsCorrect() {
-        return passwordConfirm() && passwordCorrectFormat();
+     **/
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     /**
@@ -126,14 +85,6 @@ public class User implements Serializable {
         return username;
     }
 
-    /**
-     * Getter de l'edat de l'usuari.
-     *
-     * @return Retorna un int que conté l'edat de l'usuari.
-     */
-    public int getAge() {
-        return age;
-    }
 
     /**
      * Getter del tipus de compte de l'usuari.
@@ -160,6 +111,15 @@ public class User implements Serializable {
      */
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * Getter de la confirmació de password de l'usuari.
+     *
+     * @return Retorna un String que conté la confirmació de la password de l'usuari.
+     */
+    public String getPasswordConfirmation() {
+        return passwordConfirmation;
     }
 
     /**
@@ -243,6 +203,15 @@ public class User implements Serializable {
         return match;
     }
 
+    public ArrayList<User> getAcceptedMe() {
+        return acceptedMe;
+    }
+
+    /**
+     * Funció encarregada de transformar una imatge a text.
+     *
+     * @return Retorna el text en Base64 que representa la imatge.
+     */
     public String imageToBase64() {
         String s = null;
         try {
@@ -253,11 +222,24 @@ public class User implements Serializable {
         return s;
     }
 
+    /**
+     * Mètode encarregat de reconstruir una imatge a partir d'un String.
+     *
+     * @param encodedString String que conté la imatge codificada en Base64.
+     */
     public void base64ToImage(String encodedString) {
         try {
             FileUtils.writeByteArrayToFile(new File("data/imageConverted.jpg"), Base64.getDecoder().decode(encodedString));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }
