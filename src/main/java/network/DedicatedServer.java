@@ -85,9 +85,6 @@ public class DedicatedServer extends Thread {
                             if(userExistsL) {
                                 objectOut.writeObject(dbUser);
                             }*/
-                            System.out.println(userExistsL);
-                            System.out.println(u1.getUsername());
-                            System.out.println(u1.getPassword());
                         } catch (ClassNotFoundException e1) {
                             e1.printStackTrace();
                         }
@@ -100,9 +97,6 @@ public class DedicatedServer extends Thread {
                             User u2 = (User) objectIn.readObject();
                             //TODO: comprovar a la base de dades si l'usuari existeix. En cas afirmatiu retornar true, altrament retornar false.
                             //userExistsR = check();
-                            System.out.println(userExistsR);
-                            System.out.println(u2.getUsername());
-                            System.out.println(u2.getPassword());
                         } catch (ClassNotFoundException e2) {
                             e2.printStackTrace();
                         }
