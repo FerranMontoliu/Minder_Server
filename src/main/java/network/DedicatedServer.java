@@ -82,6 +82,7 @@ public class DedicatedServer extends Thread {
                         try {
                             User u1 = (User) objectIn.readObject();
                             //TODO: comprovar a la base de dades si l'usuari existeix. En cas afirmatiu retornar true, altrament retornar false.
+                            //userExistsL = check();
                         } catch (ClassNotFoundException e1) {
                             e1.printStackTrace();
                         }
@@ -89,9 +90,14 @@ public class DedicatedServer extends Thread {
                         break;
 
                     case REGISTER_USER:
-                        //TODO: llegir user.
-                        //TODO: comprovar a la base de dades si l'usuari existeix. En cas afirmatiu retornar true, altrament retornar false.
                         boolean userExistsR = false;
+                        try {
+                            User u2 = (User) objectIn.readObject();
+                            //TODO: comprovar a la base de dades si l'usuari existeix. En cas afirmatiu retornar true, altrament retornar false.
+                            //userExistsR = check();
+                        } catch (ClassNotFoundException e2) {
+                            e2.printStackTrace();
+                        }
                         dataOutput.writeBoolean(userExistsR);
                         break;
 
@@ -108,35 +114,38 @@ public class DedicatedServer extends Thread {
                         try {
                             User u4 = (User) objectIn.readObject();
                             User u5 = (User) objectIn.readObject();
+                            //TODO: connectar amb la base de dades i ficar cada usuari a la llista de match de l'altre.
                         } catch (ClassNotFoundException e4) {
                             e4.printStackTrace();
                         }
-                        //TODO: connectar amb la base de dades i ficar cada usuari a la llista de match de l'altre.
                         break;
 
                     case USER_UNMATCHED:
                         try {
                             User u6 = (User) objectIn.readObject();
                             User u7 = (User) objectIn.readObject();
+                            //TODO: connectar amb la base de dades i treure cada usuari de la llista de match de l'altre.
                         } catch (ClassNotFoundException e5) {
                             e5.printStackTrace();
                         }
-                        //TODO: connectar amb la base de dades i treure cada usuari de la llista de match de l'altre.
                         break;
 
                     case LOAD_CHAT:
                         try {
                             User u8 = (User) objectIn.readObject();
                             User u9 = (User) objectIn.readObject();
+                            //TODO: connectar amb la base de dades i agafar el seu xat.
                         } catch (ClassNotFoundException e6) {
                             e6.printStackTrace();
                         }
-                        //TODO: connectar amb la base de dades i agafar el seu xat.
                         break;
 
                     case SEND_MESSAGE:
                         String message = dataInput.readUTF();
                         //TODO: connectar amb la base de dades i afegir el String a la llista de missatges que conforma el xat.
+                        break;
+                    default:
+                        System.out.println("WTF està passant aquí?!");
                         break;
                 }
                 //updateAllClients();
