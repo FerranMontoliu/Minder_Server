@@ -7,7 +7,7 @@ public class ServerConfig {
     private String name;
     private String user;
     private String password;
-    private int listernerPort;
+    private int listenerPort;
 
     /**
      * Constructor del ServerConfig.
@@ -17,15 +17,15 @@ public class ServerConfig {
      * @param name Nom de la base de dades.
      * @param user Username de l'admin de la base de dades.
      * @param password Password de l'admin de la base de dades.
-     * @param listernerPort Port per on el servidor escolta noves peticions de clients.
+     * @param listenerPort Port per on el servidor escolta noves peticions de clients.
      */
-    public ServerConfig(int port, String serverIP, String name, String user, String password, int listernerPort) {
+    public ServerConfig(int port, String serverIP, String name, String user, String password, int listenerPort) {
         this.port = port;
         this.serverIP = serverIP;
         this.name = name;
         this.user = user;
         this.password = password;
-        this.listernerPort = listernerPort;
+        this.listenerPort = listenerPort;
     }
 
     /**
@@ -78,7 +78,7 @@ public class ServerConfig {
      *
      * @return Retorna un int que conté el port per on el servidor escolta peticions de clients.
      */
-    public int getListernerPort() {
-        return listernerPort;
+    public int getListenerPort() {
+        return listenerPort;
     }
 }

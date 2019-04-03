@@ -4,5 +4,5 @@
   "name": "minderdb",
   "user": "admin",
   "password": "admin",
-  "listenerPort": 40000
+  "listenerPort": 4000
 }

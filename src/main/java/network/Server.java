@@ -28,7 +28,7 @@ public class Server extends Thread {
             this.model = model;
 
             ServerConfig sc = Json.parseJson();
-            this.sSocket = new ServerSocket(sc.getListernerPort());
+            this.sSocket = new ServerSocket(sc.getListenerPort());
             this.dServers = new LinkedList<>();
         } catch (IOException e) {
             e.printStackTrace();
