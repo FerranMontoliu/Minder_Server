@@ -78,9 +78,13 @@ public class DedicatedServer extends Thread {
                 char func = dataInput.readChar();
                 switch(func){
                     case LOGIN_USER:
-                        //TODO: llegir user.
-                        //TODO: comprovar a la base de dades si l'usuari existeix. En cas afirmatiu retornar true, altrament retornar false.
                         boolean userExistsL = false;
+                        try {
+                            User u1 = (User) objectIn.readObject();
+                            //TODO: comprovar a la base de dades si l'usuari existeix. En cas afirmatiu retornar true, altrament retornar false.
+                        } catch (ClassNotFoundException e1) {
+                            e1.printStackTrace();
+                        }
                         dataOutput.writeBoolean(userExistsL);
                         break;
 
@@ -92,27 +96,46 @@ public class DedicatedServer extends Thread {
                         break;
 
                     case EDIT_PROFILE:
-                        //TODO: llegir user.
-                        //TODO: escriure els nous paràmetres a la base de dades.
+                        try {
+                            User u3 = (User) objectIn.readObject();
+                            //TODO: escriure els nous paràmetres a la base de dades.
+                        } catch (ClassNotFoundException e3) {
+                            e3.printStackTrace();
+                        }
                         break;
 
                     case USER_MATCHED:
-                        //TODO: llegir 2 usuaris que han fet match.
+                        try {
+                            User u4 = (User) objectIn.readObject();
+                            User u5 = (User) objectIn.readObject();
+                        } catch (ClassNotFoundException e4) {
+                            e4.printStackTrace();
+                        }
                         //TODO: connectar amb la base de dades i ficar cada usuari a la llista de match de l'altre.
                         break;
 
                     case USER_UNMATCHED:
-                        //TODO: llegir 2 usuaris que han fet match.
+                        try {
+                            User u6 = (User) objectIn.readObject();
+                            User u7 = (User) objectIn.readObject();
+                        } catch (ClassNotFoundException e5) {
+                            e5.printStackTrace();
+                        }
                         //TODO: connectar amb la base de dades i treure cada usuari de la llista de match de l'altre.
                         break;
 
                     case LOAD_CHAT:
-                        //TODO: llegir 2 usuaris que conformen el xat.
+                        try {
+                            User u8 = (User) objectIn.readObject();
+                            User u9 = (User) objectIn.readObject();
+                        } catch (ClassNotFoundException e6) {
+                            e6.printStackTrace();
+                        }
                         //TODO: connectar amb la base de dades i agafar el seu xat.
                         break;
 
                     case SEND_MESSAGE:
-                        //TODO: llegir String.
+                        String message = dataInput.readUTF();
                         //TODO: connectar amb la base de dades i afegir el String a la llista de missatges que conforma el xat.
                         break;
                 }
