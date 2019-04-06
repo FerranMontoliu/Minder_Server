@@ -104,7 +104,7 @@ public class DedicatedServer extends Thread {
                         break;
 
                     case EDIT_PROFILE:
-                        try {
+                        try {       //TODO: Comprovar si existeix! Si no existeix, significa que és la primera edicio de perfil.
                             User u3 = (User) objectIn.readObject();
                             //TODO: escriure els nous paràmetres a la base de dades.
                         } catch (ClassNotFoundException e3) {
