@@ -17,6 +17,7 @@ public class JRegister extends JPanel {
     public JRegister(){
         setLayout(new GridLayout(15,2));
 
+        //Inicialitzar els text fields
         jtfAge = new JTextField();
         jtfName = new JTextField();
         jtfPassword = new JTextField();
@@ -26,6 +27,7 @@ public class JRegister extends JPanel {
         jrbJava = new JRadioButton("Java");
 
 
+        //Afegir components al panell
         add(new JLabel("User name"));
         add(jtfName);
         add(new JLabel("Mail"));
