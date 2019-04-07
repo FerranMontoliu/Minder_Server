@@ -21,7 +21,7 @@ public class Main {
 
 
         });
-        //User u = new User("name", 18, true, "test@example.com", "Password1", "Password1");
+        User u = new User("name", "18", true, "test@example.com", "Password1", "Password1");
         //String s = u.imageToBase64();
         //u.base64ToImage(s);
 
@@ -30,7 +30,11 @@ public class Main {
         int[] week = {3,22,2,4,5,7,5};
         int[] month = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,1,5,3,9,8,6,12,3,4,7,8,1};
 
-        Window view = new Window(day, week, month);
+        User[] users = new User[5];
+        for (int i = 0; i<5; i++){
+            users[i] = u;
+        }
+        Window view = new Window(day, week, month, users);
 
         view.setVisible(true);
     }

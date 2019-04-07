@@ -1,4 +1,6 @@
 package view;
+import model.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Scanner;
@@ -7,7 +9,7 @@ public class Window extends JFrame{
 
     private JCharts jCharts;
 
-    public Window(int[] day, int[] week, int[] month){
+    public Window(int[] day, int[] week, int[] month, User[]users){
 
         //Iniciar la finestra
         setTitle("Server");
@@ -35,7 +37,7 @@ public class Window extends JFrame{
         jtPane.addTab("Estadistiques",jCharts );
 
         //Panell Top 5
-        JTop jTop = new JTop();
+        JTop jTop = new JTop(users);
         jtPane.addTab("Top 5",jTop);
         //Afegir al panell principal el JTabbedPane
         getContentPane().add(jtPane);

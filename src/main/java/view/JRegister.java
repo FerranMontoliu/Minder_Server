@@ -11,11 +11,13 @@ public class JRegister extends JPanel {
     private JTextField jtfPassword2;
     private JRadioButton jrbC;
     private JRadioButton jrbJava;
+    private JRadioButton jrbPremium;
+    private JButton jbRegister;
 
 
 
     public JRegister(){
-        setLayout(new GridLayout(15,2));
+        setLayout(new GridLayout(16,1));
 
         //Inicialitzar els text fields
         jtfAge = new JTextField();
@@ -25,6 +27,8 @@ public class JRegister extends JPanel {
         jtfPassword2 = new JTextField();
         jrbC = new JRadioButton("C");
         jrbJava = new JRadioButton("Java");
+        jrbPremium = new JRadioButton("Yes");
+        jbRegister = new JButton("Register");
 
 
         //Afegir components al panell
@@ -41,6 +45,9 @@ public class JRegister extends JPanel {
         add(new JLabel("Programming languages:"));
         add(jrbC);
         add(jrbJava);
+        add (new JLabel("Premium"));
+        add (jrbPremium);
+        add(jbRegister);
 
 
 

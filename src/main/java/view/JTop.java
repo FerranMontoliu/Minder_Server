@@ -1,34 +1,68 @@
 package view;
+import model.User;
+
 import javax.swing.*;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Vector;
 
 public class JTop extends JPanel {
-    private JTable scrTbl;
+    private JTable jTable;
+    private User[] users;
+    private DefaultTableModel defaultTableModel;
 
-    public JTop(){
-        int  nmbrRows;
+    public JTop(User[] users){
 
-        setLayout(null);
-        Vector colHdrs;
+        this.users = users;
+        defaultTableModel = new DefaultTableModel();
+        TableModelListener[] listeners = defaultTableModel.getTableModelListeners();
 
-        //create column headers
 
-        colHdrs = new Vector(10);
-        colHdrs.addElement(new String("Ticker"));
+        // Data to be displayed in the JTable
 
-        // more statements like the above to establish all col. titles
+        String[][] data = new String[users.length][];
+        for(int i = 0; i< users.length;i++){
+            data[i] = new String[4];
+            data[i][0] = users[i].getUsername();
+            defaultTableModel.addRow(data[i]);
 
-        nmbrRows = 5;
-        DefaultTableModel tblModel = new DefaultTableModel(nmbrRows, colHdrs.size());
-        tblModel.setColumnIdentifiers(colHdrs);
+        }
 
-        scrTbl = new JTable(tblModel);
-        scrTbl.setBounds(25, 50, 950, 600);
-        scrTbl.setRowHeight(23);
-        add(scrTbl);
+        // Column Names
+        String[] columnNames = new String[] { "Name", "PassWord"};
 
+        // Initializing the JTable
+        jTable = new JTable(data, columnNames);
+        //jTable.setModel(defaultTableModel);
+
+        for (TableModelListener l : listeners) {
+            defaultTableModel.addTableModelListener(l);
+        }
+
+        jTable.setEnabled(false);
+        add(new JScrollPane(jTable));
+
+        users[0] = new User("Hola", "18", true, "test@example.com", "Password1", "Password1");
+       // update(users);
+    }
+
+
+    public void update(User[] users){
+        this.users = users;
+
+        defaultTableModel.setRowCount(0);
+
+        String[][] data = new String[users.length][];
+
+        for(int i = 0; i< users.length;i++){
+            data[i] = new String[1];
+            data[i][0] = users[i].getUsername();
+
+            defaultTableModel.addRow(data[i]);
+        }
+
+        defaultTableModel.fireTableDataChanged();
 
     }
 }
