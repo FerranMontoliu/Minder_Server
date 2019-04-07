@@ -1,9 +1,7 @@
 package view;
-import model.User;
+import model.entity.User;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.Scanner;
 
 public class Window extends JFrame{
 

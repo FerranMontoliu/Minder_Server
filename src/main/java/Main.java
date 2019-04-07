@@ -1,4 +1,4 @@
-import model.User;
+import model.entity.User;
 import network.Server;
 import view.Window;
 
@@ -21,7 +21,7 @@ public class Main {
 
 
         });
-        User u = new User("name", "18", true, "test@example.com", "Password1", "Password1");
+        User u = new User("name", "18", true, "test@example.com", "Password1", null);
         //String s = u.imageToBase64();
         //u.base64ToImage(s);
 

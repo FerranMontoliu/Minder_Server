@@ -1,7 +1,7 @@
-package model;
+package model.entity;
 
+import model.UserManager;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.validator.routines.EmailValidator;
 
 import java.awt.*;
 import java.io.File;
@@ -19,7 +19,7 @@ public class User implements Serializable {
     private boolean premium;
     private String mail;
     private String password;
-    private String passwordConfirmation;
+    private byte[] salt;
 
     private Image photo;
     private String description;
@@ -34,14 +34,14 @@ public class User implements Serializable {
     private ArrayList<User> acceptedMe;
 
 
-    public User(boolean completed, String username, String age, boolean premium, String mail, String password, String passwordConfirmation, Image photo, String description, boolean likesJava, boolean likesC, String favSong, ArrayList<String> hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
+    public User(boolean completed, String username, String age, boolean premium, String mail, String password, byte[] salt, Image photo, String description, boolean likesJava, boolean likesC, String favSong, ArrayList<String> hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
         this.completed = completed;
         this.username = username;
         this.age = age;
         this.premium = premium;
         this.mail = mail;
         this.password = password;
-        this.passwordConfirmation = passwordConfirmation;
+        this.salt = salt;
         this.photo = photo;
         this.description = description;
         this.likesJava = likesJava;
@@ -58,22 +58,27 @@ public class User implements Serializable {
      * Constructor que es crida quan es registra l'usuari.
      *
      **/
-    public User(String username, String age, boolean premium, String mail, String password, String passwordConfirmation) {
+    public User(String username, String age, boolean premium, String mail, String password, byte[] salt) {
         this.username = username;
         this.age = age;
         this.premium = premium;
         this.mail = mail;
         this.password = password;
-        this.passwordConfirmation = passwordConfirmation;
+        this.salt = salt;
+        this.completed = false;
     }
 
     /**
-     * Constructor que es crida quan l'usuari fa login.
+     * Constructor que es crida quan l'usuari fa login amb el username.
      *
      **/
-    public User(String username, String password) {
-        this.username = username;
+    public User(String identificator, String password) {
         this.password = password;
+        if(UserManager.mailInSignIn(identificator)){
+            this.mail = identificator;
+        }else{
+            this.username = identificator;
+        }
     }
 
     /**
@@ -85,6 +90,9 @@ public class User implements Serializable {
         return username;
     }
 
+    public int getAge() {
+        return Integer.parseInt(age);
+    }
 
     /**
      * Getter del tipus de compte de l'usuari.
@@ -114,15 +122,6 @@ public class User implements Serializable {
     }
 
     /**
-     * Getter de la confirmació de password de l'usuari.
-     *
-     * @return Retorna un String que conté la confirmació de la password de l'usuari.
-     */
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
-    }
-
-    /**
      * Getter de la foto de perfil de l'usuari.
      *
      * @return Retorna una Image que és la foto de perfil de l'usuari.
@@ -145,7 +144,7 @@ public class User implements Serializable {
      *
      * @return Retorna true si a l'usuari li agrada Java, false sinó.
      */
-    public boolean isLikesJava() {
+    public boolean getLikesJava() {
         return likesJava;
     }
 
@@ -154,8 +153,12 @@ public class User implements Serializable {
      *
      * @return Retorna true si a l'usuari li agrada C, false sinó.
      */
-    public boolean isLikesC() {
+    public boolean getLikesC() {
         return likesC;
+    }
+
+    public byte[] getSalt() {
+        return salt;
     }
 
     /**
