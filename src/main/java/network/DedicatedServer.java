@@ -76,19 +76,28 @@ public class DedicatedServer extends Thread {
                 char func = dataInput.readChar();
                 switch(func){
                     case LOGIN_USER:
-                        boolean userExistsL = false;
+                        boolean userExistsL = true;
                         try {
                             User u1 = (User) objectIn.readObject();
                             //TODO: comprovar a la base de dades si l'usuari existeix. En cas afirmatiu retornar true, altrament retornar false.
                             //userExistsL = check();
                             User dbUser = new User("Polete", "polete");
+                            //TODO: set salt
+                            dataOutput.writeBoolean(userExistsL);
                             if(userExistsL) {
                                 objectOut.writeObject(dbUser);
+                                User us = (User) objectIn.readObject();
+                                //TODO: comprovo que la password hashejada coincideixi
+                                boolean ok = true;
+                                dataOutput.writeBoolean(ok);
+                                if(ok) {
+                                    User user = new User("polete", "polete");//TODO: agafa user base de dades complet
+                                    objectOut.writeObject(user);
+                                }
                             }
                         } catch (ClassNotFoundException e1) {
                             e1.printStackTrace();
                         }
-                        dataOutput.writeBoolean(userExistsL);
                         break;
 
                     case REGISTER_USER:
@@ -104,7 +113,7 @@ public class DedicatedServer extends Thread {
                         break;
 
                     case EDIT_PROFILE:
-                        try {       //TODO: Comprovar si existeix! Si no existeix, significa que és la primera edicio de perfil.
+                        try {
                             User u3 = (User) objectIn.readObject();
                             //TODO: escriure els nous paràmetres a la base de dades.
                         } catch (ClassNotFoundException e3) {

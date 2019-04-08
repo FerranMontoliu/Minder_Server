@@ -3,18 +3,27 @@ package model.database.dao;
 import model.database.DBConnector;
 import model.entity.User;
 
+import java.sql.ResultSet;
+
 public class UserDAO {
     public void addUser(User u) {
-        String query = "INSERT INTO users(username, mail, completed, age, premium, password, salt, photo, description, likes_java, likes_c, fav_song, hobbies) VALUES ('" + u.getUsername() + "', '" + u.getMail() + "', 'false', '" + u.getAge() + "', '" + u.isPremium() + "', '" + u.getPassword() + "', '" + u.getSalt() + "', 'null', 'null', '" + u.getLikesJava() + "', '" + u.getLikesC() + "', 'null', 'null')";
-        DBConnector.getInstance().insertQuery(query);
+        int isPremium = u.isPremium()? 1: 0;
+        int likesC = u.getLikesC()? 1: 0;
+        int likesJava = u.getLikesJava()? 1: 0;
+        String query = "INSERT INTO users(username, mail, completed, age, premium, password, salt, photo, description, likes_java, likes_c, fav_song, hobbies) VALUES ('" + u.getUsername() + "', '" + u.getMail() + "', '0', '" + u.getAge() + "', '" + isPremium + "', '" + u.getPassword() + "', '" + u.getSalt() + "', 'null', 'null', '" + likesJava + "', '" + likesC + "', 'null', 'null')";
+        DBConnector.getInstance().executeQuery(query);
     }
 
     public void updateInfoUser(User u) {
-        String query = "UPDATE users SET description = '" + u.getDescription() + "', photo = '" + "string de la foto aqui" + "', likes_java = '" + u.getLikesJava() + "', likes_c = '" + u.getLikesC() + "', fav_song = '" + u.getFavSong() + "', hobbies = '" + u.getHobbies() + "' WHERE username = " + u.getUsername() + ";";
-        DBConnector.getInstance().insertQuery(query);
+        int likesC = u.getLikesC()? 1: 0;
+        int likesJava = u.getLikesJava()? 1: 0;
+        String query = "UPDATE users SET photo = '" + "string de la foto aqui" + "', description = '" + u.getDescription() + "', likes_java = '" + likesJava + "', likes_c = '" + likesC + "', fav_song = '" + u.getFavSong() + "', hobbies = '" + "u.getHobbies()" + "' WHERE users.username = '" + u.getUsername() + "'";
+        DBConnector.getInstance().executeQuery(query);
     }
 
     public void existsUser(User u) {
-
+        String query = "SELECT COUNT(1) FROM users WHERE users.username = '" + u.getUsername() + "'";
+        ResultSet i = DBConnector.getInstance().selectQuery(query);
+        System.out.println(i);
     }
 }

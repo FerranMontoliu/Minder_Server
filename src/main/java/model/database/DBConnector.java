@@ -49,33 +49,13 @@ public class DBConnector {
 
     }
 
-    public void insertQuery(String query) {
-        try {
-            s =(Statement) conn.createStatement();
-            s.executeUpdate(query);
-
-        } catch(SQLException ex) {
-            System.out.println("Problema al Inserir --> " + ex.getSQLState());
-        }
-    }
-
-    public void updateQuery(String query) {
+    public void executeQuery(String query) {
         try {
             s =(Statement) conn.createStatement();
             s.executeUpdate(query);
         } catch(SQLException ex) {
-            System.out.println("Problema al Modificar --> " + ex.getSQLState());
+            System.out.println("Problema a l'executar la Query --> " + ex.getSQLState());
         }
-    }
-
-    public void deleteQuery(String query) {
-        try {
-            s =(Statement) conn.createStatement();
-            s.executeUpdate(query);
-        } catch(SQLException ex) {
-            System.out.println("Problema al Eliminar --> " + ex.getSQLState());
-        }
-
     }
 
     public ResultSet selectQuery(String query) {
