@@ -5,10 +5,10 @@ import java.awt.*;
 
 public class JRegister extends JPanel {
     private JTextField jtfName;
-    private JTextField jtfPassword;
+    private JPasswordField jpfPassword;
     private JTextField jtfAge;
     private JTextField jtfMail;
-    private JTextField jtfPassword2;
+    private JPasswordField jpfPassword2;
     private JRadioButton jrbC;
     private JRadioButton jrbJava;
     private JRadioButton jrbPremium;
@@ -22,9 +22,9 @@ public class JRegister extends JPanel {
         //Inicialitzar els text fields
         jtfAge = new JTextField();
         jtfName = new JTextField();
-        jtfPassword = new JTextField();
+        jpfPassword = new JPasswordField();
         jtfMail = new JTextField();
-        jtfPassword2 = new JTextField();
+        jpfPassword2 = new JPasswordField();
         jrbC = new JRadioButton("C");
         jrbJava = new JRadioButton("Java");
         jrbPremium = new JRadioButton("Yes");
@@ -37,9 +37,9 @@ public class JRegister extends JPanel {
         add(new JLabel("Mail"));
         add(jtfMail);
         add(new JLabel("Password"));
-        add(jtfPassword);
+        add(jpfPassword);
         add(new JLabel("Repeat Password"));
-        add(jtfPassword2);
+        add(jpfPassword2);
         add(new JLabel("Age"));
         add(jtfAge);
         add(new JLabel("Programming languages:"));
