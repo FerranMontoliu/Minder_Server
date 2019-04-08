@@ -26,12 +26,5 @@
     <orderEntry type="library" name="mysql-connector-java-5.1.47" level="project" />
     <orderEntry type="library" name="jcommon-1.0.8" level="project" />
     <orderEntry type="library" name="jfreechart-1.5.0" level="project" />
-<<<<<<< HEAD
-=======
-    <orderEntry type="library" name="jfreechart-1.5.0" level="project" />
-    <orderEntry type="library" name="jcommon-1.0.8" level="project" />
-    <orderEntry type="library" name="mysql-connector-java-5.1.47" level="project" />
-    <orderEntry type="library" name="mysql-connector-java-5.1.47" level="project" />
->>>>>>> 95da78457ecd72ec7691fa16b1bedb512ee4a928
   </component>
 </module>
