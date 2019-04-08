@@ -1,7 +1,7 @@
 package network;
 
 import model.Json;
-import model.User;
+import model.entity.User;
 
 import java.io.IOException;
 import java.net.ServerSocket;

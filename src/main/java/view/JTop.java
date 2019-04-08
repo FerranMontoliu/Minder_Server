@@ -1,10 +1,13 @@
 package view;
-import model.User;
+import model.entity.User;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+<<<<<<< HEAD
 import java.util.Vector;
+=======
+>>>>>>> e83c07ba0f747bad89bf6415c9b86c9236b30b1c
 
 public class JTop extends JPanel {
     private JTable jTable;
@@ -46,12 +49,17 @@ public class JTop extends JPanel {
         jTable.setEnabled(false);
         add(new JScrollPane(jTable));
 
+<<<<<<< HEAD
         users[0] = new User("Hola", "18", true, "test@example.com", "Password1", "Password1");
         users[1] = new User("Anna", "18", true, "test@example.com", "Password1", "Password1");
 
 
 
         update(users);
+=======
+        users[0] = new User("Hola", "18", true, "test@example.com", "Password1", null);
+       // update(users);
+>>>>>>> e83c07ba0f747bad89bf6415c9b86c9236b30b1c
     }
 
 

@@ -1,6 +1,6 @@
 package network;
 
-import model.User;
+import model.entity.User;
 
 import java.io.*;
 import java.net.Socket;
