@@ -4,11 +4,14 @@ import model.entity.User;
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import java.util.Vector;
+
 
 public class JTop extends JPanel {
     private JTable jTable;
     private User[] users;
     private DefaultTableModel defaultTableModel;
+    private Vector columnNames;
 
     public JTop(User[] users){
 
@@ -17,32 +20,37 @@ public class JTop extends JPanel {
         TableModelListener[] listeners = defaultTableModel.getTableModelListeners();
 
 
-        // Data to be displayed in the JTable
 
-        String[][] data = new String[users.length][];
-        for(int i = 0; i< users.length;i++){
-            data[i] = new String[4];
-            data[i][0] = users[i].getUsername();
-            defaultTableModel.addRow(data[i]);
-
-        }
 
         // Column Names
-        String[] columnNames = new String[] { "Name", "PassWord"};
+        columnNames = new Vector();
+        columnNames.addElement("Name");
+        columnNames.addElement("Password");
+
+
+        // Data to be displayed in the JTable
+
+        Vector<String> element = new Vector<String>();
+        Vector<Vector> data = new Vector<Vector>();
+        for(int i = 0; i< users.length;i++){
+            element.addElement(users[i].getUsername());
+            element.addElement("Password" + i);
+            defaultTableModel.addRow(element);
+
+        }
 
         // Initializing the JTable
-        jTable = new JTable(data, columnNames);
-        //jTable.setModel(defaultTableModel);
-
-        for (TableModelListener l : listeners) {
-            defaultTableModel.addTableModelListener(l);
-        }
+        jTable = new JTable(defaultTableModel);
+        defaultTableModel.setColumnIdentifiers(columnNames);
+        //defaultTableModel.fireTableDataChanged();
 
         jTable.setEnabled(false);
         add(new JScrollPane(jTable));
 
         users[0] = new User("Hola", "18", true, "test@example.com", "Password1", null);
-       // update(users);
+        users[1] = new User("Anna", "18", true, "test@example.com", "Password1", null);
+
+        update(users);
     }
 
 
@@ -50,16 +58,18 @@ public class JTop extends JPanel {
         this.users = users;
 
         defaultTableModel.setRowCount(0);
-
-        String[][] data = new String[users.length][];
+        Vector<String> element = new Vector<String>();
+        Vector<Vector> data = new Vector<Vector>();
 
         for(int i = 0; i< users.length;i++){
-            data[i] = new String[1];
-            data[i][0] = users[i].getUsername();
+            System.out.println(users[i].getUsername());
+            element = new Vector<String>();
+            element.addElement(users[i].getUsername());
+            element.addElement("Password " + i);
+            data.addElement(element);
 
-            defaultTableModel.addRow(data[i]);
         }
-
+        defaultTableModel.setDataVector(data, columnNames);
         defaultTableModel.fireTableDataChanged();
 
     }
