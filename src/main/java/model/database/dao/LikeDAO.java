@@ -5,12 +5,12 @@ import model.entity.User;
 
 public class LikeDAO {
     public void getUserLikes(User u) {
-        String query = "SELECT * FROM liked WHERE username_1 = " + u.getUsername() + ";";
+        String query = "SELECT * FROM liked WHERE username_1 = '" + u.getUsername() + "';";
         DBConnector.getInstance().executeQuery(query);
     }
 
     public void getUserLikesMe(User u) {
-        String query = "SELECT * FROM liked WHERE username_2 = " + u.getUsername() + ";";
+        String query = "SELECT * FROM liked WHERE username_2 = '" + u.getUsername() + "';";
         DBConnector.getInstance().executeQuery(query);
     }
 
