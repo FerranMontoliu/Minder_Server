@@ -16,6 +16,9 @@ public class DBConnector {
     private static Statement s;
     private static DBConnector instance;
 
+    /**
+     * Constructor de la classe encarregada de gestionar la connexió amb la base de dades.
+     */
     private DBConnector(String user, String pass, String db, int port) {
         this.username = user;
         this.password = pass;
@@ -31,9 +34,12 @@ public class DBConnector {
             instance = new DBConnector("root", "", "minderdb", 3306);
             instance.connect();
         }
-        return  instance;
+        return instance;
     }
 
+    /**
+     * Mètode encarregat d'establir la connexió amb la base de dades.
+     */
     public void connect() {
         try {
             Class.forName("com.mysql.jdbc.Connection");
@@ -49,6 +55,11 @@ public class DBConnector {
 
     }
 
+    /**
+     * Mètode encarregat d'executar una query d'nserció, eliminació o actualització d'informació.
+     *
+     * @param query Query que es vol executar.
+     */
     public void executeQuery(String query) {
         try {
             s =(Statement) conn.createStatement();
@@ -58,6 +69,12 @@ public class DBConnector {
         }
     }
 
+    /**
+     * Mètode encarregat d'executar una query de selecció.
+     *
+     * @param query Query que es vol executar.
+     * @return
+     */
     public ResultSet selectQuery(String query) {
         ResultSet rs = null;
         try {
@@ -69,7 +86,11 @@ public class DBConnector {
         return rs;
     }
 
+    /**
+     * Mètode que es crida quan es vol tancar la connexió amb la base de dades.
+     */
     public void disconnect() {
+        //TODO: fer un windowlistener i cridat-la des del controller de la vista. Tancar també els threads amb els clients.
         try {
             conn.close();
         } catch(SQLException e) {

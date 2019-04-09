@@ -32,6 +32,10 @@ public class User implements Serializable {
     private ArrayList<User> acceptedMe;
 
 
+    /**
+     *Constructor que ompla TOTS els camps de l'usuari.
+     *
+     */
     public User(boolean completed, String username, String age, boolean premium, String mail, String password, String photo, String description, boolean likesJava, boolean likesC, String favSong, String[] hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
         this.completed = completed;
         this.username = username;
@@ -86,6 +90,11 @@ public class User implements Serializable {
         return username;
     }
 
+    /**
+     * Getter de l'edat de l'usuari.
+     *
+     * @return Retorna un enter que conté l'edat de l'usuari.
+     */
     public int getAge() {
         return Integer.parseInt(age);
     }
@@ -198,6 +207,11 @@ public class User implements Serializable {
         return match;
     }
 
+    /**
+     * Getter de la llista de perfils que han acceptat a l'usuari.
+     *
+     * @return Retorna una llista de Users que conté els perfils que ja han acceptat a l'usuari.
+     */
     public ArrayList<User> getAcceptedMe() {
         return acceptedMe;
     }
@@ -230,10 +244,20 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Funció encarregada de comprovar si un usuari està completat o no.
+     *
+     * @return Retorna true si està completat, no altrament.
+     */
     public boolean isCompleted() {
         return completed;
     }
 
+    /**
+     * Setter de l'atribut de completed.
+     *
+     * @param completed nou valor que contindrà el paràmetre completed.
+     */
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }

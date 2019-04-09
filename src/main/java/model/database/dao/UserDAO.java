@@ -7,6 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO {
+
+    /**
+     * Mètode encarregat de registrar un nou usuari a la base de dades.
+     *
+     * @param u Usuari que es vol registrar.
+     */
     public void addUser(User u) {
         int isPremium = u.isPremium()? 1: 0;
         int likesC = u.getLikesC()? 1: 0;
@@ -15,6 +21,11 @@ public class UserDAO {
         DBConnector.getInstance().executeQuery(query);
     }
 
+    /**
+     * Mètode encarregat d'actualitzar la informació d'un usuari.
+     *
+     * @param u Usuari del qual es vol actualitzar la informació.
+     */
     public void updateInfoUser(User u) {
         int likesC = u.getLikesC()? 1: 0;
         int likesJava = u.getLikesJava()? 1: 0;
@@ -22,7 +33,14 @@ public class UserDAO {
         DBConnector.getInstance().executeQuery(query);
     }
 
+    /**
+     * Funció que s'encarrega de comprovar si un usuari existeix o no en la base de dades.
+     *
+     * @param u Usuari del qual es vol comprovar l'existència.
+     * @return Retorna true si existeix, false altrament.
+     */
     public boolean existsUser(User u) {
+        //TODO: també pot existir pel mail!!
         String query = "SELECT COUNT(*) FROM users WHERE users.username = '" + u.getUsername() + "'";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         int i = 0;
@@ -35,6 +53,12 @@ public class UserDAO {
         return i > 0;
     }
 
+    /**
+     * Funció que retorna l'usuari complet de la base de dades que correspon a l'usuari incomplet que se li entra com a paràmetre.
+     *
+     * @param u Usuari del qual es vol extreure tota la info de la base de dades.
+     * @return Usuari amb tota la seva informació de la base de dades.
+     */
     public User getUser(User u) {
         String query = "SELECT * FROM users WHERE users.username = '" + u.getUsername() + "'";
         ResultSet res = DBConnector.getInstance().selectQuery(query);

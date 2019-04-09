@@ -62,7 +62,7 @@ public class DedicatedServer extends Thread {
     }
 
     /**
-     * Mètode que s'executa quan es crea un nou servidor dedicat.
+     * Mètode que s'executa quan es crea un nou servidor dedicat i que gestiona totes les peticions que passen per aquest.
      *
      */
     public void run() {
