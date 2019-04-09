@@ -19,7 +19,6 @@ public class User implements Serializable {
     private boolean premium;
     private String mail;
     private String password;
-    private byte[] salt;
 
     private Image photo;
     private String description;
@@ -34,14 +33,13 @@ public class User implements Serializable {
     private ArrayList<User> acceptedMe;
 
 
-    public User(boolean completed, String username, String age, boolean premium, String mail, String password, byte[] salt, Image photo, String description, boolean likesJava, boolean likesC, String favSong, ArrayList<String> hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
+    public User(boolean completed, String username, String age, boolean premium, String mail, String password, Image photo, String description, boolean likesJava, boolean likesC, String favSong, ArrayList<String> hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
         this.completed = completed;
         this.username = username;
         this.age = age;
         this.premium = premium;
         this.mail = mail;
         this.password = password;
-        this.salt = salt;
         this.photo = photo;
         this.description = description;
         this.likesJava = likesJava;
@@ -58,13 +56,12 @@ public class User implements Serializable {
      * Constructor que es crida quan es registra l'usuari.
      *
      **/
-    public User(String username, String age, boolean premium, String mail, String password, byte[] salt) {
+    public User(String username, String age, boolean premium, String mail, String password) {
         this.username = username;
         this.age = age;
         this.premium = premium;
         this.mail = mail;
         this.password = password;
-        this.salt = salt;
         this.completed = false;
     }
 
@@ -155,10 +152,6 @@ public class User implements Serializable {
      */
     public boolean getLikesC() {
         return likesC;
-    }
-
-    public byte[] getSalt() {
-        return salt;
     }
 
     /**

@@ -10,7 +10,7 @@ public class UserDAO {
         int isPremium = u.isPremium()? 1: 0;
         int likesC = u.getLikesC()? 1: 0;
         int likesJava = u.getLikesJava()? 1: 0;
-        String query = "INSERT INTO users(username, mail, completed, age, premium, password, salt, photo, description, likes_java, likes_c, fav_song, hobbies) VALUES ('" + u.getUsername() + "', '" + u.getMail() + "', '0', '" + u.getAge() + "', '" + isPremium + "', '" + u.getPassword() + "', '" + u.getSalt() + "', 'null', 'null', '" + likesJava + "', '" + likesC + "', 'null', 'null')";
+        String query = "INSERT INTO users(username, mail, completed, age, premium, password, photo, description, likes_java, likes_c, fav_song, hobbies) VALUES ('" + u.getUsername() + "', '" + u.getMail() + "', '0', '" + u.getAge() + "', '" + isPremium + "', '" + u.getPassword() + "', 'null', 'null', '" + likesJava + "', '" + likesC + "', 'null', 'null')";
         DBConnector.getInstance().executeQuery(query);
     }
 
@@ -23,7 +23,7 @@ public class UserDAO {
 
     public void existsUser(User u) {
         String query = "SELECT COUNT(1) FROM users WHERE users.username = '" + u.getUsername() + "'";
-        ResultSet i = DBConnector.getInstance().selectQuery(query);
-        System.out.println(i);
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        System.out.println(res);
     }
 }

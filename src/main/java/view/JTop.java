@@ -47,8 +47,8 @@ public class JTop extends JPanel {
         jTable.setEnabled(false);
         add(new JScrollPane(jTable));
 
-        users[0] = new User("Hola", "18", true, "test@example.com", "Password1", null);
-        users[1] = new User("Anna", "18", true, "test@example.com", "Password1", null);
+        users[0] = new User("Hola", "18", true, "test@example.com", "Password1");
+        users[1] = new User("Anna", "18", true, "test@example.com", "Password1");
 
         update(users);
     }
