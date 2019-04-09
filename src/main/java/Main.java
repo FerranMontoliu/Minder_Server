@@ -1,5 +1,7 @@
+import model.database.dao.LikeDAO;
 import model.database.dao.MatchDAO;
 import model.database.dao.UserDAO;
+import model.database.dao.ViewDAO;
 import model.entity.User;
 import network.Server;
 import view.Window;
@@ -46,6 +48,14 @@ public class Main {
             nepe.addMatch(us, us);
             nepe.getUserMatches(us);
             nepe.deleteMatch(us, us);
+
+            LikeDAO membre = new LikeDAO();
+            membre.addLike(us, us);
+            membre.getUserLikes(us);
+            membre.getUserLikesMe(us);
+
+            ViewDAO test = new ViewDAO();
+            test.addViewed(us, us);
             //Aquí acaba la brossa del Ferran.
         });
     }
