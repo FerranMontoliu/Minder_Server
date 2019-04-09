@@ -4,6 +4,7 @@ import model.database.DBConnector;
 import model.entity.User;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserDAO {
     public void addUser(User u) {
@@ -22,8 +23,15 @@ public class UserDAO {
     }
 
     public void existsUser(User u) {
-        String query = "SELECT COUNT(1) FROM users WHERE users.username = '" + u.getUsername() + "'";
+        String query = "SELECT COUNT(*) FROM users WHERE users.username = '" + u.getUsername() + "'";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
-        System.out.println(res);
+        int i = 0;
+        try {
+            res.next();
+            i = res.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println(i);
     }
 }
