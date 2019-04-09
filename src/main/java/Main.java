@@ -22,7 +22,7 @@ public class Main {
             Server server = new Server(model);
             server.startServer();
 
-            //Brossa de l'Anna:
+            //Tests de l'Anna:
             User u = new User("name", "18", true, "test@example.com", "Password1");
             int[] day = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,9,6,5,9,0,1};
             int[] week = {3,22,2,4,5,7,5};
@@ -31,32 +31,10 @@ public class Main {
             for (int i = 0; i<5; i++){
                 users[i] = u;
             }
-            //Aquí acaba la brossa de l'Anna.
+            //Aquí acaben els tests de l'Anna.
 
-
-            //Brossa del Ferran:
             Window view = new Window(day, week, month, users);
             view.setVisible(true);
-
-            UserDAO pene = new UserDAO();
-            pene.addUser(u);
-            User us = new User(true, "name", "18", true, "test@example.com", "Password1", null, "Mencanta menjar polles enormes", true, false, "`", null, null, null, null, null);
-            pene.updateInfoUser(us);
-            pene.existsUser(us);
-
-            MatchDAO nepe = new MatchDAO();
-            nepe.addMatch(us, us);
-            nepe.getUserMatches(us);
-            nepe.deleteMatch(us, us);
-
-            LikeDAO membre = new LikeDAO();
-            membre.addLike(us, us);
-            membre.getUserLikes(us);
-            membre.getUserLikesMe(us);
-
-            ViewDAO test = new ViewDAO();
-            test.addViewed(us, us);
-            //Aquí acaba la brossa del Ferran.
         });
     }
 }

@@ -22,7 +22,7 @@ public class UserDAO {
         DBConnector.getInstance().executeQuery(query);
     }
 
-    public void existsUser(User u) {
+    public boolean existsUser(User u) {
         String query = "SELECT COUNT(*) FROM users WHERE users.username = '" + u.getUsername() + "'";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         int i = 0;
@@ -32,6 +32,36 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(i);
+        return i > 0;
+    }
+
+    public User getUser(User u) {
+        String query = "SELECT * FROM users WHERE users.username = '" + u.getUsername() + "'";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        String username = null, mail = null, password = null, photo = null, description = null, favSong = null, hobbiesString = null;
+        boolean completed = false, premium = false, likesJava = false, likesC = false;
+        int age = 0;
+        String[] hobbies = null;
+        try {
+            while(res.next()) {
+                username = res.getString("username");
+                mail = res.getString("mail");
+                completed = res.getInt("completed") > 0;
+                age = res.getInt("age");
+                premium = res.getInt("premium") > 0;
+                password = res.getString("password");
+                photo = res.getString("photo");
+                description = res.getString("description");
+                likesJava = res.getInt("likes_java") > 0;
+                likesC = res.getInt("likes_c") > 0;
+                favSong = res.getString("fav_song");
+                hobbiesString = res.getString("hobbies");
+                hobbies = hobbiesString.split(",");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        User dbUser = new User(completed, username, Integer.toString(age), premium, mail, password, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null);
+        return dbUser;
     }
 }

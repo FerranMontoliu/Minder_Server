@@ -1,5 +1,6 @@
 package network;
 
+import model.database.dao.UserDAO;
 import model.entity.User;
 
 import java.io.*;
@@ -79,8 +80,8 @@ public class DedicatedServer extends Thread {
                         boolean userExistsL = true;
                         try {
                             User u1 = (User) objectIn.readObject();
-                            //TODO: comprovar a la base de dades si l'usuari existeix. En cas afirmatiu retornar true, altrament retornar false.
-                            //userExistsL = check();
+                            UserDAO userDAO = new UserDAO();
+                            userExistsL = userDAO.existsUser(u1);
                             User dbUser = new User("Polete", "polete");
                             //TODO: set salt
                             dataOutput.writeBoolean(userExistsL);

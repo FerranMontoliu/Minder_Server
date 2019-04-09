@@ -3,7 +3,6 @@ package model.entity;
 import model.UserManager;
 import org.apache.commons.io.FileUtils;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -20,12 +19,12 @@ public class User implements Serializable {
     private String mail;
     private String password;
 
-    private Image photo;
+    private String photo;
     private String description;
     private boolean likesJava;
     private boolean likesC;
     private String favSong;
-    private ArrayList<String> hobbies;
+    private String[] hobbies;
 
     private ArrayList<User> viewed;
     private ArrayList<User> accepted;
@@ -33,7 +32,7 @@ public class User implements Serializable {
     private ArrayList<User> acceptedMe;
 
 
-    public User(boolean completed, String username, String age, boolean premium, String mail, String password, Image photo, String description, boolean likesJava, boolean likesC, String favSong, ArrayList<String> hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
+    public User(boolean completed, String username, String age, boolean premium, String mail, String password, String photo, String description, boolean likesJava, boolean likesC, String favSong, String[] hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
         this.completed = completed;
         this.username = username;
         this.age = age;
@@ -123,7 +122,7 @@ public class User implements Serializable {
      *
      * @return Retorna una Image que és la foto de perfil de l'usuari.
      */
-    public Image getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
@@ -168,7 +167,7 @@ public class User implements Serializable {
      *
      * @return Retorna una llista de Strings que conté els hobbies de l'usuari.
      */
-    public ArrayList<String> getHobbies() {
+    public String[] getHobbies() {
         return hobbies;
     }
 
