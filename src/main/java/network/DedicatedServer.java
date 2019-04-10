@@ -17,6 +17,7 @@ public class DedicatedServer extends Thread {
     private static final char USER_UNMATCHED = 'e';
     private static final char LOAD_CHAT = 'f';
     private static final char SEND_MESSAGE = 'g';
+    private static final char USER_MATCH_LIST = 'h';
 
     private boolean isOn;
     private Socket sClient;
@@ -75,19 +76,19 @@ public class DedicatedServer extends Thread {
                 UserDAO userDAO = new UserDAO();
                 switch(func){
                     case LOGIN_USER:
-                        boolean userExistsL = true;
+                        boolean userExistsL;
                         try {
-                            User u1 = (User) objectIn.readObject();
-                            userExistsL = userDAO.existsUser(u1);
+                            User loginUser = (User) objectIn.readObject();
+                            userExistsL = userDAO.existsUser(loginUser);
                             dataOutput.writeBoolean(userExistsL);
-                            if(userExistsL) {
-                                User dbUser = new User("Polete", "polete"); //User de prova
-                                //User realUser = userDAO.getUser(u1);  Nose si son aixi les comandes pero s'han de seguir aquests passos
-                                //User dbUser = new User(realUSer.getUsername(), realUser.getPassword());
-                                objectOut.writeObject(dbUser); //S'enviaria un User amb només el Nom i Hash i es comprova al Client si coincideixen
-                                boolean sameUser = dataInput.readBoolean();
+                            if(userExistsL) { //Si existeix, es comprova el hash aqui i s'avisa al Client
+                                //User realUser = userDAO.getUser(loginUSer);  //TODO:Descomentar aquesta linia quan funcioni el DAO.getUser()
+                                //TODO: Comparar hash. Descomentar la següent quan estigui programat el hash.
+                                //boolean sameUser = comparaHash(realUser.getPassword(), loginUser.getPassword());
+                                boolean sameUser = true;
+                                dataOutput.writeBoolean(sameUser);
                                 if(sameUser) {
-                                    User userTest = new User("polete", "polete");//TODO: Substituir el procediment pel que està comentat
+                                    User userTest = new User("polete", "polete");//TODO: Substituir el descomentat pel que està comentat
                                     //objectOut.writeObject(realUser); S'envia el real amb tota la info.
                                     objectOut.writeObject(userTest);
                                 }
@@ -161,6 +162,16 @@ public class DedicatedServer extends Thread {
                         break;
                     default:
                         System.out.println("WTF està passant aquí?!");
+                        break;
+                    case USER_MATCH_LIST:
+                        //Obtenir la llista de matches d'un user per a mostrar-ho a la zona superior del ChatPanel
+                        try{
+                            User userToGetMatches = (User) objectIn.readObject();
+                            //TODO: D'aquest user cal obtenir la seva llista de matches
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
                         break;
                 }
                 //updateAllClients();
