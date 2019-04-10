@@ -25,20 +25,17 @@ public class DedicatedServer extends Thread {
     private ObjectInputStream objectIn;
     private ObjectOutputStream objectOut;
     private LinkedList<DedicatedServer> clients;
-    private ArrayList<User> model;
     private Server server;
 
     /**
      * Constructor de la classe.
      *
-     * @param model Llista de productes amb tota la informació sobre aquests.
      * @param sClient Socket que connecta amb el client.
      * @param clients Llista de connexions (tantes connexions com clients connectants simultàneament).
      * @param server Servidor que controla els threads.
      */
-    public DedicatedServer(ArrayList<User> model, Socket sClient, LinkedList<DedicatedServer> clients, Server server) {
+    public DedicatedServer(Socket sClient, LinkedList<DedicatedServer> clients, Server server) {
         this.isOn = false;
-        this.model = model;
         this.sClient = sClient;
         this.clients = clients;
         this.server = server;
@@ -186,7 +183,7 @@ public class DedicatedServer extends Thread {
             outStream = dServer.getOutChannel();
             try {
                 outStream.reset();
-                outStream.writeObject(new UserState(model));
+                outStream.writeObject(new User("",""));
             } catch (IOException e) {
                 e.printStackTrace();
             }

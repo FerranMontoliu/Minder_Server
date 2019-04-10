@@ -29,6 +29,11 @@ public class DBConnector {
         this.instance = null;
     }
 
+    /**
+     * Mètode encarregat de crear la instància de la connexió amb la nostra base de dades utilitzant el nom de l'admin, la seva password, el nom de la db i el seu port.
+     *
+     * @return Retorna la instància de la connexió.
+     */
     public static DBConnector getInstance(){
         if(instance == null) {
             instance = new DBConnector("root", "", "minderdb", 3306);
