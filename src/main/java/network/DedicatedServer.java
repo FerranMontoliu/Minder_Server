@@ -72,25 +72,24 @@ public class DedicatedServer extends Thread {
             while(isOn) {
                 //Llegir char que indica quin missatge rebrà el servidor:
                 char func = dataInput.readChar();
+                UserDAO userDAO = new UserDAO();
                 switch(func){
                     case LOGIN_USER:
                         boolean userExistsL = true;
                         try {
                             User u1 = (User) objectIn.readObject();
-                            UserDAO userDAO = new UserDAO();
                             userExistsL = userDAO.existsUser(u1);
-                            User dbUser = new User("Polete", "polete");
-                            //TODO: set salt
                             dataOutput.writeBoolean(userExistsL);
                             if(userExistsL) {
-                                objectOut.writeObject(dbUser);
-                                User us = (User) objectIn.readObject();
-                                //TODO: comprovo que la password hashejada coincideixi
-                                boolean ok = true;
-                                dataOutput.writeBoolean(ok);
-                                if(ok) {
-                                    User user = new User("polete", "polete");//TODO: agafa user base de dades complet
-                                    objectOut.writeObject(user);
+                                User dbUser = new User("Polete", "polete"); //User de prova
+                                //User realUser = userDAO.getUser(u1);  Nose si son aixi les comandes pero s'han de seguir aquests passos
+                                //User dbUser = new User(realUSer.getUsername(), realUser.getPassword());
+                                objectOut.writeObject(dbUser); //S'enviaria un User amb només el Nom i Hash i es comprova al Client si coincideixen
+                                boolean sameUser = dataInput.readBoolean();
+                                if(sameUser) {
+                                    User userTest = new User("polete", "polete");//TODO: Substituir el procediment pel que està comentat
+                                    //objectOut.writeObject(realUser); S'envia el real amb tota la info.
+                                    objectOut.writeObject(userTest);
                                 }
                             }
                         } catch (ClassNotFoundException e1) {
@@ -101,9 +100,14 @@ public class DedicatedServer extends Thread {
                     case REGISTER_USER:
                         boolean userExistsR = false;
                         try {
-                            User u2 = (User) objectIn.readObject();
+                            User registeringUser = (User) objectIn.readObject();
                             //TODO: comprovar a la base de dades si l'usuari existeix. En cas afirmatiu retornar true, altrament retornar false.
-                            //userExistsR = check();
+                            userExistsR = userDAO.existsUser(registeringUser);
+                            dataOutput.writeBoolean(userExistsR);
+                            if(!userExistsR){
+                                //TODO:Afegir a la base de dades
+                                //userDao.insert(registeringUser);
+                            }
                         } catch (ClassNotFoundException e2) {
                             e2.printStackTrace();
                         }
@@ -113,7 +117,9 @@ public class DedicatedServer extends Thread {
                     case EDIT_PROFILE:
                         try {
                             User u3 = (User) objectIn.readObject();
-                            //TODO: escriure els nous paràmetres a la base de dades.
+                            //TODO: escriure els nous paràmetres a la base de dades i enviar boolean indicant si ha sigut satisfactori
+                            boolean editionDone = true;
+                            dataOutput.writeBoolean(editionDone);
                         } catch (ClassNotFoundException e3) {
                             e3.printStackTrace();
                         }

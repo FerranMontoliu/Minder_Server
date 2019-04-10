@@ -52,7 +52,7 @@ public class Server extends Thread {
             try {
                 Socket sClient = sSocket.accept();
 
-                DedicatedServer pwClient = new DedicatedServer(model, sClient, dServers, this);
+                DedicatedServer pwClient = new DedicatedServer(sClient, dServers, this);
                 dServers.add(pwClient);
 
                 pwClient.startDedicatedServer();
