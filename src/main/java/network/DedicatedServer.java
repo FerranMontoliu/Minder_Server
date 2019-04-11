@@ -83,8 +83,8 @@ public class DedicatedServer extends Thread {
                             User loginUser = (User) objectIn.readObject();
                             userExistsL = userDAO.existsUser(loginUser);
                             dataOutput.writeBoolean(userExistsL);
-                            if(userExistsL) { //Si existeix, es comprova el hash aqui i s'avisa al Client
-                                User realUser = userDAO.getUser(loginUser);  //TODO:Descomentar aquesta linia quan funcioni el DAO.getUser()
+                            if(userExistsL) {
+                                User realUser = userDAO.getUser(loginUser);
                                 boolean sameUser = realUser.getPassword().equals(loginUser.getPassword());
                                 dataOutput.writeBoolean(sameUser);
                                 if(sameUser) {
@@ -97,7 +97,7 @@ public class DedicatedServer extends Thread {
                         break;
 
                     case REGISTER_USER:
-                        boolean userExistsR = false;
+                        boolean userExistsR;
                         try {
                             User registeringUser = (User) objectIn.readObject();
                             userExistsR = userDAO.existsUser(registeringUser);
