@@ -1,3 +1,4 @@
+import controller.Controller;
 import model.database.dao.LikeDAO;
 import model.database.dao.MatchDAO;
 import model.database.dao.UserDAO;
@@ -33,7 +34,10 @@ public class Main {
             }
             //Aquí acaben els tests de l'Anna.
 
+
             Window view = new Window(day, week, month, users);
+            Controller controller = new Controller(view);
+            view.registerController(controller);
             view.setVisible(true);
         });
     }

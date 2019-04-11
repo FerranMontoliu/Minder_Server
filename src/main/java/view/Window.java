@@ -1,4 +1,5 @@
 package view;
+import controller.Controller;
 import model.entity.User;
 
 import javax.swing.*;
@@ -6,6 +7,7 @@ import javax.swing.*;
 public class Window extends JFrame{
 
     private JCharts jCharts;
+    private JRegister jRegister;
 
     public Window(int[] day, int[] week, int[] month, User[]users){
 
@@ -26,7 +28,7 @@ public class Window extends JFrame{
 
 
         //Panell de Registrar
-        JRegister jRegister = new JRegister();
+        jRegister = new JRegister();
         jtPane.addTab("Registrar",jRegister );
 
 
@@ -45,6 +47,7 @@ public class Window extends JFrame{
 
     }
 
+
     public void update(){
         int[] week = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,9,6,5,9,0,1,2};
         int[] month = {3,22,2,4,5,7,5};
@@ -54,5 +57,11 @@ public class Window extends JFrame{
 
     }
 
+    public JRegister getRegister(){
+        return jRegister;
+    }
 
+    public void registerController(Controller c) {
+        jRegister.registerController(c.getCr());
+    }
 }

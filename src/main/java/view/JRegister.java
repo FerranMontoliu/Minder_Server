@@ -1,5 +1,6 @@
 package view;
 
+import controller.ControllerRegister;
 import model.entity.User;
 
 import javax.swing.*;
@@ -67,20 +68,31 @@ public class JRegister extends JPanel {
 
     public User getUser() {
 
-        //User u = new User();
+        User u = new User(jtfName.getText(), jtfAge.getText(), jrbPremium.isSelected(), jtfMail.getText(), new String (jpfPassword.getPassword()));
 
-        return null;
+        return u;
     }
 
     public void removeRegister(){
+        jtfAge.setText("");
+        jtfMail.setText("");
+        jtfName.setText("");
+        jpfPassword.setText("");
+        jpfPassword2.setText("");
+
+        jrbNoPremium.setSelected(true);
+
+        jcbC.setSelected(false);
+        jcbJava.setSelected(false);
 
     }
 
 
-    /*
+
+
     public void registerController(ControllerRegister controller) {
         jbRegister.addActionListener(controller);
         jbRegister.setActionCommand("REGISTER");
     }
-    */
+
 }
