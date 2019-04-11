@@ -1,4 +1,7 @@
 package view;
+
+import model.entity.User;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
@@ -9,9 +12,10 @@ public class JRegister extends JPanel {
     private JTextField jtfAge;
     private JTextField jtfMail;
     private JPasswordField jpfPassword2;
-    private JRadioButton jrbC;
-    private JRadioButton jrbJava;
+    private JCheckBox jcbC;
+    private JCheckBox jcbJava;
     private JRadioButton jrbPremium;
+    private JRadioButton jrbNoPremium;
     private JButton jbRegister;
 
 
@@ -19,17 +23,23 @@ public class JRegister extends JPanel {
     public JRegister(){
         setLayout(new GridLayout(16,1));
 
-        //Inicialitzar els text fields
+        //Inicialitzar els elements
         jtfAge = new JTextField();
         jtfName = new JTextField();
         jpfPassword = new JPasswordField();
         jtfMail = new JTextField();
         jpfPassword2 = new JPasswordField();
-        jrbC = new JRadioButton("C");
-        jrbJava = new JRadioButton("Java");
+        jcbC = new JCheckBox("C");
+        jcbJava = new JCheckBox("Java");
         jrbPremium = new JRadioButton("Yes");
+        jrbNoPremium = new JRadioButton("No");
         jbRegister = new JButton("Register");
 
+        //Grup de radioButtons
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(jrbNoPremium);
+        bg.add(jrbPremium);
+        jrbNoPremium.setSelected(true);
 
         //Afegir components al panell
         add(new JLabel("User name"));
@@ -43,13 +53,34 @@ public class JRegister extends JPanel {
         add(new JLabel("Age"));
         add(jtfAge);
         add(new JLabel("Programming languages:"));
-        add(jrbC);
-        add(jrbJava);
+        add(jcbC);
+        add(jcbJava);
+        JPanel jpRadioButton = new JPanel(new GridLayout(1,2));
+        jpRadioButton.add(jrbNoPremium);
+        jpRadioButton.add(jrbPremium);
         add (new JLabel("Premium"));
-        add (jrbPremium);
+        add (jpRadioButton);
         add(jbRegister);
 
 
+    }
+
+    public User getUser() {
+
+        //User u = new User();
+
+        return null;
+    }
+
+    public void removeRegister(){
 
     }
+
+
+    /*
+    public void registerController(ControllerRegister controller) {
+        jbRegister.addActionListener(controller);
+        jbRegister.setActionCommand("REGISTER");
+    }
+    */
 }
