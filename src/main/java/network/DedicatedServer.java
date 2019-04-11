@@ -2,6 +2,8 @@ package network;
 
 import model.database.dao.UserDAO;
 import model.entity.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.*;
 import java.net.Socket;
@@ -82,15 +84,11 @@ public class DedicatedServer extends Thread {
                             userExistsL = userDAO.existsUser(loginUser);
                             dataOutput.writeBoolean(userExistsL);
                             if(userExistsL) { //Si existeix, es comprova el hash aqui i s'avisa al Client
-                                //User realUser = userDAO.getUser(loginUSer);  //TODO:Descomentar aquesta linia quan funcioni el DAO.getUser()
-                                //TODO: Comparar hash. Descomentar la següent quan estigui programat el hash.
-                                //boolean sameUser = comparaHash(realUser.getPassword(), loginUser.getPassword());
-                                boolean sameUser = true;
+                                User realUser = userDAO.getUser(loginUser);  //TODO:Descomentar aquesta linia quan funcioni el DAO.getUser()
+                                boolean sameUser = realUser.getPassword().equals(loginUser.getPassword());
                                 dataOutput.writeBoolean(sameUser);
                                 if(sameUser) {
-                                    User userTest = new User("polete", "polete");//TODO: Substituir el descomentat pel que està comentat
-                                    //objectOut.writeObject(realUser); S'envia el real amb tota la info.
-                                    objectOut.writeObject(userTest);
+                                    objectOut.writeObject(realUser);
                                 }
                             }
                         } catch (ClassNotFoundException e1) {
