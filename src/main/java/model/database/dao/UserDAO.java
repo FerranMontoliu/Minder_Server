@@ -40,8 +40,12 @@ public class UserDAO {
      * @return Retorna true si existeix, false altrament.
      */
     public boolean existsUser(User u) {
-        //TODO: també pot existir pel mail!!
-        String query = "SELECT COUNT(*) FROM users WHERE users.username = '" + u.getUsername() + "'";
+        String query;
+        if(u.getUsername() != null) {
+            query = "SELECT COUNT(*) FROM users WHERE users.username = '" + u.getUsername() + "'";
+        } else {
+            query = "SELECT COUNT(*) FROM users WHERE users.username = '" + u.getUsername() + "'";
+        }
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         int i = 0;
         try {
