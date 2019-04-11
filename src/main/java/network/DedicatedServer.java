@@ -102,17 +102,14 @@ public class DedicatedServer extends Thread {
                         boolean userExistsR = false;
                         try {
                             User registeringUser = (User) objectIn.readObject();
-                            //TODO: comprovar a la base de dades si l'usuari existeix. En cas afirmatiu retornar true, altrament retornar false.
                             userExistsR = userDAO.existsUser(registeringUser);
                             dataOutput.writeBoolean(userExistsR);
                             if(!userExistsR){
-                                //TODO:Afegir a la base de dades
-                                //userDao.insert(registeringUser);
+                                userDAO.addUser(registeringUser);
                             }
                         } catch (ClassNotFoundException e2) {
                             e2.printStackTrace();
                         }
-                        dataOutput.writeBoolean(userExistsR);
                         break;
 
                     case EDIT_PROFILE:
