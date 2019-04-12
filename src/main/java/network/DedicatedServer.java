@@ -1,6 +1,7 @@
 package network;
 
 import model.database.dao.UserDAO;
+import model.entity.MatchLoader;
 import model.entity.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -162,7 +163,11 @@ public class DedicatedServer extends Thread {
                         //Obtenir la llista de matches d'un user per a mostrar-ho a la zona superior del ChatPanel
                         try{
                             User userToGetMatches = (User) objectIn.readObject();
+                            //String username = dataInput.readUTF(); //Si vols es podria només enviar el seu username
                             //TODO: D'aquest user cal obtenir la seva llista de matches
+                            //MatchLoader matchLoader = matchDAO.getMatchs(userToGetMatches);
+                            MatchLoader matchLoader = new MatchLoader(); //Provisional
+                            objectOut.writeObject(matchLoader);
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
