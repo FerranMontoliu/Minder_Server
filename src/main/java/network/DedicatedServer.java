@@ -1,7 +1,10 @@
 package network;
 
+import model.database.dao.ChatDAO;
+import model.database.dao.MatchDAO;
 import model.database.dao.UserDAO;
 import model.entity.MatchLoader;
+import model.entity.Message;
 import model.entity.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -77,6 +80,8 @@ public class DedicatedServer extends Thread {
                 //Llegir char que indica quin missatge rebrà el servidor:
                 char func = dataInput.readChar();
                 UserDAO userDAO = new UserDAO();
+                MatchDAO matchDAO = new MatchDAO();
+                ChatDAO chatDAO = new ChatDAO();
                 switch(func){
                     case LOGIN_USER:
                         boolean userExistsL;
@@ -114,9 +119,7 @@ public class DedicatedServer extends Thread {
                     case EDIT_PROFILE:
                         try {
                             User u3 = (User) objectIn.readObject();
-                            //TODO: escriure els nous paràmetres a la base de dades i enviar boolean indicant si ha sigut satisfactori
-                            boolean editionDone = true;
-                            dataOutput.writeBoolean(editionDone);
+                            userDAO.updateInfoUser(u3);
                         } catch (ClassNotFoundException e3) {
                             e3.printStackTrace();
                         }
@@ -126,7 +129,7 @@ public class DedicatedServer extends Thread {
                         try {
                             User u4 = (User) objectIn.readObject();
                             User u5 = (User) objectIn.readObject();
-                            //TODO: connectar amb la base de dades i ficar cada usuari a la llista de match de l'altre.
+                            matchDAO.addMatch(u4.getUsername(), u5.getUsername());
                         } catch (ClassNotFoundException e4) {
                             e4.printStackTrace();
                         }
@@ -136,7 +139,7 @@ public class DedicatedServer extends Thread {
                         try {
                             User u6 = (User) objectIn.readObject();
                             User u7 = (User) objectIn.readObject();
-                            //TODO: connectar amb la base de dades i treure cada usuari de la llista de match de l'altre.
+                            matchDAO.deleteMatch(u6.getUsername(), u7.getUsername());
                         } catch (ClassNotFoundException e5) {
                             e5.printStackTrace();
                         }
@@ -146,19 +149,22 @@ public class DedicatedServer extends Thread {
                         try {
                             User u8 = (User) objectIn.readObject();
                             User u9 = (User) objectIn.readObject();
-                            //TODO: connectar amb la base de dades i agafar el seu xat.
+                            chatDAO.loadChat(u8.getUsername(), u9.getUsername());
                         } catch (ClassNotFoundException e6) {
                             e6.printStackTrace();
                         }
                         break;
 
                     case SEND_MESSAGE:
-                        String message = dataInput.readUTF();
-                        //TODO: connectar amb la base de dades i afegir el String a la llista de missatges que conforma el xat.
+                        Message m = null;
+                        try {
+                            m = (Message) objectIn.readObject();
+                        } catch (ClassNotFoundException e7) {
+                            e7.printStackTrace();
+                        }
+                        chatDAO.sendMessage(m);
                         break;
-                    default:
-                        System.out.println("WTF està passant aquí?!");
-                        break;
+
                     case USER_MATCH_LIST:
                         //Obtenir la llista de matches d'un user per a mostrar-ho a la zona superior del ChatPanel
                         try{
@@ -171,7 +177,10 @@ public class DedicatedServer extends Thread {
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
+                        break;
 
+                    default:
+                        System.out.println("WTF està passant aquí?!");
                         break;
                 }
                 //updateAllClients();

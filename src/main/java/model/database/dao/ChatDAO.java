@@ -13,7 +13,7 @@ import java.util.LinkedList;
 
 public class ChatDAO {
     public Chat loadChat(String u1, String u2) {
-        String query = "SELECT * FROM chats WHERE username_1 = '" + u1 + "' AND username_2 = '" + u2 + "';";
+        String query = "SELECT * FROM chats WHERE username_1 = '" + u1 + "' AND username_2 = '" + u2 + "' OR username_1 = '" + u2 + "' AND username_2 = '" + u1 + "';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         LinkedList<Message> xat = new LinkedList<>();
         String source, destination, message, date;
@@ -36,8 +36,8 @@ public class ChatDAO {
         return c;
     }
 
-    public void sendMessage(String u1, String u2, Message m) {
-        String query = "INSERT INTO chats (username_1, username_2, message_date, message) VALUES ('" + u1 + "', '" + u2 + "', '" + "2019-04-10" + "', '" + m + "')";
+    public void sendMessage(Message m) {
+        String query = "INSERT INTO chats (username_1, username_2, message_date, message) VALUES ('" + m.getSource() + "', '" + m.getDestination() + "', '" + "2019-04-10" + "', '" + m.getText() + "')";
         DBConnector.getInstance().executeQuery(query);
     }
 }
