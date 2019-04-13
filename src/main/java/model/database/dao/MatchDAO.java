@@ -1,16 +1,35 @@
 package model.database.dao;
 
 import model.database.DBConnector;
-import model.entity.User;
+import model.entity.MatchLoader;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MatchDAO {
-    public void getUserMatches(User u) {
-        String query = "SELECT * FROM matchs WHERE username_1 = '" + u.getUsername() + "' OR username_2 = '" + u.getUsername() + "';";
+    public MatchLoader getUserMatches(String u) {
+        String query = "SELECT * FROM matchs WHERE username_1 = '" + u + "';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
-        System.out.println(res);
-        //TODO: fer que retorni un array de Users.
+        MatchLoader ml = new MatchLoader();
+        try {
+            while(res.next()) {
+                String matchedUser = res.getString("username_2");
+                ml.addMatch(matchedUser);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        query = "SELECT * FROM matchs WHERE username_2 = '" + u + "';";
+        res = DBConnector.getInstance().selectQuery(query);
+        try {
+            while(res.next()) {
+                String matchedUser = res.getString("username_1");
+                ml.addMatch(matchedUser);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ml;
     }
 
     /**
@@ -19,8 +38,8 @@ public class MatchDAO {
      * @param u1 Usuari que conforma el match.
      * @param u2 Usuari que conforma el match.
      */
-    public void addMatch(User u1, User u2) {
-        String query = "INSERT INTO matchs (username_1, username_2, match_date) VALUES ('" + u1.getUsername() + "', '" + u2.getUsername() + "', '" + "2019-04-10" + "')";
+    public void addMatch(String u1, String u2) {
+        String query = "INSERT INTO matchs (username_1, username_2, match_date) VALUES ('" + u1 + "', '" + u2 + "', '" + "2019-04-10" + "')";
         DBConnector.getInstance().executeQuery(query);
     }
 
@@ -30,8 +49,8 @@ public class MatchDAO {
      * @param u1 Usuari que conforma el match.
      * @param u2 Usuari que conforma el match.
      */
-    public void deleteMatch(User u1, User u2) {
-        String query = "DELETE FROM matchs WHERE (username_1 = '" + u1.getUsername() + "' AND username_2 = '" + u2.getUsername() + "') OR (username_1 = '" + u2.getUsername() + "' AND username_2 = '" + u1.getUsername() + "');";
+    public void deleteMatch(String u1, String u2) {
+        String query = "DELETE FROM matchs WHERE (username_1 = '" + u1 + "' AND username_2 = '" + u2 + "') OR (username_1 = '" + u2 + "' AND username_2 = '" + u1 + "');";
         DBConnector.getInstance().executeQuery(query);
     }
 }
