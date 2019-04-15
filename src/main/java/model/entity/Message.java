@@ -25,7 +25,7 @@ public class Message implements Serializable {
     }
 
     private String generateMessageTime() {
-        String format = "yyyy-MM-dd_HH-mm";
+        String format = "MM/dd/yyyy HH:mm";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
         return simpleDateFormat.format(new Date());
     }

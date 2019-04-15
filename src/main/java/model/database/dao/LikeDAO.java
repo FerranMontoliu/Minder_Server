@@ -38,7 +38,7 @@ public class LikeDAO {
     }
 
     /**
-     * Mètode encarregat de registrar un nou like a un perfil a la base de dades.
+     * Metode encarregat de registrar un nou like a un perfil a la base de dades.
      *
      * @param u1 Usuari que ha donat el like.
      * @param u2 Usuari al qual s'ha donat el like.

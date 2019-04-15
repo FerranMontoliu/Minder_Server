@@ -3,6 +3,7 @@ package network;
 import model.database.dao.ChatDAO;
 import model.database.dao.MatchDAO;
 import model.database.dao.UserDAO;
+import model.entity.Chat;
 import model.entity.MatchLoader;
 import model.entity.Message;
 import model.entity.User;
@@ -147,10 +148,11 @@ public class DedicatedServer extends Thread {
 
                     case LOAD_CHAT:
                         try {
-                            User u8 = (User) objectIn.readObject();
-                            User u9 = (User) objectIn.readObject();
-                            chatDAO.loadChat(u8.getUsername(), u9.getUsername());
-                        } catch (ClassNotFoundException e6) {
+                            String sender = dataInput.readUTF();
+                            String receiver = dataInput.readUTF();
+                            Chat storedChat = chatDAO.loadChat(sender, receiver);
+                            objectOut.writeObject(storedChat);
+                        } catch (IOException e6) {
                             e6.printStackTrace();
                         }
                         break;
@@ -166,16 +168,12 @@ public class DedicatedServer extends Thread {
                         break;
 
                     case USER_MATCH_LIST:
-                        //Obtenir la llista de matches d'un user per a mostrar-ho a la zona superior del ChatPanel
-                        try{
-                            User userToGetMatches = (User) objectIn.readObject();
-                            //String username = dataInput.readUTF(); //Si vols es podria només enviar el seu username
-                            //TODO: D'aquest user cal obtenir la seva llista de matches
-                            //MatchLoader matchLoader = matchDAO.getMatchs(userToGetMatches);
-                            MatchLoader matchLoader = new MatchLoader(); //Provisional
+                        try {
+                            String username = dataInput.readUTF();
+                            MatchLoader matchLoader = matchDAO.getUserMatches(username);
                             objectOut.writeObject(matchLoader);
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
+                        }catch(Exception e1){
+                            e1.printStackTrace();
                         }
                         break;
 

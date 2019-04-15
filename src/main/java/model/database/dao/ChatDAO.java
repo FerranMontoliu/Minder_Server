@@ -12,12 +12,13 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 public class ChatDAO {
+
     public Chat loadChat(String u1, String u2) {
         String query = "SELECT * FROM chats WHERE username_1 = '" + u1 + "' AND username_2 = '" + u2 + "' OR username_1 = '" + u2 + "' AND username_2 = '" + u1 + "';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         LinkedList<Message> xat = new LinkedList<>();
         String source, destination, message, date;
-        String pattern = "MM/dd/yyyy HH:mm:ss";
+        String pattern = "MM/dd/yyyy HH:mm";
         DateFormat df = new SimpleDateFormat(pattern);
         try {
             while(res.next()) {
