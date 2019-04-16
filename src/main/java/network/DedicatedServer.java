@@ -50,7 +50,7 @@ public class DedicatedServer extends Thread {
     }
 
     /**
-     * Mètode encarregat de crear un nou thread del servidor dedicat.
+     * Metode encarregat de crear un nou thread del servidor dedicat.
      *
      */
     public void startDedicatedServer() {
@@ -59,7 +59,7 @@ public class DedicatedServer extends Thread {
     }
 
     /**
-     * Mètode encarregat d'aturar un thread d'un servidor dedicat.
+     * Metode encarregat d'aturar un thread d'un servidor dedicat.
      */
     public void stopDedicatedServer() {
         this.isOn = false;
@@ -67,7 +67,7 @@ public class DedicatedServer extends Thread {
     }
 
     /**
-     * Mètode que s'executa quan es crea un nou servidor dedicat i que gestiona totes les peticions que passen per aquest.
+     * Metode que s'executa quan es crea un nou servidor dedicat i que gestiona totes les peticions que passen per aquest.
      *
      */
     public void run() {
@@ -138,10 +138,10 @@ public class DedicatedServer extends Thread {
 
                     case USER_UNMATCHED:
                         try {
-                            User u6 = (User) objectIn.readObject();
-                            User u7 = (User) objectIn.readObject();
-                            matchDAO.deleteMatch(u6.getUsername(), u7.getUsername());
-                        } catch (ClassNotFoundException e5) {
+                            String sender = dataInput.readUTF();
+                            String deleted = dataInput.readUTF();
+                            matchDAO.deleteMatch(sender, deleted);
+                        } catch (IOException e5) {
                             e5.printStackTrace();
                         }
                         break;
@@ -199,7 +199,7 @@ public class DedicatedServer extends Thread {
     }
 
     /**
-     * Mètode encarregat d'enviar les noves dades actualitzades a tots els clients que hi ha connectats al servidor.
+     * Metode encarregat d'enviar les noves dades actualitzades a tots els clients que hi ha connectats al servidor.
      */
     private void updateAllClients() {
         ObjectOutputStream outStream;

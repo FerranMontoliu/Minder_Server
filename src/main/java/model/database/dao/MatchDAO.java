@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MatchDAO {
+
     public MatchLoader getUserMatches(String u) {
         String query = "SELECT * FROM matchs WHERE username_1 = '" + u + "';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
