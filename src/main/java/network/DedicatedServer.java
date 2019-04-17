@@ -1,6 +1,7 @@
 package network;
 
 import model.database.dao.ChatDAO;
+import model.database.dao.LikeDAO;
 import model.database.dao.MatchDAO;
 import model.database.dao.UserDAO;
 import model.entity.Chat;
@@ -25,6 +26,9 @@ public class DedicatedServer extends Thread {
     private static final char LOAD_CHAT = 'f';
     private static final char SEND_MESSAGE = 'g';
     private static final char USER_MATCH_LIST = 'h';
+    private static final char CONNECT_LIKE = 'i';
+    private static final char CONNECT_DISLIKE = 'j';
+    private static final char CONNECT_USER = 'k';
 
     private boolean isOn;
     private Socket sClient;
@@ -172,9 +176,29 @@ public class DedicatedServer extends Thread {
                             String username = dataInput.readUTF();
                             MatchLoader matchLoader = matchDAO.getUserMatches(username);
                             objectOut.writeObject(matchLoader);
-                        }catch(Exception e1){
+                        }catch(IOException e1){
                             e1.printStackTrace();
                         }
+                        break;
+                    case CONNECT_USER: //TODO: Solicita un USER a visualitzar pel connect panel
+                            //User u = viewDAO.Obtenir usuari a visualitzar. Cal: Nom, foto, description, java/C, hobbies i song. La resta a null.
+                            //També cal comprovar que l'usuari no s'hagi vist abans, no?
+                            User test = new User("polete", "password");
+                            objectOut.writeObject(test);
+                        break;
+                    case CONNECT_LIKE: //TODO: Fas LIKE en el connect panel.
+                        String sender = dataInput.readUTF();
+                        String liked = dataInput.readUTF();
+                        LikeDAO likeDAO = new LikeDAO();
+                        likeDAO.addLike(sender, liked);
+                        //boolean isMatch = MIRAR SI FAS UN NOU MATCH i en aquest cas, afegirlo a la base de dades
+                        boolean isMatch = true;
+                        dataOutput.writeBoolean(isMatch);
+                        break;
+                    case CONNECT_DISLIKE: //TODO: Fas DISLIKE en el connect panel.
+                        String source = dataInput.readUTF();
+                        String disliked = dataInput.readUTF();
+                        //Nose si això s'ha de guardar, però si s'ha de fer només, cal escriure la comanda del DAO.
                         break;
 
                     default:

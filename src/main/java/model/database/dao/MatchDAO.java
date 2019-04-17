@@ -34,7 +34,7 @@ public class MatchDAO {
     }
 
     /**
-     * Mètode encarregat d'afegir un like a la base de dades.
+     * Metode encarregat d'afegir un like a la base de dades.
      *
      * @param u1 Usuari que conforma el match.
      * @param u2 Usuari que conforma el match.
@@ -45,7 +45,7 @@ public class MatchDAO {
     }
 
     /**
-     * Mètode encarregat d'eliminar un matx de la base de dades.
+     * Metode encarregat d'eliminar un match de la base de dades.
      *
      * @param u1 Usuari que conforma el match.
      * @param u2 Usuari que conforma el match.

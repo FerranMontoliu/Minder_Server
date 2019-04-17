@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class ViewDAO {
 
     /**
-     * Mètode encarregat de registrar una nova visualització d'un perfil a la base de dades.
+     * Metode encarregat de registrar una nova visualitzacio d'un perfil a la base de dades.
      *
      * @param u1 Usuari que ha vist el perfil.
      * @param u2 Usuari del qual s'ha vist el perfil.
