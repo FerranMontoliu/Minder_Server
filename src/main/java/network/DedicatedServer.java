@@ -8,8 +8,8 @@ import model.entity.Chat;
 import model.entity.MatchLoader;
 import model.entity.Message;
 import model.entity.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.*;
 import java.net.Socket;
@@ -96,6 +96,9 @@ public class DedicatedServer extends Thread {
                             dataOutput.writeBoolean(userExistsL);
                             if(userExistsL) {
                                 User realUser = userDAO.getUser(loginUser);
+                                //TODO ERROR: el hash de la contrassenya varia cada vegada que es demana de fer un coding, per tant no coincideixen mai les contrassenyes del mateix usuari
+                                System.out.println(realUser.getPassword());
+                                System.out.println(loginUser.getPassword());
                                 boolean sameUser = realUser.getPassword().equals(loginUser.getPassword());
                                 dataOutput.writeBoolean(sameUser);
                                 if(sameUser) {
