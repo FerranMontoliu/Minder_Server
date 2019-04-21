@@ -115,13 +115,15 @@ public class DedicatedServer extends Thread {
                         break;
 
                     case REGISTER_USER:
-                        boolean userExistsR;
                         try {
                             User registeringUser = (User) objectIn.readObject();
-                            userExistsR = userDAO.existsUser(registeringUser);
-                            dataOutput.writeBoolean(userExistsR);
-                            if(!userExistsR){
+                            boolean usernameExistsR = userDAO.existsUser(registeringUser);
+                            boolean mailExistsR = userDAO.existsUser(new User(registeringUser.getMail(), registeringUser.getPassword()));
+                            if((!usernameExistsR) && (!mailExistsR)){
+                                dataOutput.writeBoolean(true);
                                 userDAO.addUser(registeringUser);
+                            }else{
+                                dataOutput.writeBoolean(false);
                             }
                         } catch (ClassNotFoundException e2) {
                             e2.printStackTrace();
