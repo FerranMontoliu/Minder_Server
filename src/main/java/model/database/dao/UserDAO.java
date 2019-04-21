@@ -44,7 +44,7 @@ public class UserDAO {
         if(u.getUsername() != null) {
             query = "SELECT COUNT(*) FROM users WHERE users.username = '" + u.getUsername() + "'";
         } else {
-            query = "SELECT COUNT(*) FROM users WHERE users.username = '" + u.getUsername() + "'";
+            query = "SELECT COUNT(*) FROM users WHERE users.mail = '" + u.getMail() + "'";
         }
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         int i = 0;
@@ -68,7 +68,7 @@ public class UserDAO {
         if(u.getUsername() != null) {
             query = "SELECT * FROM users WHERE users.username = '" + u.getUsername() + "'";
         } else {
-            query = "SELECT * FROM users WHERE users.username = '" + u.getMail() + "'";
+            query = "SELECT * FROM users WHERE users.mail = '" + u.getMail() + "'";
         }
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         String username = null, mail = null, password = null, photo = null, description = null, favSong = null, hobbiesString = null;
