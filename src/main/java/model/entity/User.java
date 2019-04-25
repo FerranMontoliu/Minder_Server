@@ -263,4 +263,24 @@ public class User implements Serializable {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    /**
+     * Metode que actualitza els camps del User despres d'editar el perfil
+     * @param description nova description
+     * @param java nou valor del boolean java
+     * @param c nou valor del boolean c
+     * @param song nova canso preferida
+     * @param hobbies nous hobbies
+     */
+    public void saveEdition(String description, boolean java, boolean c, String song, String hobbies) {
+        this.description = description;
+        this.likesJava = java;
+        this.likesC = c;
+        this.favSong = song;
+
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 }
