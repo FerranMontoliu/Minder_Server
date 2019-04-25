@@ -231,14 +231,13 @@ public class User implements Serializable {
     /**
      * Metode encarregat de reconstruir una imatge a partir d'un String.
      *
-     * @param encodedString String que conte la imatge codificada en Base64.
      * @param username String que definira el nom de la imatge a descarregar.
      */
-    public void base64ToImage(String encodedString, String username) {
+    public void base64ToImage(String username) {
         try {
             //Alba
             //encoded String conte al prinipi de la codificacio la següent info: "data:image/png;base64," que no volem decodificar
-            String base64Image = encodedString.split(",")[1];
+            String base64Image = photo.split(",")[1];
 
             FileUtils.writeByteArrayToFile(new File("data/" + username + ".jpg"), Base64.getDecoder().decode(base64Image));
         } catch (IOException e) {
