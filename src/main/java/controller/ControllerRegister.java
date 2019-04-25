@@ -21,6 +21,9 @@ public class ControllerRegister implements ActionListener {
         switch (command){
             case "REGISTER":
                 jRegister.removeRegister();
+
+            case "PASSWORD":
+                jRegister.changeViewPassword();
         }
 
     }

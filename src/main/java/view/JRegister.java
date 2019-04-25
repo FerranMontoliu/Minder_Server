@@ -18,11 +18,13 @@ public class JRegister extends JPanel {
     private JRadioButton jrbPremium;
     private JRadioButton jrbNoPremium;
     private JButton jbRegister;
+    private JCheckBox jcbViewPassword;
+    private char ecoChar;
 
 
 
     public JRegister(){
-        setLayout(new GridLayout(16,1));
+        setLayout(new GridLayout(17,1));
 
         //Inicialitzar els elements
         jtfAge = new JTextField();
@@ -35,12 +37,17 @@ public class JRegister extends JPanel {
         jrbPremium = new JRadioButton("Yes");
         jrbNoPremium = new JRadioButton("No");
         jbRegister = new JButton("Register");
+        jcbViewPassword = new JCheckBox();
 
         //Grup de radioButtons
         ButtonGroup bg = new ButtonGroup();
         bg.add(jrbNoPremium);
         bg.add(jrbPremium);
         jrbNoPremium.setSelected(true);
+
+
+        //Guardar el eco del Password
+        ecoChar = jpfPassword.getEchoChar();
 
         //Afegir components al panell
         add(new JLabel("User name"));
@@ -51,6 +58,10 @@ public class JRegister extends JPanel {
         add(jpfPassword);
         add(new JLabel("Repeat Password"));
         add(jpfPassword2);
+        JPanel jpViewPassword = new JPanel(new FlowLayout());
+        jpViewPassword.add(jcbViewPassword);
+        jpViewPassword.add(new JLabel("Mostra passwords"));
+        add(jpViewPassword);
         add(new JLabel("Age"));
         add(jtfAge);
         add(new JLabel("Programming languages:"));
@@ -93,6 +104,22 @@ public class JRegister extends JPanel {
     public void registerController(ControllerRegister controller) {
         jbRegister.addActionListener(controller);
         jbRegister.setActionCommand("REGISTER");
+
+        jcbViewPassword.addActionListener(controller);
+        jcbViewPassword.setActionCommand("PASSWORD");
     }
 
+    public void changeViewPassword() {
+        if(jcbViewPassword.isSelected()){
+
+            jpfPassword.setEchoChar((char) 0);
+            jpfPassword2.setEchoChar((char) 0);
+
+        }else{
+
+            jpfPassword.setEchoChar((ecoChar));
+            jpfPassword2.setEchoChar((ecoChar));
+
+        }
+    }
 }
