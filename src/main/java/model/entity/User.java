@@ -277,7 +277,11 @@ public class User implements Serializable {
         this.likesJava = java;
         this.likesC = c;
         this.favSong = song;
-
+        this.hobbies = hobbies.split(",");
+        for (int i = 0; i < this.hobbies.length; i++) {
+            // Fetch the item, trim it and put it back in
+            this.hobbies[i] = this.hobbies[i].trim();
+        }
     }
 
     public void setPhoto(String photo) {
