@@ -1,9 +1,6 @@
 package network;
 
-import model.database.dao.ChatDAO;
-import model.database.dao.LikeDAO;
-import model.database.dao.MatchDAO;
-import model.database.dao.UserDAO;
+import model.database.dao.*;
 import model.entity.Chat;
 import model.entity.MatchLoader;
 import model.entity.Message;
@@ -90,6 +87,9 @@ public class DedicatedServer extends Thread {
                 UserDAO userDAO = new UserDAO();
                 MatchDAO matchDAO = new MatchDAO();
                 ChatDAO chatDAO = new ChatDAO();
+                LikeDAO likeDAO = new LikeDAO();
+                ViewDAO viewDAO = new ViewDAO();
+
                 switch(func){
                     case LOGIN_USER:
                         boolean userExistsL;
@@ -195,15 +195,15 @@ public class DedicatedServer extends Thread {
                             String[] hobbies = {"Hello", "World"};
                             //usuari de prova amb la info necessaria per a mostrar info en cas de voler accedir a
                             //info addicional
-                            User test = new User(true, "polete", "19", false, "polsuk@gmail.com", "hola", "$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "something", true, true, "frozen", hobbies, null, null, null, null);
-
+                            User test = new User(true, "polete", "19", false, "polsuk@gmail.com", "hola", "$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "60","90", "something", true, true, "frozen", hobbies, null, null, null, null);
+                        //TODO: demanar al userDAO la llista d'usuaris i llavors controlar quin es el següent usuari que li toca visualitzar
                         objectOut.writeObject(test);
                         break;
                     case CONNECT_LIKE: //TODO: Fas LIKE en el connect panel.
                         String sender = dataInput.readUTF();
                         String liked = dataInput.readUTF();
-                        LikeDAO likeDAO = new LikeDAO();
                         likeDAO.addLike(sender, liked);
+                        viewDAO.addViewed(sender, liked);
                         //boolean isMatch = MIRAR SI FAS UN NOU MATCH i en aquest cas, afegirlo a la base de dades
                         boolean isMatch = true;
                         dataOutput.writeBoolean(isMatch);
@@ -211,6 +211,7 @@ public class DedicatedServer extends Thread {
                     case CONNECT_DISLIKE: //TODO: Fas DISLIKE en el connect panel.
                         String source = dataInput.readUTF();
                         String disliked = dataInput.readUTF();
+                        viewDAO.addViewed(source, disliked);
                         //Nose si això s'ha de guardar, però si s'ha de fer només, cal escriure la comanda del DAO.
                         break;
 

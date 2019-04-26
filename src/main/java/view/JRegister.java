@@ -78,8 +78,8 @@ public class JRegister extends JPanel {
     }
 
     public User getUser() {
-
-        User u = new User(jtfName.getText(), jtfAge.getText(), jrbPremium.isSelected(), jtfMail.getText(), new String (jpfPassword.getPassword()));
+        //TODO: update age filter parameters (last two nulls)
+        User u = new User(jtfName.getText(), jtfAge.getText(), jrbPremium.isSelected(), jtfMail.getText(), new String (jpfPassword.getPassword()),null, null);
 
         return u;
     }

@@ -18,6 +18,8 @@ public class User implements Serializable {
     private boolean premium;
     private String mail;
     private String password;
+    private String minAge;
+    private String maxAge;
 
     private String photo;
     private String description;
@@ -36,13 +38,15 @@ public class User implements Serializable {
      *Constructor que ompla TOTS els camps de l'usuari.
      *
      */
-    public User(boolean completed, String username, String age, boolean premium, String mail, String password, String photo, String description, boolean likesJava, boolean likesC, String favSong, String[] hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
+    public User(boolean completed, String username, String age, boolean premium, String mail, String password, String minAge, String maxAge, String photo, String description, boolean likesJava, boolean likesC, String favSong, String[] hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
         this.completed = completed;
         this.username = username;
         this.age = age;
         this.premium = premium;
         this.mail = mail;
         this.password = password;
+        this.minAge = minAge;
+        this.maxAge = maxAge;
         this.photo = photo;
         this.description = description;
         this.likesJava = likesJava;
@@ -59,13 +63,15 @@ public class User implements Serializable {
      * Constructor que es crida quan es registra l'usuari.
      *
      **/
-    public User(String username, String age, boolean premium, String mail, String password) {
+    public User(String username, String age, boolean premium, String mail, String password, String minAge, String maxAge) {
         this.username = username;
         this.age = age;
         this.premium = premium;
         this.mail = mail;
         this.password = password;
         this.completed = false;
+        this.minAge = minAge;
+        this.maxAge = maxAge;
     }
 
     /**
@@ -96,6 +102,8 @@ public class User implements Serializable {
      * @return Retorna un enter que conté l'edat de l'usuari.
      */
     public int getAge() {
+        //System.out.println(age);
+        //System.out.println(Integer.parseInt(age));
         return Integer.parseInt(age);
     }
 
@@ -124,6 +132,40 @@ public class User implements Serializable {
      */
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * Getter de l'edat minima que ha seleccionat l'usuari per al filtre d'edat
+     *
+     * @return Retorna un String que conté l'edat minima de l'usuari
+     */
+    public String getMinAge() {
+        return minAge;
+    }
+
+    /**
+     * Setter de l'edat minima que ha seleccionat l'usuari per al filtre d'edat
+     *
+     */
+    public void setMinAge(String minAge) {
+        this.minAge = minAge;
+    }
+
+    /**
+     * Getter de l'edat maxima que ha seleccionat l'usuari per al filtre d'edat
+     *
+     * @return Retorna un String que conté l'edat maxima de l'usuari
+     */
+    public String getMaxAge() {
+        return maxAge;
+    }
+
+    /**
+     * Setter de l'edat maxima que ha seleccionat l'usuari per al filtre d'edat
+     *
+     */
+    public void setMaxAge(String maxAge) {
+        this.maxAge = maxAge;
     }
 
     /**
@@ -246,7 +288,7 @@ public class User implements Serializable {
     }
 
     /**
-     * Funció encarregada de comprovar si un usuari està completat o no.
+     * Funcio encarregada de comprovar si un usuari està completat o no.
      *
      * @return Retorna true si està completat, no altrament.
      */

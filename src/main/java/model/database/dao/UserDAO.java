@@ -71,7 +71,7 @@ public class UserDAO {
             query = "SELECT * FROM users WHERE users.mail = '" + u.getMail() + "'";
         }
         ResultSet res = DBConnector.getInstance().selectQuery(query);
-        String username = null, mail = null, password = null, photo = null, description = null, favSong = null, hobbiesString = null;
+        String username = null, mail = null, password = null, photo = null, description = null, favSong = null, hobbiesString = null, minimumAge = null, maximumAge = null;
         boolean completed = false, premium = false, likesJava = false, likesC = false;
         int age = 0;
         String[] hobbies = null;
@@ -83,6 +83,9 @@ public class UserDAO {
                 age = res.getInt("age");
                 premium = res.getInt("premium") > 0;
                 password = res.getString("password");
+                //TODO: update database to fit the two new attributes for the age filter
+                //minimumAge = res.getString("minimumAge");
+                //maximumAge = res.getString("maximumAge");
                 photo = res.getString("photo");
                 description = res.getString("description");
                 likesJava = res.getInt("likes_java") > 0;
@@ -94,7 +97,7 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        User dbUser = new User(completed, username, Integer.toString(age), premium, mail, password, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null);
+        User dbUser = new User(completed, username, Integer.toString(age), premium, mail, password, minimumAge, maximumAge, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null);
         return dbUser;
     }
 }
