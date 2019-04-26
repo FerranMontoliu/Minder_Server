@@ -17,30 +17,36 @@ public class JRegister extends JPanel {
     private JCheckBox jcbJava;
     private JRadioButton jrbPremium;
     private JRadioButton jrbNoPremium;
+    private JPanel jpRegister;
     private JButton jbRegister;
     private JCheckBox jcbViewPassword;
-    private JComboBox jcbMinAgeFilter;
-    private JComboBox jcbMaxAgeFilter;
     private char ecoChar;
 
 
 
     public JRegister(){
-        setLayout(new GridLayout(21,1));
+        Dimension d = new Dimension(10000,200);
+        setLayout(new GridLayout(18,2));
+
         //Inicialitzar els elements
+        GridBagConstraints gbc = new GridBagConstraints();
+        jpRegister = new JPanel(new GridBagLayout());
         jtfAge = new JTextField();
+        jtfAge.setPreferredSize(d);
         jtfName = new JTextField();
+        jtfName.setPreferredSize(d);
         jpfPassword = new JPasswordField();
+        jpfPassword.setPreferredSize(d);
         jtfMail = new JTextField();
+        jtfMail.setPreferredSize(d);
         jpfPassword2 = new JPasswordField();
-        jcbC = new JCheckBox("C");
+        jpfPassword2.setPreferredSize(d);
+        jcbC = new JCheckBox("C    ");
         jcbJava = new JCheckBox("Java");
         jrbPremium = new JRadioButton("Yes");
         jrbNoPremium = new JRadioButton("No");
-        jbRegister = new JButton("Register");
+        jbRegister = new JButton("Sign-Up",new ImageIcon("icons/sign_up.png"));
         jcbViewPassword = new JCheckBox();
-
-
 
         //Grup de radioButtons
         ButtonGroup bg = new ButtonGroup();
@@ -53,72 +59,71 @@ public class JRegister extends JPanel {
         ecoChar = jpfPassword.getEchoChar();
 
         //Afegir components al panell
-        add(new JLabel("User name"));
+        gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(new JLabel("--------------------------------------------- Sign Up ---------------------------------------------"));
+        add(new JLabel("Username"),gbc);
         add(jtfName);
-        add(new JLabel("Mail"));
-        add(jtfMail);
-        add(new JLabel("Password"));
-        add(jpfPassword);
-        add(new JLabel("Repeat Password"));
-        add(jpfPassword2);
-        JPanel jpViewPassword = new JPanel(new FlowLayout());
-        jpViewPassword.add(jcbViewPassword);
-        jpViewPassword.add(new JLabel("Mostra passwords"));
-        add(jpViewPassword);
         add(new JLabel("Age"));
         add(jtfAge);
-        add(new JLabel("Programming languages:"));
-        add(jcbC);
-        add(jcbJava);
-        JPanel jpRadioButton = new JPanel(new GridLayout(1,2));
-        jpRadioButton.add(jrbNoPremium);
-        jpRadioButton.add(jrbPremium);
-        add (new JLabel("Premium"));
-        add (jpRadioButton);
+        add(new JLabel("Mail"),gbc);
+        add(jtfMail);
+        add(new JLabel("Password"),gbc);
+        add(jpfPassword);
+        add(new JLabel("Repeat Password"),gbc);
+        add(jpfPassword2);
 
-        createAgeFilters();
-        //add (new JLabel("Minmum age filter"));
-        //add (jcbMinAgeFilter);
-        //add (new JLabel("Maximum age filter"));
-        //add (jcbMaxAgeFilter);
-        add (jbRegister);
+        JPanel jpViewPassword = new JPanel(new GridBagLayout());
+        gbc.gridy = 0;
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        jpViewPassword.add(jcbViewPassword,gbc);
+        gbc.gridy = 1;
+        gbc.gridx = 1;
+        JLabel gg = new JLabel("Show Password");
+        jpViewPassword.add(gg,gbc);
+
+        JLabel gg2 = new JLabel("");
+        JLabel gg4 = new JLabel("");
+        jpViewPassword.add(gg4,gbc);
+        gbc.gridy = 2;
+
+        jpViewPassword.add(gg4,gbc);
+        add(jpViewPassword);
+        JPanel jp = new JPanel(new GridBagLayout());
+        jp.setMinimumSize(new Dimension(1000,100));
+        JPanel jp2 = new JPanel(new GridBagLayout());
+        gbc.gridx = 2;
+        jp.add(jcbC,gbc);
+        gbc.gridx = 3;
+        jp.add(new JLabel(new ImageIcon("icons/java-24px.png")),gbc);
+        String a = "                    ";
+        gbc.gridx = 2;
+        jp2.add(jcbJava,gbc);
+        gbc.gridx = 3;
+        jp2.add(new JLabel(new ImageIcon("icons/c++.png")),gbc);
+
+        add(new JLabel(a+a+a+a+"Programming languages"));
+        add(jp);
+        add(jp2);
+
+        JPanel jpRadioButton = new JPanel();
+        jpRadioButton.add(jrbPremium);
+        jpRadioButton.add(jrbNoPremium);
+        add (new JLabel(a+a+a+a+"  Premium Membership"));
+        add(jpRadioButton);
+        jpRegister.add(jbRegister);
+        add(jpRegister);
 
 
     }
 
     public User getUser() {
-        //TODO: update age filter parameters (last two nulls)
-        User u = new User(jtfName.getText(), jtfAge.getText(), jrbPremium.isSelected(), jtfMail.getText(), new String (jpfPassword.getPassword()),jcbMinAgeFilter.getSelectedItem().toString(), jcbMaxAgeFilter.getSelectedItem().toString());
 
-        return u;
-    }
+        //User u = new User(jtfName.getText(), jtfAge.getText(), jrbPremium.isSelected(), jtfMail.getText(), new String (jpfPassword.getPassword()));
 
-    /**
-     * Metode que crea els dos JComboBox (desplegables) amb les etiquetes corresponents a edat minima i maxima (de 18 a 100 anys)
-     */
-    private void createAgeFilters() {
-        //MINIMUM AGE
-        add(new JLabel("Minimum age: "));
-        //Min age comboBox
-        jcbMinAgeFilter = new JComboBox<>();
-        jcbMinAgeFilter.setEditable(false);
-        jcbMinAgeFilter.setPreferredSize(new Dimension(100,30));
-        jcbMinAgeFilter.setMaximumSize(jcbMinAgeFilter.getPreferredSize());
-        for (int i = 18; i <= 100; ++i) {
-            jcbMinAgeFilter.addItem(i);
-        }
-        add (jcbMinAgeFilter);
-        //MAXIMUM AGE
-        add(new JLabel("Maximum age:"));
-        //Max age comboBox
-        jcbMaxAgeFilter = new JComboBox<>();
-        jcbMaxAgeFilter.setEditable(false);
-        jcbMaxAgeFilter.setPreferredSize(new Dimension(100,30));
-        jcbMaxAgeFilter.setMaximumSize(jcbMaxAgeFilter.getPreferredSize());
-        for (int i = 18; i <= 100; ++i) {
-            jcbMaxAgeFilter.addItem(i);
-        }
-        add(jcbMaxAgeFilter);
+        return null;
     }
 
     public void removeRegister(){

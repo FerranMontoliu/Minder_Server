@@ -24,17 +24,17 @@ public class Window extends JFrame{
 
         //Panell d'Acceptats/Visualitzar
         JAccepted jpAcceptats = new JAccepted(5,7);
-        jtPane.addTab("Acceptats/Visualitzats",jpAcceptats );
+        jtPane.addTab("Accepted/Viewed",jpAcceptats );
 
 
         //Panell de Registrar
         jRegister = new JRegister();
-        jtPane.addTab("Registrar",jRegister );
+        jtPane.addTab("Sign Up",jRegister );
 
 
         //Panell d'estadístiques
         jCharts = new JCharts(day, week, month);
-        jtPane.addTab("Estadistiques",jCharts );
+        jtPane.addTab("Statistics",jCharts );
 
         //Panell Top 5
         JTop jTop = new JTop(users);
