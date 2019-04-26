@@ -192,8 +192,12 @@ public class DedicatedServer extends Thread {
                     case CONNECT_USER: //TODO: Solicita un USER a visualitzar pel connect panel
                             //User u = viewDAO.Obtenir usuari a visualitzar. Cal: Nom, foto, description, java/C, hobbies i song. La resta a null.
                             //També cal comprovar que l'usuari no s'hagi vist abans, no?
-                            User test = new User("polete", "password");
-                            objectOut.writeObject(test);
+                            String[] hobbies = {"Hello", "World"};
+                            //usuari de prova amb la info necessaria per a mostrar info en cas de voler accedir a
+                            //info addicional
+                            User test = new User(true, "polete", "19", false, "polsuk@gmail.com", "hola", "$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "something", true, true, "frozen", hobbies, null, null, null, null);
+
+                        objectOut.writeObject(test);
                         break;
                     case CONNECT_LIKE: //TODO: Fas LIKE en el connect panel.
                         String sender = dataInput.readUTF();
