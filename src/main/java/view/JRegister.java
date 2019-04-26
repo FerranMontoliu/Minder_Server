@@ -93,81 +93,32 @@ public class JRegister extends JPanel {
         return u;
     }
 
+    /**
+     * Metode que crea els dos JComboBox (desplegables) amb les etiquetes corresponents a edat minima i maxima (de 18 a 100 anys)
+     */
     private void createAgeFilters() {
-        JPanel jpFilterAge = new JPanel();
-        jpFilterAge.setLayout(new FlowLayout());
-
-        JPanel jpBothFilters = new JPanel();
-        jpBothFilters.setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-
-        //Minimum Age
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weightx = 1.0f;
-        constraints.weighty = 1.0f;
-        constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.fill = GridBagConstraints.WEST;
-
-        JLabel jlMin = new JLabel("Minimum age:");
-        jlMin.setHorizontalAlignment(SwingConstants.CENTER);
-        jpBothFilters.add(jlMin, constraints);
-
+        //MINIMUM AGE
+        add(new JLabel("Minimum age: "));
         //Min age comboBox
         jcbMinAgeFilter = new JComboBox<>();
         jcbMinAgeFilter.setEditable(false);
         jcbMinAgeFilter.setPreferredSize(new Dimension(100,30));
         jcbMinAgeFilter.setMaximumSize(jcbMinAgeFilter.getPreferredSize());
-
         for (int i = 18; i <= 100; ++i) {
             jcbMinAgeFilter.addItem(i);
         }
-
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        constraints.weightx = 1.0f;
-        constraints.weighty = 1.0f;
-        constraints.insets = new Insets(5, 2, 5, 5);
-        constraints.fill = GridBagConstraints.CENTER;
-
-        jpBothFilters.add(jcbMinAgeFilter, constraints);
-
-        //Maximum Age
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        constraints.weightx = 1.0f;
-        constraints.weighty = 1.0f;
-        constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.fill = GridBagConstraints.WEST;
-
-        JLabel jlMax = new JLabel("Maximum age:");
-        jlMax.setHorizontalAlignment(SwingConstants.CENTER);
-        jpBothFilters.add(jlMax, constraints);
-
+        add (jcbMinAgeFilter);
+        //MAXIMUM AGE
+        add(new JLabel("Maximum age:"));
         //Max age comboBox
-
         jcbMaxAgeFilter = new JComboBox<>();
         jcbMaxAgeFilter.setEditable(false);
         jcbMaxAgeFilter.setPreferredSize(new Dimension(100,30));
         jcbMaxAgeFilter.setMaximumSize(jcbMaxAgeFilter.getPreferredSize());
-
         for (int i = 18; i <= 100; ++i) {
             jcbMaxAgeFilter.addItem(i);
         }
-
-        constraints.gridx = 1;
-        constraints.gridy = 2;
-        constraints.weightx = 1.0f;
-        constraints.weighty = 1.0f;
-        constraints.insets = new Insets(5, 5, 5, 2);
-        constraints.fill = GridBagConstraints.CENTER;
-
-        jpBothFilters.add(jcbMaxAgeFilter, constraints);
-
-        jpFilterAge.add(jpBothFilters);
-
-        add(jpFilterAge);
-        //add(Box.createVerticalStrut(10));
+        add(jcbMaxAgeFilter);
     }
 
     public void removeRegister(){
