@@ -17,7 +17,7 @@ public class UserDAO {
         int isPremium = u.isPremium()? 1: 0;
         int likesC = u.getLikesC()? 1: 0;
         int likesJava = u.getLikesJava()? 1: 0;
-        String query = "INSERT INTO users(username, mail, completed, age, premium, password, photo, description, likes_java, likes_c, fav_song, hobbies) VALUES ('" + u.getUsername() + "', '" + u.getMail() + "', '0', '" + u.getAge() + "', '" + isPremium + "', '" + u.getPassword() + "', 'null', 'null', '" + likesJava + "', '" + likesC + "', 'null', 'null')";
+        String query = "INSERT INTO users(username, mail, completed, age, premium, password, photo, description, likes_java, likes_c, fav_song, hobbies, connected, minAge, maxAge) VALUES ('" + u.getUsername() + "', '" + u.getMail() + "', '0', '" + u.getAge() + "', '" + isPremium + "', '" + u.getPassword() + "', 'null', 'null', '" + likesJava + "', '" + likesC + "', 'null', 'null', '0', '18', '0')";
         DBConnector.getInstance().executeQuery(query);
     }
 
@@ -71,7 +71,7 @@ public class UserDAO {
             query = "SELECT * FROM users WHERE users.mail = '" + u.getMail() + "'";
         }
         ResultSet res = DBConnector.getInstance().selectQuery(query);
-        String username = null, mail = null, password = null, photo = null, description = null, favSong = null, hobbiesString = null, minimumAge = null, maximumAge = null;
+        String username = null, mail = null, password = null, photo = null, description = null, favSong = null, hobbiesString = null, minAge = null, maxAge = null;
         boolean completed = false, premium = false, likesJava = false, likesC = false;
         int age = 0;
         String[] hobbies = null;
@@ -83,9 +83,8 @@ public class UserDAO {
                 age = res.getInt("age");
                 premium = res.getInt("premium") > 0;
                 password = res.getString("password");
-                //TODO: update database to fit the two new attributes for the age filter
-                //minimumAge = res.getString("minimumAge");
-                //maximumAge = res.getString("maximumAge");
+                minAge = res.getString("minAge");
+                maxAge = res.getString("maxAge");
                 photo = res.getString("photo");
                 description = res.getString("description");
                 likesJava = res.getInt("likes_java") > 0;
@@ -97,7 +96,67 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        User dbUser = new User(completed, username, Integer.toString(age), premium, mail, password, minimumAge, maximumAge, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null);
+        User dbUser = new User(completed, username, Integer.toString(age), premium, mail, password, minAge, maxAge, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null);
         return dbUser;
+    }
+
+    public boolean isConnected(String username) {
+        boolean connected = false;
+        String query = "SELECT * FROM users WHERE users.username = '" + username + "'";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        try {
+            res.next();
+            connected = res.getInt("connected") > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return connected;
+    }
+
+    public void userConnects(String username) {
+        String query = "UPDATE users SET connected = '1' WHERE users.username = '" + username + "'";
+        DBConnector.getInstance().executeQuery(query);
+    }
+
+    public void userDisconnects(String username) {
+        String query = "UPDATE users SET connected = '0' WHERE users.username = '" + username + "'";
+        DBConnector.getInstance().executeQuery(query);
+    }
+
+    public String getNextUser(String username, String minAge, String maxAge, boolean isPremium) {
+        String query, user = null;
+        if(isPremium) { //TODO: falta implementar què passa si el user és premium
+            //Si maxAge es 0 implica que no hi ha filtre per edat.
+            if(Integer.parseInt(maxAge) == 0) {
+                //Retorna els usuaris que t'han donat like a tu:
+                query = "SELECT * FROM liked WHERE liked.username_2 = '" + username + "'"; //TODO: falta implementar que tampoc els hagis vist
+                //Retorna els usuaris que no t'han donat like a tu:
+                //TODO: potser hauria de retornar tots els users que no he vist i tots els que m'han donat like i fer una poda.
+            } else {
+                //TODO: el mateix però aplicant el filtre BETWEEN.
+            }
+        } else {
+            //Si maxAge es 0 implica que no hi ha filtre per edat.
+            if(Integer.parseInt(maxAge) == 0) {
+                query = "SELECT * FROM users";
+                ResultSet res = DBConnector.getInstance().selectQuery(query);
+                try {
+                    res.next();
+                    user = res.getString("username");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                query = "SELECT * FROM users WHERE users.age BETWEEN '" + minAge + "' AND '" + maxAge + "'";
+                ResultSet res = DBConnector.getInstance().selectQuery(query);
+                try {
+                    res.next();
+                    user = res.getString("username");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return user;
     }
 }

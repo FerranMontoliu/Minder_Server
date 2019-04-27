@@ -34,6 +34,14 @@ public class Main {
             }
             //Aquí acaben els tests de l'Anna.
 
+            /*//Tests del Ferran:
+            User test = new User(true, "Pol Espurnes", "19", false, "polsuk@gmail.com", "hola", "60","90", "penis", "something", true, true, "frozen", null, null, null, null, null);
+            test.imageToBase64("data/image.jpg");
+            System.out.println("Penis: " + test.getPhoto());
+            UserDAO ud = new UserDAO();
+            ud.updateInfoUser(test);
+            //Fi.*/
+
 
             Window view = new Window(day, week, month, users);
             Controller controller = new Controller(view);
