@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class UserDAO {
 
     /**
-     * Mètode encarregat de registrar un nou usuari a la base de dades.
+     * Metode encarregat de registrar un nou usuari a la base de dades.
      *
      * @param u Usuari que es vol registrar.
      */
@@ -22,8 +22,8 @@ public class UserDAO {
     }
 
     /**
-     * Mètode encarregat d'actualitzar la informació d'un usuari.
-     *
+     * Metode encarregat d'actualitzar la informacio d'un usuari.
+     * Tambe activa el camp completed en cas que sigui necessari.
      * @param u Usuari del qual es vol actualitzar la informació.
      */
     public void updateInfoUser(User u) {
@@ -31,6 +31,11 @@ public class UserDAO {
         int likesJava = u.getLikesJava()? 1: 0;
         String query = "UPDATE users SET photo = '" + u.getPhoto() + "', description = '" + u.getDescription() + "', likes_java = '" + likesJava + "', likes_c = '" + likesC + "', fav_song = '" + u.getFavSong() + "', hobbies = '" + "u.getHobbies()" + "' WHERE users.username = '" + u.getUsername() + "'";
         DBConnector.getInstance().executeQuery(query);
+        User updatedUser = getUser(u);
+        if(!updatedUser.isCompleted()){
+            query = "UPDATE users SET completed = '1' WHERE users.username = '" + u.getUsername() + "'";
+            DBConnector.getInstance().executeQuery(query);
+        }
     }
 
     /**
