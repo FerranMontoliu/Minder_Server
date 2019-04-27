@@ -97,12 +97,12 @@ public class JRegister extends JPanel {
         gbc.gridx = 2;
         jp.add(jcbC,gbc);
         gbc.gridx = 3;
-        jp.add(new JLabel(new ImageIcon("icons/java-24px.png")),gbc);
+        jp.add(new JLabel(new ImageIcon("icons/c++.png")),gbc);
         String a = "                    ";
         gbc.gridx = 2;
         jp2.add(jcbJava,gbc);
         gbc.gridx = 3;
-        jp2.add(new JLabel(new ImageIcon("icons/c++.png")),gbc);
+        jp2.add(new JLabel(new ImageIcon("icons/java-24px.png")),gbc);
 
         add(new JLabel(a+a+a+a+"Programming languages"));
         add(jp);
