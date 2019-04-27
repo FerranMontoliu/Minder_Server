@@ -134,6 +134,7 @@ public class DedicatedServer extends Thread {
                         try {
                             User u3 = (User) objectIn.readObject();
                             userDAO.updateInfoUser(u3);
+                            dataOutput.writeBoolean(true);
                         } catch (ClassNotFoundException e3) {
                             e3.printStackTrace();
                         }
