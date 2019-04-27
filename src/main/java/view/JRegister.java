@@ -20,6 +20,8 @@ public class JRegister extends JPanel {
     private JPanel jpRegister;
     private JButton jbRegister;
     private JCheckBox jcbViewPassword;
+    private JComboBox jcbMinAgeFilter;
+    private JComboBox jcbMaxAgeFilter;
     private char ecoChar;
 
 
@@ -124,6 +126,36 @@ public class JRegister extends JPanel {
         //User u = new User(jtfName.getText(), jtfAge.getText(), jrbPremium.isSelected(), jtfMail.getText(), new String (jpfPassword.getPassword()));
 
         return null;
+    }
+
+    //TODO: incloure desplegables per al filtre d'edat: aqui hi ha el codi que s'ha sobreescrit amb el commit de l'Agustí,
+    //TODO: que s'hauria d'adequar al disseny actual
+    /**
+     * Metode que crea els dos JComboBox (desplegables) amb les etiquetes corresponents a edat minima i maxima (de 18 a 100 anys)
+     */
+    private void createAgeFilters() {
+        //MINIMUM AGE
+        add(new JLabel("Minimum age: "));
+        //Min age comboBox
+        jcbMinAgeFilter = new JComboBox<>();
+        jcbMinAgeFilter.setEditable(false);
+        jcbMinAgeFilter.setPreferredSize(new Dimension(100, 30));
+        jcbMinAgeFilter.setMaximumSize(jcbMinAgeFilter.getPreferredSize());
+        for (int i = 18; i <= 100; ++i) {
+            jcbMinAgeFilter.addItem(i);
+        }
+        add(jcbMinAgeFilter);
+        //MAXIMUM AGE
+        add(new JLabel("Maximum age:"));
+        //Max age comboBox
+        jcbMaxAgeFilter = new JComboBox<>();
+        jcbMaxAgeFilter.setEditable(false);
+        jcbMaxAgeFilter.setPreferredSize(new Dimension(100, 30));
+        jcbMaxAgeFilter.setMaximumSize(jcbMaxAgeFilter.getPreferredSize());
+        for (int i = 18; i <= 100; ++i) {
+            jcbMaxAgeFilter.addItem(i);
+        }
+        add(jcbMaxAgeFilter);
     }
 
     public void removeRegister(){
