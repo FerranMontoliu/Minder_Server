@@ -29,6 +29,7 @@ public class DedicatedServer extends Thread {
     private static final char CONNECT_LIKE = 'i';
     private static final char CONNECT_DISLIKE = 'j';
     private static final char CONNECT_USER = 'k';
+    private static final char EDIT_PREFERENCES = 'l';
 
     private boolean isOn;
     private Socket sClient;
@@ -104,6 +105,7 @@ public class DedicatedServer extends Thread {
                                 System.out.println(loginUser.getPassword());
                                 boolean sameUser = encoder.matches(loginUser.getPassword(), realUser.getPassword());
                                 dataOutput.writeBoolean(sameUser);
+
                                 if(sameUser) {
                                     System.out.println("Són iguals");
                                     objectOut.writeObject(realUser);
@@ -201,8 +203,8 @@ public class DedicatedServer extends Thread {
                             String[] hobbies = {"Hello", "World"};
                             User test = new User(true, nextUsername, "19", false, "polsuk@gmail.com", "hola", "$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "60","90", "something", true, true, "frozen", hobbies, null, null, null, null);
                             objectOut.writeObject(test);
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
+                        } catch (ClassNotFoundException e8) {
+                            e8.printStackTrace();
                         }
 
                         //TODO: demanar al userDAO la llista d'usuaris i llavors controlar quin es el següent usuari que li toca visualitzar
@@ -222,7 +224,20 @@ public class DedicatedServer extends Thread {
                         viewDAO.addViewed(source, disliked);
                         //Nose si això s'ha de guardar, però si s'ha de fer només, cal escriure la comanda del DAO.
                         break;
+                    case EDIT_PREFERENCES:
+                        try {
+                            User updatedUser = (User) objectIn.readObject();
+                            System.out.println("update pref: "+updatedUser.getUsername());
+                            //TODO: implementar a UserDAO les preferencies i descomentar seguent linia
+                            //userDAO.updateUserPreferences(updatedUser);
+                            boolean editDone = true; //hi pot haver algun cas en que no es pugui fer el canvi?
+                            dataOutput.writeBoolean(editDone);
 
+                        } catch (ClassNotFoundException e9) {
+                            e9.printStackTrace();
+                        }
+
+                        break;
                     default:
                         System.out.println("WTF està passant aquí?!");
                         break;
