@@ -18,7 +18,7 @@ public class Chart extends JPanel {
         startX = 50;
         startY = 50;
         endX = 400;
-        endY =400;
+        endY = 400;
         unitX = (endX -startX)/dia.length;
         unitY = (endY - startY) / maxValue(dia);
         prevX = startX;
@@ -80,18 +80,29 @@ public class Chart extends JPanel {
 
         //Linies i numeros de la taula de color negre
         g2d.setColor(Color.BLACK);
-        g2d.drawString( Integer.toString(maxValue(data)) ,startX-20, startY+20);
+        g2d.drawString( Integer.toString(maxValue(data)),startX-20, startY+20);
+        g2d.drawString("matches",startX-50, startX-4);
         g2d.drawString( Integer.toString(0) ,startX-20, endY);
         g2d.drawLine(startX  , startY, startX, endY);
         g2d.drawLine(startX, endY, endX, endY);
         g2d.drawLine(endX, startY, endX, endY);
         g2d.drawLine(startX, startY, endX, startY);
 
-        g2d.drawString( Integer.toString(data.length) ,endX, endY+20);
+        if(data.length == 7) {
+            g2d.drawString(Integer.toString(data.length) + " days ", endX, endY + 20);
+        }
+        if(data.length == 24) {
+            g2d.drawString(Integer.toString(data.length) + " hours ", endX, endY + 20);
+
+        }
+        if(data.length > 24) {
+            g2d.drawString(Integer.toString(data.length) + " days ", endX, endY + 20);
+
+        }
         g2d.drawString( Integer.toString(0) ,startX, endY+20);
 
 
-        //Linies de les coordenades de color vermell
+        //Línies de les coordenades de color vermell
         g2d.setColor(Color.RED);
         for (int y : data) {
             g2d.drawLine(prevX, prevY, prevX += unitX, prevY = (endY - (y * unitY)));
