@@ -191,14 +191,21 @@ public class DedicatedServer extends Thread {
                         }
                         break;
                     case CONNECT_USER: //TODO: Solicita un USER a visualitzar pel connect panel
-                            //User u = viewDAO.Obtenir usuari a visualitzar. Cal: Nom, foto, description, java/C, hobbies i song. La resta a null.
-                            //També cal comprovar que l'usuari no s'hagi vist abans, no?
+                        try {
+                            User associatedUser = (User) objectIn.readObject();
+                            //System.out.println("associated: "+associatedUser.getUsername());
+                            String nextUsername = userDAO.getNextUser(associatedUser.getUsername(), associatedUser.getMinAge(), associatedUser.getMaxAge(), associatedUser.isPremium());
+                            //TODO: retorna null
+                            //System.out.println("nextUsername: "+nextUsername);
+                            //User nextUser = getUserByUsername();
                             String[] hobbies = {"Hello", "World"};
-                            //usuari de prova amb la info necessaria per a mostrar info en cas de voler accedir a
-                            //info addicional
-                            User test = new User(true, "polete", "19", false, "polsuk@gmail.com", "hola", "$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "60","90", "something", true, true, "frozen", hobbies, null, null, null, null);
+                            User test = new User(true, nextUsername, "19", false, "polsuk@gmail.com", "hola", "$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "60","90", "something", true, true, "frozen", hobbies, null, null, null, null);
+                            objectOut.writeObject(test);
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
                         //TODO: demanar al userDAO la llista d'usuaris i llavors controlar quin es el següent usuari que li toca visualitzar
-                        objectOut.writeObject(test);
                         break;
                     case CONNECT_LIKE: //TODO: Fas LIKE en el connect panel.
                         String sender = dataInput.readUTF();
