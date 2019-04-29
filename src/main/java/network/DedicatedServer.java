@@ -242,10 +242,25 @@ public class DedicatedServer extends Thread {
                         System.out.println("WTF està passant aquí?!");
                         break;
                 }
-                //updateAllClients();
             }
         } catch (IOException e1) {
-            stopDedicatedServer();
+            clients.remove(this);
+        } finally {
+            try {
+                dataOutput.close();
+            } catch (IOException e) {}
+            try {
+                dataInput.close();
+            } catch (IOException e) {}
+            try {
+                objectOut.close();
+            } catch (IOException e) {}
+            try {
+                objectIn.close();
+            } catch (IOException e) {}
+            try {
+                sClient.close();
+            } catch (IOException e) {}
             clients.remove(this);
         }
     }
