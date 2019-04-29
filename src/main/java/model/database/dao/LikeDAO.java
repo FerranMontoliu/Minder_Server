@@ -47,4 +47,9 @@ public class LikeDAO {
         String query = "INSERT INTO liked (username_1, username_2, liked_date) VALUES ('" + u1 + "', '" + u2 + "', '" + "2019-04-10" + "')";
         DBConnector.getInstance().executeQuery(query);
     }
+
+    public int getNumberOfLikes() {
+        //TODO: SELECT COUNT bla bla
+        return 0;
+    }
 }

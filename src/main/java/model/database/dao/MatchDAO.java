@@ -54,4 +54,29 @@ public class MatchDAO {
         String query = "DELETE FROM matchs WHERE (username_1 = '" + u1 + "' AND username_2 = '" + u2 + "') OR (username_1 = '" + u2 + "' AND username_2 = '" + u1 + "');";
         DBConnector.getInstance().executeQuery(query);
     }
+
+    public String[] getTopFiveMostMatchedUsers() {
+        //TODO: retornar els 5 users amb més matches (ASUMINT QUE EXISTEIXEN 5 USERS MÍNIM!).
+        return null;
+    }
+
+    public int getNumberOfMatches() {
+        //TODO: SELECT COUNT bla bla
+        return 0;
+    }
+
+    public int[] getLastDayMatches(String actualDate) {
+        //TODO: SELECT COUNT bla bla
+        return null;
+    }
+
+    public int[] getLastWeekMatches(String actualDate) {
+        //TODO: SELECT COUNT bla bla
+        return null;
+    }
+
+    public int[] getLastMonthMatches(String actualDate) {
+        //TODO: SELECT COUNT bla bla
+        return null;
+    }
 }

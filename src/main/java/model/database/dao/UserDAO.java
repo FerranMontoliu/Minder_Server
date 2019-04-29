@@ -128,8 +128,10 @@ public class UserDAO {
         DBConnector.getInstance().executeQuery(query);
     }
 
-    public String getNextUser(String username, String minAge, String maxAge, boolean isPremium) {
+    public String getNextUser(String username, String minAge, String maxAge, boolean isPremium, boolean likesCb, boolean likesJavab) {
         String query, user = null;
+        int likesC = likesCb? 1: 0;
+        int likesJava = likesJavab? 1: 0;
         if(isPremium) { //TODO: falta implementar què passa si el user és premium
             //Si maxAge es 0 implica que no hi ha filtre per edat.
             if(Integer.parseInt(maxAge) == 0) {
@@ -144,6 +146,7 @@ public class UserDAO {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
             if(Integer.parseInt(maxAge) == 0) {
                 query = "SELECT * FROM users";
+                //query = "SELECT * FROM users as u, views as v WHERE u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "' AND v.username_1 = '" + username + "' AND v.username_2 = 'u.username'";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
                 try {
                     res.next();
