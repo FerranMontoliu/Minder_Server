@@ -49,7 +49,15 @@ public class LikeDAO {
     }
 
     public int getNumberOfLikes() {
-        //TODO: SELECT COUNT bla bla
-        return 0;
+        String query = "SELECT COUNT(*) FROM liked";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        int i = 0;
+        try {
+            res.next();
+            i = res.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
     }
 }

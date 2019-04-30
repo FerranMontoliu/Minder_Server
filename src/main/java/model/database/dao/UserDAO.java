@@ -107,7 +107,7 @@ public class UserDAO {
 
     public boolean isConnected(String username) {
         boolean connected = false;
-        String query = "SELECT * FROM users WHERE users.username = '" + username + "'";
+        String query = "SELECT connected FROM users WHERE users.username = '" + username + "'";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         try {
             res.next();
