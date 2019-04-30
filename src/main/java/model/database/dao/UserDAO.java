@@ -132,32 +132,38 @@ public class UserDAO {
         String query, user = null;
         int likesC = likesCb? 1: 0;
         int likesJava = likesJavab? 1: 0;
-        if(isPremium) { //TODO: falta implementar què passa si el user és premium
+        if(isPremium) {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
             if(Integer.parseInt(maxAge) == 0) {
                 //Retorna els usuaris que t'han donat like a tu:
                 query = "SELECT u.username FROM users as u, views as v, liked ad l WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (l.username_2 = '" + username + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
                 try {
-                    res.next();
+                    //Si no ha trobat cap user, et retorna el següent user que no hagis vist:
+                    if(!res.next()) {
+                        query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
+                        res = DBConnector.getInstance().selectQuery(query);
+                        res.next();
+                    }
                     user = res.getString("username");
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                //Retorna els usuaris que no t'han donat like a tu:
-                //TODO: retornar usuari que no t'ha donat like a tu en cas de no haver trobat cap user que t'hagi donat like.
             } else {
                 //Retorna els usuaris que t'han donat like a tu:
                 query = "SELECT u.username FROM users as u, views as v, liked ad l WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (l.username_2 = '" + username + "') AND (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
                 try {
-                    res.next();
+                    //Si no ha trobat cap user, et retorna el següent user que no hagis vist:
+                    if(!res.next()) {
+                        query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
+                        res = DBConnector.getInstance().selectQuery(query);
+                        res.next();
+                    }
                     user = res.getString("username");
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                //Retorna els usuaris que no t'han donat like a tu:
-                //TODO: retornar usuari que no t'ha donat like a tu en cas de no haver trobat cap user que t'hagi donat like.
             }
         } else {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
