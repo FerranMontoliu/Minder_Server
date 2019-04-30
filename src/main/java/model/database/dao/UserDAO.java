@@ -39,6 +39,22 @@ public class UserDAO {
     }
 
     /**
+     * Metode encarregat d'actualitzar les preferencies de compte d'un usuari. Aquestes
+     * preferencies inclouen: password, isPremium i age filter
+     * @param u Usuari del qual es vol actualitzar la informació.
+     */
+    public void updatePreferences(User u){
+        int premium = u.isPremium()? 1: 0;
+        String query = "UPDATE users SET minAge = '" + u.getMinAge() + "', maxAge = '"+ u.getMaxAge() + "', password = '" + u.getPassword() + "', premium = '" + premium + "' WHERE users.username = '" + u.getUsername() + "'";
+        DBConnector.getInstance().executeQuery(query);
+        User updatedUser = getUser(u);
+        if(!updatedUser.isCompleted()){
+            query = "UPDATE users SET completed = '1' WHERE users.username = '" + u.getUsername() + "'";
+            DBConnector.getInstance().executeQuery(query);
+        }
+    }
+
+    /**
      * Funció que s'encarrega de comprovar si un usuari existeix o no en la base de dades.
      *
      * @param u Usuari del qual es vol comprovar l'existència.

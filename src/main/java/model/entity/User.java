@@ -328,4 +328,20 @@ public class User implements Serializable {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+
+    /**
+     * Metode que actualitza les dades de l'usuari segons els camps seleccionats a la opcio Etit account preferences del
+     * client
+     * @param hashedPassword
+     * @param isPremium
+     * @param minAge
+     * @param maxAge
+     * @param noFilter
+     */
+    public void savePreferencesUpdate(String hashedPassword, boolean isPremium, String minAge, String maxAge, boolean noFilter) {
+        this.password = hashedPassword;
+        this.premium = isPremium;
+        this.minAge = minAge;
+        this.maxAge = noFilter? String.valueOf(0): maxAge;
+    }
 }
