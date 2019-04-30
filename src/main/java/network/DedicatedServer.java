@@ -167,7 +167,11 @@ public class DedicatedServer extends Thread {
                             String sender = dataInput.readUTF();
                             String receiver = dataInput.readUTF();
                             Chat storedChat = chatDAO.loadChat(sender, receiver);
-                            objectOut.writeObject(storedChat);
+                            boolean existsChat = storedChat.getMessages().size() > 0;
+                            dataOutput.writeBoolean(existsChat);
+                            if(existsChat){
+                                objectOut.writeObject(storedChat);
+                            }
                         } catch (IOException e6) {
                             e6.printStackTrace();
                         }
@@ -192,17 +196,17 @@ public class DedicatedServer extends Thread {
                             e1.printStackTrace();
                         }
                         break;
-                    case CONNECT_USER: //TODO: Solicita un USER a visualitzar pel connect panel
+                    case CONNECT_USER: //TODO: Solicita un USER a visualitzar pel connect panel. Per acabar.
                         try {
                             User associatedUser = (User) objectIn.readObject();
                             //System.out.println("associated: "+associatedUser.getUsername());
-                            String nextUsername = userDAO.getNextUser(associatedUser.getUsername(), associatedUser.getMinAge(), associatedUser.getMaxAge(), associatedUser.isPremium());
+                            //String nextUsername = userDAO.getNextUser(associatedUser.getUsername(), associatedUser.getMinAge(), associatedUser.getMaxAge(), associatedUser.isPremium());
                             //TODO: retorna null
                             //System.out.println("nextUsername: "+nextUsername);
                             //User nextUser = getUserByUsername();
                             String[] hobbies = {"Hello", "World"};
-                            User test = new User(true, nextUsername, "19", false, "polsuk@gmail.com", "hola", "$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "60","90", "something", true, true, "frozen", hobbies, null, null, null, null);
-                            objectOut.writeObject(test);
+                           // User test = new User(true, nextUsername, "19", false, "polsuk@gmail.com", "hola", "$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "60","90", "something", true, true, "frozen", hobbies, null, null, null, null);
+                           // objectOut.writeObject(test);
                         } catch (ClassNotFoundException e8) {
                             e8.printStackTrace();
                         }
