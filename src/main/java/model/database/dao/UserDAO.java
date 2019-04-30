@@ -143,7 +143,9 @@ public class UserDAO {
         String query = "UPDATE users SET connected = '0' WHERE users.username = '" + username + "'";
         DBConnector.getInstance().executeQuery(query);
     }
-
+    //TODO: Ferran, tot just cridar aquesta funcio peta amb el missatge: "java.lang.NullPointerException
+    //TODO	                                                              at model.database.dao.UserDAO.getNextUser(UserDAO.java:174)"
+    //He provat de cridar-la havent borrat els usuaris vistos de la bbdd pero igualment peta.
     public String getNextUser(String username, String minAge, String maxAge, boolean isPremium, boolean likesCb, boolean likesJavab) {
         String query, user = null;
         int likesC = likesCb? 1: 0;
@@ -171,7 +173,7 @@ public class UserDAO {
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
                 try {
                     //Si no ha trobat cap user, et retorna el següent user que no hagis vist:
-                    if(!res.next()) {
+                    if(!res.next()) { //TODO: Aqui peta
                         query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
                         res = DBConnector.getInstance().selectQuery(query);
                         res.next();
