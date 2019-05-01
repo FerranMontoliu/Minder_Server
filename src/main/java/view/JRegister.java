@@ -4,7 +4,6 @@ import controller.ControllerRegister;
 import model.entity.User;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 
 public class JRegister extends JPanel {
@@ -170,6 +169,18 @@ public class JRegister extends JPanel {
         jcbC.setSelected(false);
         jcbJava.setSelected(false);
 
+    }
+    public String getUsername() {
+        return jtfName.getText();
+    }
+    public String getAge() {
+        return jtfAge.getText();
+    }
+    public String getMail() {
+        return jtfMail.getText();
+    }
+    public String getPassword() {
+        return String.valueOf(jpfPassword.getPassword());
     }
 
 

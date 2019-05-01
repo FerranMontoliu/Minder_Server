@@ -9,12 +9,14 @@ import java.awt.event.ActionListener;
 public class Controller implements ActionListener {
 
     private Window view;
+    private JRegister jRegister;
     private ControllerRegister cr;
 
 
-    public Controller(Window view){
+    public Controller(Window view, JRegister jRegister){
         this.view = view;
         cr = new ControllerRegister((view.Window) view);
+        this.jRegister = jRegister;
 
     }
 
@@ -25,6 +27,7 @@ public class Controller implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        boolean correct;
 
     }
 }
