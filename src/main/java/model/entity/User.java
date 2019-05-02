@@ -277,11 +277,12 @@ public class User implements Serializable {
      */
     public void base64ToImage(String username) {
         try {
-            //Alba
-            //encoded String conte al prinipi de la codificacio la següent info: "data:image/png;base64," que no volem decodificar
-            String base64Image = photo.split(",")[1];
-
-            FileUtils.writeByteArrayToFile(new File("data/" + username + ".jpg"), Base64.getDecoder().decode(base64Image));
+            try{
+                String base64Image = photo.split(",")[1];
+                FileUtils.writeByteArrayToFile(new File("MinderDownloads/" + username + ".jpg"), Base64.getDecoder().decode(base64Image));
+            }catch(Exception e1){
+                FileUtils.writeByteArrayToFile(new File("MinderDownloads/" + username + ".jpg"), Base64.getDecoder().decode(photo));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -318,6 +319,14 @@ public class User implements Serializable {
         this.likesJava = java;
         this.likesC = c;
         this.favSong = song;
+        convertToStringArray(hobbies);
+    }
+
+    /**
+     * Metode que converteix un String (amb comes) i el divideix per aquestes en un Array d'Strings
+     * @param hobbies
+     */
+    private void convertToStringArray(String hobbies) {
         this.hobbies = hobbies.split(",");
         for (int i = 0; i < this.hobbies.length; i++) {
             // Fetch the item, trim it and put it back in
@@ -342,6 +351,23 @@ public class User implements Serializable {
         this.password = hashedPassword;
         this.premium = isPremium;
         this.minAge = minAge;
-        this.maxAge = noFilter? String.valueOf(0): maxAge;
+        this.maxAge = noFilter?  String.valueOf(0): maxAge;
+
+    }
+
+    /**
+     * Setter de l'array d'strings de hobbies
+     * @param hobbies
+     */
+    public void setHobbies(String[] hobbies) {
+        this.hobbies = hobbies;
+    }
+
+    /**
+     * Setter de la canco preferida de l'usuari
+     * @param song
+     */
+    public void setFavSong(String song) {
+        this.favSong = song;
     }
 }
