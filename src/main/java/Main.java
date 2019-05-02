@@ -44,7 +44,7 @@ public class Main {
 
 
             Window view = new Window(day, week, month, users);
-            Controller controller = new Controller(view);
+            Controller controller = new Controller(view,view.getRegister());
             view.registerController(controller);
             view.setVisible(true);
         });

@@ -25,6 +25,13 @@ public class ControllerRegister implements ActionListener {
         switch (command) {
             case "REGISTER":
                 System.out.println("Register button");
+
+                //Comprovació Username
+                if(jRegister.getUsername().length() == 0) {
+                    correct = false;
+                    System.out.println("USERNAME Invalid");
+                }
+                //Comprovació Age
                 String a = jRegister.getAge();
                 if(a.length() > 0) {
                     if (Integer.valueOf(a) < 18) { //Comprovació EDAT
@@ -38,15 +45,11 @@ public class ControllerRegister implements ActionListener {
                 //Comprovació Mail
                 correct = userManager.mailCorrectFormat(jRegister.getMail());
 
-                //Comprovació Username
-
-                if(jRegister.getUsername().length() == 0) {
-                    correct = false;
-                    System.out.println("USERNAME Invalid");
-                }
+                //Comprovació Password
                 if(!(userManager.passwordCorrectFormat(jRegister.getPassword()))) {
                     System.out.println("Password is wrong");
                 }
+                //if(userManager.passwordConfirm(jRegister.getPassword(),jpfPassword2.getPassword()))
 
                 if(correct) {
 
