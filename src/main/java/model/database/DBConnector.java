@@ -82,6 +82,7 @@ public class DBConnector {
      * @return
      */
     public ResultSet selectQuery(String query) {
+        System.out.println(query);
         ResultSet rs = null;
         try {
             s =(Statement) conn.createStatement();

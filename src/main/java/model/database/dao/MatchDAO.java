@@ -40,6 +40,7 @@ public class MatchDAO {
      * @param u2 Usuari que conforma el match.
      */
     public void addMatch(String u1, String u2) {
+        //TODO: agafar data, convertir i enviar
         String query = "INSERT INTO matchs (username_1, username_2, match_date) VALUES ('" + u1 + "', '" + u2 + "', '" + "2019-04-10" + "')";
         DBConnector.getInstance().executeQuery(query);
     }
@@ -65,6 +66,11 @@ public class MatchDAO {
         return 0;
     }
 
+    public int getUserNumberOfMatches(String username) {
+        //TODO: SELECT COUNT bla bla
+        return 0;
+    }
+
     public int[] getLastDayMatches(String actualDate) {
         //TODO: SELECT COUNT bla bla
         return null;
@@ -78,5 +84,9 @@ public class MatchDAO {
     public int[] getLastMonthMatches(String actualDate) {
         //TODO: SELECT COUNT bla bla
         return null;
+    }
+
+    public void viewedMatch(String username1, String username2) {
+        //TODO: SET bla bla bla
     }
 }

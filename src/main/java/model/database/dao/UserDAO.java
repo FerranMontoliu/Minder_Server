@@ -186,7 +186,9 @@ public class UserDAO {
         } else {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
             if(Integer.parseInt(maxAge) == 0) {
-                query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
+                query = "SELECT u.username FROM users as u " +
+                        "WHERE (u.username NOT IN(SELECT v.username_2 FROM views as v WHERE v.username_1 = '" + username + "'))" +
+                        "AND (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') LIMIT 1;";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
                 try {
                     res.next();
@@ -195,7 +197,7 @@ public class UserDAO {
                     e.printStackTrace();
                 }
             } else {
-                query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
+                query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (u.age BETWEEN '" + Integer.parseInt(minAge) + "' AND '" + Integer.parseInt(maxAge) + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
                 try {
                     res.next();
