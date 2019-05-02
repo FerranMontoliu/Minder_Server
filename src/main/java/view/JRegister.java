@@ -207,4 +207,7 @@ public class JRegister extends JPanel {
 
         }
     }
+    public String getConfirmPassword() {
+        return String.valueOf(jpfPassword2.getPassword());
+    }
 }

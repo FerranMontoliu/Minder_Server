@@ -81,7 +81,7 @@ public class Chart extends JPanel {
         //Linies i numeros de la taula de color negre
         g2d.setColor(Color.BLACK);
         g2d.drawString( Integer.toString(maxValue(data)),startX-20, startY+20);
-        g2d.drawString("matches",startX-50, startX-4);
+        g2d.drawString("Matches",startX-50, startX-4);
         g2d.drawString( Integer.toString(0) ,startX-20, endY);
         g2d.drawLine(startX  , startY, startX, endY);
         g2d.drawLine(startX, endY, endX, endY);
