@@ -17,7 +17,9 @@ public class UserDAO {
         int isPremium = u.isPremium()? 1: 0;
         int likesC = u.getLikesC()? 1: 0;
         int likesJava = u.getLikesJava()? 1: 0;
-        String query = "INSERT INTO users(username, mail, completed, age, premium, password, photo, description, likes_java, likes_c, fav_song, hobbies, connected, minAge, maxAge) VALUES ('" + u.getUsername() + "', '" + u.getMail() + "', '0', '" + u.getAge() + "', '" + isPremium + "', '" + u.getPassword() + "', 'null', 'null', '" + likesJava + "', '" + likesC + "', 'null', 'null', '0', '18', '0')";
+        int minAge = u.getMinAge();
+        int maxAge = u.getMaxAge();
+        String query = "INSERT INTO users(username, mail, completed, age, premium, password, photo, description, likes_java, likes_c, fav_song, hobbies, connected, minAge, maxAge) VALUES ('" + u.getUsername() + "', '" + u.getMail() + "', '0', '" + u.getAge() + "', '" + isPremium + "', '" + u.getPassword() + "', 'null', 'null', '" + likesJava + "', '" + likesC + "', 'null', 'null', '0', '" + minAge + "', '" + maxAge +"')";
         DBConnector.getInstance().executeQuery(query);
     }
 
@@ -79,7 +81,7 @@ public class UserDAO {
     }
 
     /**
-     * Funció que retorna l'usuari complet de la base de dades que correspon a l'usuari incomplet que se li entra com a paràmetre.
+     * Funcio que retorna l'usuari complet de la base de dades que correspon a l'usuari incomplet que se li entra com a parametre.
      *
      * @param u Usuari del qual es vol extreure tota la info de la base de dades.
      * @return Usuari amb tota la seva informació de la base de dades.

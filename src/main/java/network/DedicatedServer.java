@@ -231,7 +231,6 @@ public class DedicatedServer extends Thread {
                         try {
                             User updatedUser = (User) objectIn.readObject();
                             System.out.println("update pref: "+updatedUser.getUsername() + updatedUser.getMaxAge());
-                            //TODO: implementar a UserDAO les preferencies i descomentar seguent linia
                             userDAO.updatePreferences(updatedUser);
                             boolean editDone = true; //hi pot haver algun cas en que no es pugui fer el canvi?
                             dataOutput.writeBoolean(editDone);
