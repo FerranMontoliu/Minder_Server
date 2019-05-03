@@ -29,7 +29,7 @@ public class UserDAO {
     public void updateInfoUser(User u) {
         int likesC = u.getLikesC()? 1: 0;
         int likesJava = u.getLikesJava()? 1: 0;
-        String query = "UPDATE users SET photo = '" + u.getPhoto() + "', description = '" + u.getDescription() + "', likes_java = '" + likesJava + "', likes_c = '" + likesC + "', fav_song = '" + u.getFavSong() + "', hobbies = '" + "u.getHobbies()" + "' WHERE users.username = '" + u.getUsername() + "'";
+        String query = "UPDATE users SET photo = '" + u.getPhoto() + "', description = '" + u.getDescription() + "', likes_java = '" + likesJava + "', likes_c = '" + likesC + "', fav_song = '" + u.getFavSong() + "', hobbies = '" + u.getHobbies() + "' WHERE users.username = '" + u.getUsername() + "'";
         DBConnector.getInstance().executeQuery(query);
         User updatedUser = getUser(u);
         if(!updatedUser.isCompleted()){
@@ -92,9 +92,9 @@ public class UserDAO {
             query = "SELECT * FROM users WHERE users.mail = '" + u.getMail() + "'";
         }
         ResultSet res = DBConnector.getInstance().selectQuery(query);
-        String username = null, mail = null, password = null, photo = null, description = null, favSong = null, hobbiesString = null, minAge = null, maxAge = null;
+        String username = null, mail = null, password = null, photo = null, description = null, favSong = null, hobbiesString = null;
         boolean completed = false, premium = false, likesJava = false, likesC = false;
-        int age = 0;
+        int age = 0, maxAge = 0, minAge = 0;
         String[] hobbies = null;
         try {
             while(res.next()) {
@@ -104,8 +104,8 @@ public class UserDAO {
                 age = res.getInt("age");
                 premium = res.getInt("premium") > 0;
                 password = res.getString("password");
-                minAge = res.getString("minAge");
-                maxAge = res.getString("maxAge");
+                minAge = res.getInt("minAge");
+                maxAge = res.getInt("maxAge");
                 photo = res.getString("photo");
                 description = res.getString("description");
                 likesJava = res.getInt("likes_java") > 0;
@@ -117,7 +117,7 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        User dbUser = new User(completed, username, Integer.toString(age), premium, mail, password, minAge, maxAge, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null);
+        User dbUser = new User(completed, username, age, premium, mail, password, minAge, maxAge, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null);
         return dbUser;
     }
 
@@ -146,13 +146,13 @@ public class UserDAO {
     //TODO: Ferran, tot just cridar aquesta funcio peta amb el missatge: "java.lang.NullPointerException
     //TODO	                                                              at model.database.dao.UserDAO.getNextUser(UserDAO.java:174)"
     //He provat de cridar-la havent borrat els usuaris vistos de la bbdd pero igualment peta.
-    public String getNextUser(String username, String minAge, String maxAge, boolean isPremium, boolean likesCb, boolean likesJavab) {
+    public String getNextUser(String username, int minAge, int maxAge, boolean isPremium, boolean likesCb, boolean likesJavab) {
         String query, user = null;
         int likesC = likesCb? 1: 0;
         int likesJava = likesJavab? 1: 0;
         if(isPremium) {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
-            if(Integer.parseInt(maxAge) == 0) {
+            if(maxAge == 0) {
                 //Retorna els usuaris que t'han donat like a tu:
                 query = "SELECT u.username FROM users as u, views as v, liked ad l WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (l.username_2 = '" + username + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
@@ -185,7 +185,7 @@ public class UserDAO {
             }
         } else {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
-            if(Integer.parseInt(maxAge) == 0) {
+            if(maxAge == 0) {
                 query = "SELECT u.username FROM users as u " +
                         "WHERE (u.username NOT IN(SELECT v.username_2 FROM views as v WHERE v.username_1 = '" + username + "'))" +
                         "AND (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') LIMIT 1;";
@@ -197,7 +197,7 @@ public class UserDAO {
                     e.printStackTrace();
                 }
             } else {
-                query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (u.age BETWEEN '" + Integer.parseInt(minAge) + "' AND '" + Integer.parseInt(maxAge) + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
+                query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
                 try {
                     res.next();

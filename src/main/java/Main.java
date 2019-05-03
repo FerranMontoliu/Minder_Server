@@ -24,7 +24,7 @@ public class Main {
             server.startServer();
 
             //Tests de l'Anna:
-            User u = new User("name", "18", true, "test@example.com", "Password1", "20", "21");
+            User u = new User("name", 18, true, "test@example.com", "Password1", 20, 21);
             int[] day = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,9,6,5,9,0,1};
             int[] week = {3,22,2,4,5,7,5};
             int[] month = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,1,5,3,9,8,6,12,3,4,7,8,1};

@@ -199,13 +199,12 @@ public class DedicatedServer extends Thread {
                     case CONNECT_USER: //TODO: Solicita un USER a visualitzar pel connect panel. Per acabar.
                         try {
                             User associatedUser = (User) objectIn.readObject();
-                            //System.out.println("associated: "+associatedUser.getUsername());
                             String nextUsername = userDAO.getNextUser(associatedUser.getUsername(), associatedUser.getMinAge(), associatedUser.getMaxAge(), associatedUser.isPremium(), associatedUser.getLikesC(), associatedUser.getLikesJava());
                             //TODO: retorna null
                             System.out.println("nextUsername: "+nextUsername);
                             //User nextUser = getUserByUsername();
                             String[] hobbies = {"Hello", "World"};
-                            User test = new User(true, nextUsername, "19", false, "polsuk@gmail.com", "hola", "$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "60","90", "something", true, true, "frozen", hobbies, null, null, null, null);
+                            User test = new User(true, nextUsername, 19, false, "polsuk@gmail.com", "hola", 60, 90,"$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "something", true, true, "frozen", hobbies, null, null, null, null);
                             objectOut.writeObject(test);
                         } catch (ClassNotFoundException e8) {
                             e8.printStackTrace();

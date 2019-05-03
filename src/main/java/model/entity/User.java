@@ -14,12 +14,12 @@ public class User implements Serializable {
     private boolean completed;
 
     private String username;
-    private String age;
+    private int age;
     private boolean premium;
     private String mail;
     private String password;
-    private String minAge;
-    private String maxAge;
+    private int minAge;
+    private int maxAge;
 
     private String photo;
     private String description;
@@ -38,7 +38,7 @@ public class User implements Serializable {
      *Constructor que ompla TOTS els camps de l'usuari.
      *
      */
-    public User(boolean completed, String username, String age, boolean premium, String mail, String password, String minAge, String maxAge, String photo, String description, boolean likesJava, boolean likesC, String favSong, String[] hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
+    public User(boolean completed, String username, int age, boolean premium, String mail, String password, int minAge, int maxAge, String photo, String description, boolean likesJava, boolean likesC, String favSong, String[] hobbies, ArrayList<User> viewed, ArrayList<User> accepted, ArrayList<User> match, ArrayList<User> acceptedMe) {
         this.completed = completed;
         this.username = username;
         this.age = age;
@@ -63,7 +63,7 @@ public class User implements Serializable {
      * Constructor que es crida quan es registra l'usuari.
      *
      **/
-    public User(String username, String age, boolean premium, String mail, String password, String minAge, String maxAge) {
+    public User(String username, int age, boolean premium, String mail, String password, int minAge, int maxAge) {
         this.username = username;
         this.age = age;
         this.premium = premium;
@@ -102,9 +102,7 @@ public class User implements Serializable {
      * @return Retorna un enter que conté l'edat de l'usuari.
      */
     public int getAge() {
-        //System.out.println(age);
-        //System.out.println(Integer.parseInt(age));
-        return Integer.parseInt(age);
+        return age;
     }
 
     /**
@@ -139,7 +137,7 @@ public class User implements Serializable {
      *
      * @return Retorna un String que conté l'edat minima de l'usuari
      */
-    public String getMinAge() {
+    public int getMinAge() {
         return minAge;
     }
 
@@ -147,7 +145,7 @@ public class User implements Serializable {
      * Setter de l'edat minima que ha seleccionat l'usuari per al filtre d'edat
      *
      */
-    public void setMinAge(String minAge) {
+    public void setMinAge(int minAge) {
         this.minAge = minAge;
     }
 
@@ -156,7 +154,7 @@ public class User implements Serializable {
      *
      * @return Retorna un String que conté l'edat maxima de l'usuari
      */
-    public String getMaxAge() {
+    public int getMaxAge() {
         return maxAge;
     }
 
@@ -164,7 +162,7 @@ public class User implements Serializable {
      * Setter de l'edat maxima que ha seleccionat l'usuari per al filtre d'edat
      *
      */
-    public void setMaxAge(String maxAge) {
+    public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
     }
 
@@ -205,9 +203,9 @@ public class User implements Serializable {
     }
 
     /**
-     * Getter de la cançó preferida de l'usuari.
+     * Getter de la canso preferida de l'usuari.
      *
-     * @return Retorna un String que conté la cançó preferida de l'usuari.
+     * @return Retorna un String que conte la canso preferida de l'usuari.
      */
     public String getFavSong() {
         return favSong;
@@ -216,10 +214,15 @@ public class User implements Serializable {
     /**
      * Getter de la llista de hobbies de l'usuari.
      *
-     * @return Retorna una llista de Strings que conté els hobbies de l'usuari.
+     * @return Retorna una String que conte els hobbies de l'usuari.
      */
-    public String[] getHobbies() {
-        return hobbies;
+    public String getHobbies() {
+        StringBuilder convertedHobbies = new StringBuilder();
+        for(String h: hobbies){
+            convertedHobbies.append(h).append(",");
+        }
+        String hobbiesString = convertedHobbies.toString().replace(convertedHobbies.toString().substring(convertedHobbies.toString().length()-1), "");
+        return hobbiesString;
     }
 
     /**
@@ -347,11 +350,11 @@ public class User implements Serializable {
      * @param maxAge
      * @param noFilter
      */
-    public void savePreferencesUpdate(String hashedPassword, boolean isPremium, String minAge, String maxAge, boolean noFilter) {
+    public void savePreferencesUpdate(String hashedPassword, boolean isPremium, int minAge, int maxAge, boolean noFilter) {
         this.password = hashedPassword;
         this.premium = isPremium;
         this.minAge = minAge;
-        this.maxAge = noFilter?  String.valueOf(0): maxAge;
+        this.maxAge = noFilter?  0: maxAge;
 
     }
 
