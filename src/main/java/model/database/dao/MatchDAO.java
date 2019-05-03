@@ -5,6 +5,8 @@ import model.entity.MatchLoader;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MatchDAO {
 
@@ -40,8 +42,10 @@ public class MatchDAO {
      * @param u2 Usuari que conforma el match.
      */
     public void addMatch(String u1, String u2) {
-        //TODO: agafar data, convertir i enviar
-        String query = "INSERT INTO matchs (username_1, username_2, match_date) VALUES ('" + u1 + "', '" + u2 + "', '" + "2019-04-10" + "')";
+        String format = "MM-dd-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        String date = simpleDateFormat.format(new Date());
+        String query = "INSERT INTO matchs (username_1, username_2, match_date, viewed) VALUES ('" + u1 + "', '" + u2 + "', '" + date + "', '0')";
         DBConnector.getInstance().executeQuery(query);
     }
 
