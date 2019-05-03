@@ -218,11 +218,12 @@ public class User implements Serializable {
      */
     public String getHobbies() {
         StringBuilder convertedHobbies = new StringBuilder();
-        for(String h: hobbies){
-            convertedHobbies.append(h).append(",");
+        convertedHobbies.append(hobbies[0]);
+        for(int i = 1; i < hobbies.length; i++){
+            convertedHobbies.append(", ");
+            convertedHobbies.append(hobbies[i]);
         }
-        String hobbiesString = convertedHobbies.toString().replace(convertedHobbies.toString().substring(convertedHobbies.toString().length()-1), "");
-        return hobbiesString;
+        return convertedHobbies.toString();
     }
 
     /**
@@ -330,11 +331,8 @@ public class User implements Serializable {
      * @param hobbies
      */
     private void convertToStringArray(String hobbies) {
-        this.hobbies = hobbies.split(",");
-        for (int i = 0; i < this.hobbies.length; i++) {
-            // Fetch the item, trim it and put it back in
-            this.hobbies[i] = this.hobbies[i].trim();
-        }
+        this.hobbies = hobbies.split(", ");
+
     }
 
     public void setPhoto(String photo) {
