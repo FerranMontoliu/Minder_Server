@@ -7,7 +7,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 import javax.swing.*;
 
 /**
- * Classe encarregada de comprovar formats de camps d'usuari.
+ * Classe que comprova els camps en el sign-up de l'usuari per tal de comprovar
  */
 public class UserManager {
 
@@ -16,7 +16,7 @@ public class UserManager {
      *
      * @return Retorna true si es major d'edat, false sino.
      */
-    public static int isAdult(String age) throws InvalidFormatException {
+    public int isAdult(String age) throws InvalidFormatException {
         int a;
         try {
             a = getAge(age);
@@ -36,19 +36,19 @@ public class UserManager {
      *
      * @return Retorna true si el format es correcte, false sino.
      */
-    public static boolean mailCorrectFormat(String mail){
+    public boolean mailCorrectFormat(String mail){
         boolean ok = true;
         EmailValidator v = EmailValidator.getInstance();
         if(!v.isValid(mail)){
             ok = false;
         }
-    return ok;
+        return ok;
     }
 
-    public static boolean mailInSignIn(String usernameField){
-            mailCorrectFormat(usernameField);
-            return true;
-        }
+    public boolean mailInSignIn(String usernameField){
+        mailCorrectFormat(usernameField);
+        return true;
+    }
 
 
     /**
@@ -56,10 +56,11 @@ public class UserManager {
      *
      * @return Retorna true si concorda, false sino.
      */
-    public static void passwordConfirm(String password, String passwordConfirmation) throws InvalidFormatException {
+    public boolean passwordConfirm(String password, String passwordConfirmation) {
         if(!password.equals(passwordConfirmation)){
-            throw new InvalidFormatException("Password field and password do not match");
+            return false;
         }
+        return true;
     }
 
     /**
@@ -67,7 +68,7 @@ public class UserManager {
      *
      * @return Retorna true si el format és correcte, false sinó.
      */
-    public static boolean passwordCorrectFormat(String password) {
+    public boolean passwordCorrectFormat(String password) {
         boolean hasUppercase = !password.equals(password.toLowerCase());
         boolean hasLowercase = !password.equals(password.toUpperCase());
         boolean hasNumber  = password.matches(".*\\d.*");
@@ -83,7 +84,7 @@ public class UserManager {
      * Funció que s'encarrega de comprovar si la password es correcta o no quan un es registra.
      * @return Retorna true si es correcta, false sino.
      */
-    public static void signUpPasswordIsCorrect(String password,String passwordConfirmation) throws InvalidFormatException {
+    public void signUpPasswordIsCorrect(String password,String passwordConfirmation) throws InvalidFormatException {
         passwordConfirm(password, passwordConfirmation);
         passwordCorrectFormat(password);
     }

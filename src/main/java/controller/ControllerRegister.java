@@ -1,5 +1,4 @@
 package controller;
-
 import view.JRegister;
 import view.Window;
 
@@ -24,35 +23,40 @@ public class ControllerRegister implements ActionListener {
 
         switch (command) {
             case "REGISTER":
-                System.out.println("Register button");
+                correct = true;
 
                 //Comprovació Username
                 if(jRegister.getUsername().length() == 0) {
                     correct = false;
-                    System.out.println("USERNAME Invalid");
                 }
                 //Comprovació Age
                 String a = jRegister.getAge();
-                if(a.length() > 0) {
+                if(a.length() > 0 & a.matches(".*\\d.*")) {
                     if (Integer.valueOf(a) < 18) { //Comprovació EDAT
                         correct = false;
-                        System.out.println("TOO YOUNG");
                     }
                 }else {
                     correct = false;
                 }
 
                 //Comprovació Mail
-                correct = userManager.mailCorrectFormat(jRegister.getMail());
-
+                if(!(userManager.mailCorrectFormat(jRegister.getMail()))) {
+                    correct = false;
+                }
                 //Comprovació Password
                 if(!(userManager.passwordCorrectFormat(jRegister.getPassword()))) {
-                    System.out.println("Password is wrong");
+                    correct = false;
                 }
-                //if(userManager.passwordConfirm(jRegister.getPassword(),jpfPassword2.getPassword()))
+                if(!(userManager.passwordConfirm(jRegister.getPassword(),jRegister.getConfirmPassword()))) {
+                    correct = false;
+                }
 
+                //SignUp correcte, es pot passar a la base de dades per afegir-se
                 if(correct) {
-
+                    throwCorrectMessage();
+                }
+                else {
+                    throwErrorMessage();
                 }
                 jRegister.removeRegister();
 
@@ -60,5 +64,11 @@ public class ControllerRegister implements ActionListener {
                 jRegister.changeViewPassword();
         }
 
+    }
+    public void throwErrorMessage() {
+        jRegister.showMessage(false);
+    }
+    public void throwCorrectMessage() {
+        jRegister.showMessage(true);
     }
 }

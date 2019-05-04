@@ -27,7 +27,7 @@ public class JRegister extends JPanel {
 
     public JRegister(){
         Dimension d = new Dimension(10000,200);
-        setLayout(new GridLayout(18,2));
+        setLayout(new GridLayout(19,2));
 
         //Inicialitzar els elements
         GridBagConstraints gbc = new GridBagConstraints();
@@ -85,7 +85,6 @@ public class JRegister extends JPanel {
         JLabel gg = new JLabel("Show Password");
         jpViewPassword.add(gg,gbc);
 
-        JLabel gg2 = new JLabel("");
         JLabel gg4 = new JLabel("");
         jpViewPassword.add(gg4,gbc);
         gbc.gridy = 2;
@@ -95,25 +94,16 @@ public class JRegister extends JPanel {
         JPanel jp = new JPanel(new GridBagLayout());
         jp.setMinimumSize(new Dimension(1000,100));
         JPanel jp2 = new JPanel(new GridBagLayout());
-        gbc.gridx = 2;
-        jp.add(jcbC,gbc);
-        gbc.gridx = 3;
-        jp.add(new JLabel(new ImageIcon("icons/c++.png")),gbc);
         String a = "                    ";
-        gbc.gridx = 2;
-        jp2.add(jcbJava,gbc);
-        gbc.gridx = 3;
-        jp2.add(new JLabel(new ImageIcon("icons/java-24px.png")),gbc);
 
-        add(new JLabel(a+a+a+a+"Programming languages"));
-        add(jp);
-        add(jp2);
 
         JPanel jpRadioButton = new JPanel();
         jpRadioButton.add(jrbPremium);
         jpRadioButton.add(jrbNoPremium);
         add (new JLabel(a+a+a+a+"  Premium Membership"));
         add(jpRadioButton);
+        this.createAgeFilters();
+
         jpRegister.add(jbRegister);
         add(jpRegister);
 
@@ -134,7 +124,6 @@ public class JRegister extends JPanel {
      */
     private void createAgeFilters() {
         //MINIMUM AGE
-        add(new JLabel("Minimum age: "));
         //Min age comboBox
         jcbMinAgeFilter = new JComboBox<>();
         jcbMinAgeFilter.setEditable(false);
@@ -145,7 +134,7 @@ public class JRegister extends JPanel {
         }
         add(jcbMinAgeFilter);
         //MAXIMUM AGE
-        add(new JLabel("Maximum age:"));
+        JLabel a = new JLabel("                                 ");
         //Max age comboBox
         jcbMaxAgeFilter = new JComboBox<>();
         jcbMaxAgeFilter.setEditable(false);
@@ -154,7 +143,21 @@ public class JRegister extends JPanel {
         for (int i = 18; i <= 100; ++i) {
             jcbMaxAgeFilter.addItem(i);
         }
-        add(jcbMaxAgeFilter);
+        //add(jcbMaxAgeFilter);
+        JPanel jp2 = new JPanel();
+
+        jp2.setLayout(new BoxLayout(jp2,0));
+        jp2.add(new JLabel("                                                                                      "));
+        jp2.add(jcbMinAgeFilter);
+        JPanel jp = new JPanel();
+
+        jp.setLayout(new BoxLayout(jp,0));
+        jp.add(new JLabel("                                                                                      "));
+        jp.add(jcbMaxAgeFilter);
+        add(new JLabel("                                                                                       Minimum age: "));
+        add(jp2);
+        add(new JLabel("                                                                                       Maximum age:"));
+        add(jp);
     }
 
     public void removeRegister(){
@@ -181,6 +184,14 @@ public class JRegister extends JPanel {
     }
     public String getPassword() {
         return String.valueOf(jpfPassword.getPassword());
+    }
+    public void showMessage(boolean ok) {
+        if(ok) {
+            JOptionPane.showMessageDialog(this, "Sign-Up Successful!", "Minder", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "At least one field(s) contain errors!", "Minder", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 
