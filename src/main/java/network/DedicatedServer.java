@@ -38,6 +38,7 @@ public class DedicatedServer extends Thread {
     private ObjectInputStream objectIn;
     private ObjectOutputStream objectOut;
     private LinkedList<DedicatedServer> clients;
+    private String clientUser;
     private Server server;
 
     /**
@@ -52,6 +53,7 @@ public class DedicatedServer extends Thread {
         this.sClient = sClient;
         this.clients = clients;
         this.server = server;
+        this.clientUser = "";
     }
 
     /**
@@ -178,13 +180,15 @@ public class DedicatedServer extends Thread {
                         break;
 
                     case SEND_MESSAGE:
-                        Message m = null;
-                        try {
-                            m = (Message) objectIn.readObject();
-                        } catch (ClassNotFoundException e7) {
-                            e7.printStackTrace();
+                        clientUser = dataInput.readUTF();
+                        while (isOn) {
+                            Message message = (Message) objectIn.readObject();
+                            String receiver = message.getDestination();
+                            System.out.println(message.toString());
+                            chatDAO.sendMessage(message);
+                            Chat storedChat = chatDAO.loadChat(clientUser, receiver);
+                            sendToDestination(receiver, storedChat);
                         }
-                        chatDAO.sendMessage(m);
                         break;
 
                     case USER_MATCH_LIST:
@@ -245,7 +249,7 @@ public class DedicatedServer extends Thread {
                         break;
                 }
             }
-        } catch (IOException e1) {
+        } catch (IOException | ClassNotFoundException e) {
             clients.remove(this);
         } finally {
             try {
@@ -264,6 +268,26 @@ public class DedicatedServer extends Thread {
                 sClient.close();
             } catch (IOException e) {}
             clients.remove(this);
+        }
+    }
+
+    public String getClientUser() {
+        return clientUser;
+    }
+
+    private void sendToDestination(String receiver, Chat dbChat) {
+        for(DedicatedServer ds: clients){
+            if((ds.getClientUser().equals(receiver)) || (ds.getClientUser().equals(clientUser))){
+                ds.updateMessagesToClient(dbChat);
+            }
+
+        }
+    }
+
+    private void updateMessagesToClient(Chat dbChat) {
+        try {
+            objectOut.writeObject(dbChat);
+        } catch (IOException e) {
         }
     }
 

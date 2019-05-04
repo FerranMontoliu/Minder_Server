@@ -25,9 +25,8 @@ public class ChatDAO {
                 source = res.getString("username_1");
                 destination = res.getString("username_2");
                 message = res.getString("message");
-                Date d = res.getDate("message_date");
-                date = df.format(d);
-                Message m = new Message(source, message, destination, date);
+                String d = res.getString("message_date");
+                Message m = new Message(source, message, destination, d);
                 xat.add(m);
             }
         } catch (SQLException e) {
@@ -38,7 +37,8 @@ public class ChatDAO {
     }
 
     public void sendMessage(Message m) {
-        String query = "INSERT INTO chats (username_1, username_2, message_date, message) VALUES ('" + m.getSource() + "', '" + m.getDestination() + "', '" + "2019-04-10" + "', '" + m.getText() + "')";
+        System.out.println("Abans de la del send");
+        String query = "INSERT INTO chats (username_1, username_2, message, message_date) VALUES ('" + m.getSource() + "', '" + m.getDestination() + "', '" + m.getText() + "', '" + m.getTime() + "')";
         DBConnector.getInstance().executeQuery(query);
     }
 }

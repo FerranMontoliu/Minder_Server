@@ -42,6 +42,8 @@ public class Message implements Serializable {
         return destination;
     }
 
+    public String getTime() { return  time; }
+
     @Override
     public String toString () {
         return "(" + time + ") "+ source + ": " + text;
