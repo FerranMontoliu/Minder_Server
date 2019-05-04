@@ -132,6 +132,11 @@ public class MatchDAO {
         return 0;
     }
 
+    /**
+     * IN PROGRESS! NO TOCAR
+     * @param actualDate
+     * @return
+     */
     public int[] getLastDayMatches(String actualDate) {
         //TODO: SELECT COUNT bla bla
         return null;
