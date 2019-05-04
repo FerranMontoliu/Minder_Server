@@ -4,11 +4,13 @@ import model.database.dao.MatchDAO;
 import model.database.dao.UserDAO;
 import model.database.dao.ViewDAO;
 import model.entity.User;
+import model.entity.UserMatches;
 import network.Server;
 import view.Window;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Main {
 
@@ -47,6 +49,15 @@ public class Main {
             Controller controller = new Controller(view,view.getRegister());
             view.registerController(controller);
             view.setVisible(true);
+
+            /*
+            MatchDAO ma = new MatchDAO();
+            LinkedList<UserMatches> us = ma.getTopFiveMostMatchedUsers();
+            System.out.println(us.get(1).getName());
+            System.out.println(us.get(2).getName());
+            System.out.println(us.get(3).getName());
+             */
+
         });
     }
 }

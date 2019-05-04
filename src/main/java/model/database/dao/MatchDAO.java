@@ -2,11 +2,13 @@ package model.database.dao;
 
 import model.database.DBConnector;
 import model.entity.MatchLoader;
+import model.entity.UserMatches;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 
 public class MatchDAO {
 
@@ -60,9 +62,64 @@ public class MatchDAO {
         DBConnector.getInstance().executeQuery(query);
     }
 
-    public String[] getTopFiveMostMatchedUsers() {
+    /**
+     * Funcio que retorna una llista amb els usuaris de la bbdd ordenats per nombre de matches
+     * @return
+     */
+    public LinkedList<UserMatches> getTopFiveMostMatchedUsers() {
         //TODO: retornar els 5 users amb més matches (ASUMINT QUE EXISTEIXEN 5 USERS MÍNIM!).
-        return null;
+
+        LinkedList<UserMatches> users = new LinkedList<>();
+        String query = "SELECT * FROM users";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        ResultSet res1;
+        int matches;
+
+        try {
+            while (res.next()) {
+                String name = res.getString("username");
+
+                query = "SELECT COUNT(*) FROM matchs WHERE username_1 = '" + name + "'";
+                res1 = DBConnector.getInstance().selectQuery(query);
+
+                res1.next();
+                matches = res1.getInt(1);
+
+                query = "SELECT COUNT(*) FROM matchs WHERE username_2 = '" + name + "'";
+
+
+                res1 = DBConnector.getInstance().selectQuery(query);
+
+                res1.next();
+                matches+= res1.getInt(1);
+
+                users.add(new UserMatches(name, matches));
+
+            }
+
+            users.add(new UserMatches("Anna", 7));
+
+            int n = users.size();
+
+            //No ordena bé
+            for(int i = 0 ; i< n; i++){
+                for (int j = 0; j< n-1-i; j++){
+                    if(users.get(j).getMatches() > users.get(j+1).getMatches()){
+                        UserMatches u = users.get(j);
+                        users.remove(j);
+                        users.add(j, users.get(j+1));
+                        users.remove(j+1);
+                        users.add(j+1, u);
+
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
     }
 
     public int getNumberOfMatches() {

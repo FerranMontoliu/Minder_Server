@@ -36,8 +36,8 @@ public class DBConnector {
      */
     public static DBConnector getInstance(){
         if(instance == null) {
-            instance = new DBConnector("root", "", "minderdb", 3306);
-            //instance = new DBConnector("root", "root", "minderdb", 3306); //MAC users
+            //instance = new DBConnector("root", "", "minderdb", 3306);
+            instance = new DBConnector("root", "root", "minderdb", 3306); //MAC users
             instance.connect();
         }
         return instance;
