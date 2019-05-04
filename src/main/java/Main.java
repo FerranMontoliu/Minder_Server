@@ -9,6 +9,7 @@ import network.Server;
 import view.Window;
 
 import javax.swing.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -50,13 +51,20 @@ public class Main {
             view.registerController(controller);
             view.setVisible(true);
 
-            /*
-            MatchDAO ma = new MatchDAO();
+
+            /*MatchDAO ma = new MatchDAO();
             LinkedList<UserMatches> us = ma.getTopFiveMostMatchedUsers();
             System.out.println(us.get(1).getName());
             System.out.println(us.get(2).getName());
             System.out.println(us.get(3).getName());
-             */
+            */
+            //try {
+              //  ma.getLastDayMatches();
+              //  ma.getLastWeekMatches();
+              //  ma.getLastMonthMatches();
+            //} catch (SQLException e) {
+              //  e.printStackTrace();
+            //}
 
         });
     }

@@ -133,22 +133,70 @@ public class MatchDAO {
     }
 
     /**
-     * IN PROGRESS! NO TOCAR
-     * @param actualDate
+     * Metode que retorna (modificar tipus de variable de retorn al gust) els noms dels usuaris que han fet match durant
+     * el dia que s'executa aquesta query
      * @return
      */
-    public int[] getLastDayMatches(String actualDate) {
-        //TODO: SELECT COUNT bla bla
+    public int[] getLastDayMatches() throws SQLException {
+        String username1, username2;
+        String query = "SELECT username_1,username_2 " +
+                "FROM matchs " +
+                "WHERE DATE(match_date) = DATE(CURRENT_DATE)";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        while (res.next()) {
+            username1 = res.getString("username_1");
+            username2 = res.getString("username_2");
+            System.out.println("Match between " + username1 + " and " + username2 + " today!");
+        }
         return null;
     }
 
-    public int[] getLastWeekMatches(String actualDate) {
-        //TODO: SELECT COUNT bla bla
+    /**
+     * Metode que retorna (modificar tipus de variable de retorn al gust) els noms dels usuaris i data que han fet
+     * match durant la setmana que s'executa aquesta query
+     * @return
+     */
+    public int[] getLastWeekMatches() throws SQLException {
+        //TODO fer proves depenent del dia al que estem i preguntar si ha de ser des de dilluns fins dia actual o 7 dies
+        String username1, username2;
+        String query = "SELECT * " +
+                "FROM matchs " +
+                "WHERE match_date " +
+                "BETWEEN date_sub(now(),INTERVAL 1 WEEK) " +
+                "AND now()";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        while (res.next()) {
+            username1 = res.getString("username_1");
+            username2 = res.getString("username_2");
+            Date d = res.getDate("match_date");
+            System.out.println("Match between " + username1 + " and " + username2 + " this week! (day: " + d +")");
+        }
+
         return null;
     }
 
-    public int[] getLastMonthMatches(String actualDate) {
-        //TODO: SELECT COUNT bla bla
+    /**
+     * Metode que retorna (modificar tipus de variable de retorn al gust) els noms dels usuaris i data que han fet
+     * match durant l'ultim mes des de que s'executa aquesta query
+     * @return
+     */
+    public int[] getLastMonthMatches() throws SQLException {
+        //TODO: preguntar si ha de ser des del dia 1 del mes actual o han de ser els ultims 30/31 dies
+        String username1, username2;
+        //query per ultims 30 dies
+        String query ="SELECT * " +
+                "FROM matchs " +
+                "WHERE match_date " +
+                "BETWEEN date_sub(now(),INTERVAL 1 MONTH) " +
+                "AND now()";
+
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        while (res.next()) {
+            username1 = res.getString("username_1");
+            username2 = res.getString("username_2");
+            Date d = res.getDate("match_date");
+            System.out.println("Match between " + username1 + " and " + username2 + " this month! (day: " + d +")");
+        }
         return null;
     }
 
