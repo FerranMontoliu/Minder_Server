@@ -17,4 +17,8 @@ public class Chat implements Serializable {
     public void setMessages(LinkedList<Message> messages) {
         this.messages = messages;
     }
+
+    public String getNewMessage() {
+        return messages.getLast().toString();
+    }
 }

@@ -159,6 +159,7 @@ public class DedicatedServer extends Thread {
                             String sender = dataInput.readUTF();
                             String deleted = dataInput.readUTF();
                             matchDAO.deleteMatch(sender, deleted);
+                            chatDAO.deleteMessages(sender, deleted);
                         } catch (IOException e5) {
                             e5.printStackTrace();
                         }
@@ -276,8 +277,10 @@ public class DedicatedServer extends Thread {
     }
 
     private void sendToDestination(String receiver, Chat dbChat) {
+        System.out.println("Size:"+clients.size());
         for(DedicatedServer ds: clients){
             if((ds.getClientUser().equals(receiver)) || (ds.getClientUser().equals(clientUser))){
+                System.out.println("En algun entro?");
                 ds.updateMessagesToClient(dbChat);
             }
 

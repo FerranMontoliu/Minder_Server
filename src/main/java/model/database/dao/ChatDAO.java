@@ -41,4 +41,9 @@ public class ChatDAO {
         String query = "INSERT INTO chats (username_1, username_2, message, message_date) VALUES ('" + m.getSource() + "', '" + m.getDestination() + "', '" + m.getText() + "', '" + m.getTime() + "')";
         DBConnector.getInstance().executeQuery(query);
     }
+
+    public void deleteMessages(String u1, String u2){
+        String query = "DELETE FROM chats WHERE (username_1 = '" + u1 +"' AND username_2 = '" + u2 + "') OR (username_1 = '" + u2 + "' AND username_2 = '" + u1 + "')";
+        DBConnector.getInstance().executeQuery(query);
+    }
 }
