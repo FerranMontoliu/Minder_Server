@@ -164,6 +164,7 @@ public class MatchDAO {
                 "WHERE match_date " +
                 "BETWEEN date_sub(now(),INTERVAL 1 WEEK) " +
                 "AND now()";
+        //O SINO: "SELECT * FROM matchs WHERE date_format(match_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         while (res.next()) {
             username1 = res.getString("username_1");
@@ -189,7 +190,10 @@ public class MatchDAO {
                 "WHERE match_date " +
                 "BETWEEN date_sub(now(),INTERVAL 1 MONTH) " +
                 "AND now()";
-
+        //query del mateix mes que l'actual
+        String query2 = "SELECT * " +
+                "FROM matchs " +
+                "WHERE date_format(match_date, '%Y-%m') = date_format(now(), '%Y-%m')";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         while (res.next()) {
             username1 = res.getString("username_1");
