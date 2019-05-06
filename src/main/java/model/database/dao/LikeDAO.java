@@ -44,7 +44,7 @@ public class LikeDAO {
      * @param u2 Usuari al qual s'ha donat el like.
      */
     public void addLike(String u1, String u2) {
-        String query = "INSERT INTO liked (username_1, username_2, liked_date) VALUES ('" + u1 + "', '" + u2 + "', '" + "2019-04-10" + "')";
+        String query = "INSERT INTO liked (username_1, username_2, liked_date) VALUES ('" + u1 + "', '" + u2 + "', CURDATE())";
         DBConnector.getInstance().executeQuery(query);
     }
 

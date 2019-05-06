@@ -156,7 +156,7 @@ public class UserDAO {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
             if(maxAge == 0) {
                 //Retorna els usuaris que t'han donat like a tu:
-                query = "SELECT u.username FROM users as u, views as v, liked ad l WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (l.username_2 = '" + username + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
+                query = "SELECT u.username FROM users as u, views as v, liked as l WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (l.username_2 = '" + username + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
                 try {
                     //Si no ha trobat cap user, et retorna el següent user que no hagis vist:
