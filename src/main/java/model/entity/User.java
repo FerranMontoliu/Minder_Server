@@ -20,6 +20,7 @@ public class User implements Serializable {
     private String password;
     private int minAge;
     private int maxAge;
+    private int matches;
 
     private String photo;
     private String description;
@@ -85,6 +86,25 @@ public class User implements Serializable {
         }else{
             this.username = identificator;
         }
+    }
+
+    /**
+     * Constructor quan es crida des del top5 dao
+     * @param name
+     * @param matches
+     */
+    public User(String name, int matches) {
+        this.username = name;
+        this.matches = matches;
+    }
+
+
+    /**
+     * Getter del numero de matches
+     * @return
+     */
+    public int getMatches() {
+        return matches;
     }
 
     /**

@@ -17,7 +17,6 @@ public class Controller implements ActionListener {
         this.view = view;
         cr = new ControllerRegister((view.Window) view);
         this.jRegister = jRegister;
-
     }
 
 

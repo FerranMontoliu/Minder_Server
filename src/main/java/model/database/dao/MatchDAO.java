@@ -2,6 +2,7 @@ package model.database.dao;
 
 import model.database.DBConnector;
 import model.entity.MatchLoader;
+import model.entity.User;
 import model.entity.UserMatches;
 
 import java.sql.ResultSet;
@@ -66,10 +67,10 @@ public class MatchDAO {
      * Funcio que retorna una llista amb els usuaris de la bbdd ordenats per nombre de matches
      * @return
      */
-    public LinkedList<UserMatches> getTopFiveMostMatchedUsers() {
+    public LinkedList<User> getTopFiveMostMatchedUsers() {
         //TODO: retornar els 5 users amb més matches (ASUMINT QUE EXISTEIXEN 5 USERS MÍNIM!).
 
-        LinkedList<UserMatches> users = new LinkedList<>();
+        LinkedList<User> users = new LinkedList<>();
         String query = "SELECT * FROM users";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         ResultSet res1;
@@ -93,11 +94,11 @@ public class MatchDAO {
                 res1.next();
                 matches+= res1.getInt(1);
 
-                users.add(new UserMatches(name, matches));
+                users.add(new User(name, matches));
 
             }
 
-            users.add(new UserMatches("Anna", 7));
+            users.add(new User("Anna", 7));
 
             int n = users.size();
 
@@ -105,8 +106,7 @@ public class MatchDAO {
             for(int i = 0 ; i< n; i++){
                 for (int j = 0; j< n-1-i; j++){
                     if(users.get(j).getMatches() > users.get(j+1).getMatches()){
-                        UserMatches u = users.get(j);
-                        users.remove(j);
+                        User u = users.get(j);
                         users.add(j, users.get(j+1));
                         users.remove(j+1);
                         users.add(j+1, u);
