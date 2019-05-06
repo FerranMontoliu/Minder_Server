@@ -3,13 +3,15 @@ import controller.Controller;
 import model.entity.User;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
-public class Window extends JFrame{
+public class WindowServer extends JFrame{
 
     private JCharts jCharts;
     private JRegister jRegister;
+    private JTop jTop;
 
-    public Window(int[] day, int[] week, int[] month, User[]users){
+    public WindowServer(int[] day, int[] week, int[] month, ArrayList<User> users){
 
         //Iniciar la finestra
         setTitle("Server");
@@ -21,24 +23,22 @@ public class Window extends JFrame{
         //Crear el jtabbed pane principal
         JTabbedPane jtPane = new JTabbedPane();
 
-
         //Panell d'Acceptats/Visualitzar
         JAccepted jpAcceptats = new JAccepted(5,7);
         jtPane.addTab("Accepted/Viewed",jpAcceptats );
 
-
         //Panell de Registrar
         jRegister = new JRegister();
         jtPane.addTab("Sign Up",jRegister );
-
 
         //Panell d'estadístiques
         jCharts = new JCharts(day, week, month);
         jtPane.addTab("Statistics",jCharts );
 
         //Panell Top 5
-        JTop jTop = new JTop(users);
+        jTop = new JTop(users);
         jtPane.addTab("Top 5",jTop);
+
         //Afegir al panell principal el JTabbedPane
         getContentPane().add(jtPane);
 
@@ -48,14 +48,13 @@ public class Window extends JFrame{
     }
 
 
-    public void update(){
-        int[] week = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,9,6,5,9,0,1,2};
-        int[] month = {3,22,2,4,5,7,5};
-        int[] day = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,1,5,3,9,8,6,12,3,4,56,7,8,1,12};
-        jCharts.update(day, week, month);
 
+    public void updateWindow(int[]week, int[]month, int[]day, ArrayList<User> top5){
+        jCharts.update(day, week, month);
+        jTop.updateTop5(top5);
 
     }
+
 
     public JRegister getRegister(){
         return jRegister;

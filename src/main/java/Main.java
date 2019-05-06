@@ -1,17 +1,11 @@
 import controller.Controller;
-import model.database.dao.LikeDAO;
 import model.database.dao.MatchDAO;
-import model.database.dao.UserDAO;
-import model.database.dao.ViewDAO;
 import model.entity.User;
-import model.entity.UserMatches;
 import network.Server;
-import view.Window;
+import view.WindowServer;
 
 import javax.swing.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Main {
 
@@ -22,19 +16,29 @@ public class Main {
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ArrayList<User> model = new ArrayList<>();
-            Server server = new Server(model);
-            server.startServer();
 
-            //Tests de l'Anna:
+    //Tests de l'Anna:
             User u = new User("name", 18, true, "test@example.com", "Password1", 20, 21);
             int[] day = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,9,6,5,9,0,1};
             int[] week = {3,22,2,4,5,7,5};
             int[] month = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,1,5,3,9,8,6,12,3,4,7,8,1};
-            User[] users = new User[5];
+            ArrayList<User> users = new ArrayList<>();
             for (int i = 0; i<5; i++){
-                users[i] = u;
+                users.add(u);
             }
+
+            WindowServer view = new WindowServer(day, week, month, users);
+            Controller controller = new Controller(view,view.getRegister());
+            view.registerController(controller);
+            controller.updateWindow();
+            view.setVisible(true);
+
+
+            ArrayList<User> model = new ArrayList<>();
+            Server server = new Server(model, controller);
+            server.startServer();
+
+
             //Aquí acaben els tests de l'Anna.
 
             /*//Tests del Ferran:
@@ -46,18 +50,18 @@ public class Main {
             //Fi.*/
 
 
-            Window view = new Window(day, week, month, users);
-            Controller controller = new Controller(view,view.getRegister());
-            view.registerController(controller);
-            view.setVisible(true);
 
+            /*
+            MatchDAO ma = new MatchDAO();
+            ArrayList<User> us = ma.getTopFiveMostMatchedUsers();
+            System.out.println(us.get(0).getUsername());
+            System.out.println(us.get(1).getUsername());
+            System.out.println(us.get(2).getUsername());
+            System.out.println(us.get(3).getUsername());
+            System.out.println(us.size());
 
-            /*MatchDAO ma = new MatchDAO();
-            LinkedList<UserMatches> us = ma.getTopFiveMostMatchedUsers();
-            System.out.println(us.get(1).getName());
-            System.out.println(us.get(2).getName());
-            System.out.println(us.get(3).getName());
-            */
+             */
+
             //try {
               //  ma.getLastDayMatches();
               //  ma.getLastWeekMatches();

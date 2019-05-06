@@ -1,6 +1,6 @@
 package controller;
 import view.JRegister;
-import view.Window;
+import view.WindowServer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +11,7 @@ public class ControllerRegister implements ActionListener {
 
 
 
-    public ControllerRegister (Window view){
+    public ControllerRegister (WindowServer view){
         userManager = new UserManager();
         jRegister = view.getRegister();
 

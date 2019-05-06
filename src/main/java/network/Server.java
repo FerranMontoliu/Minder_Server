@@ -1,5 +1,6 @@
 package network;
 
+import controller.Controller;
 import model.Json;
 import model.entity.User;
 
@@ -13,6 +14,9 @@ public class Server extends Thread {
 
     private boolean isOn;
     private ServerSocket sSocket;
+
+    private Controller controlador;
+
     private LinkedList<DedicatedServer> dServers;
 
     private ArrayList<User> model;
@@ -22,7 +26,7 @@ public class Server extends Thread {
      *
      * @param model Llista de productes amb tota la informació d'aquests.
      */
-    public Server(ArrayList<User> model) {
+    public Server(ArrayList<User> model, Controller controlador) {
         try {
             this.isOn = false;
             this.model = model;
@@ -30,6 +34,8 @@ public class Server extends Thread {
             ServerConfig sc = Json.parseJson();
             this.sSocket = new ServerSocket(sc.getListenerPort());
             this.dServers = new LinkedList<>();
+
+            this.controlador = controlador;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +58,7 @@ public class Server extends Thread {
             try {
                 Socket sClient = sSocket.accept();
 
-                DedicatedServer pwClient = new DedicatedServer(sClient, dServers, this);
+                DedicatedServer pwClient = new DedicatedServer(sClient, dServers, this, controlador);
                 dServers.add(pwClient);
 
                 pwClient.startDedicatedServer();

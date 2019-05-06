@@ -8,8 +8,7 @@ import model.entity.UserMatches;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.*;
 
 public class MatchDAO {
 
@@ -67,10 +66,10 @@ public class MatchDAO {
      * Funcio que retorna una llista amb els usuaris de la bbdd ordenats per nombre de matches
      * @return
      */
-    public LinkedList<User> getTopFiveMostMatchedUsers() {
+    public ArrayList<User> getTopFiveMostMatchedUsers() {
         //TODO: retornar els 5 users amb més matches (ASUMINT QUE EXISTEIXEN 5 USERS MÍNIM!).
 
-        LinkedList<User> users = new LinkedList<>();
+        ArrayList<User> users = new ArrayList<>();
         String query = "SELECT * FROM users";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         ResultSet res1;
@@ -100,25 +99,25 @@ public class MatchDAO {
 
             users.add(new User("Anna", 7));
 
-            int n = users.size();
+            Collections.sort(users, new Comparator<User>() {
+                @Override
+                public int compare(User o1, User o2) {
 
-            //No ordena bé
-            for(int i = 0 ; i< n; i++){
-                for (int j = 0; j< n-1-i; j++){
-                    if(users.get(j).getMatches() > users.get(j+1).getMatches()){
-                        User u = users.get(j);
-                        users.add(j, users.get(j+1));
-                        users.remove(j+1);
-                        users.add(j+1, u);
-
+                    if(o1.getMatches() < o2.getMatches()){
+                        return 1;
                     }
+                    if(o1.getMatches() == o2.getMatches()){
+                        return 0;
+                    }
+                    return -1;
                 }
-            }
+            });
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        System.out.println(users.get(0).getUsername());
         return users;
     }
 

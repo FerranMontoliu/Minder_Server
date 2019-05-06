@@ -1,5 +1,6 @@
 package network;
 
+import controller.Controller;
 import model.database.dao.*;
 import model.entity.Chat;
 import model.entity.MatchLoader;
@@ -41,6 +42,8 @@ public class DedicatedServer extends Thread {
     private String clientUser;
     private Server server;
 
+    private Controller controlador;
+
     /**
      * Constructor de la classe.
      *
@@ -48,12 +51,13 @@ public class DedicatedServer extends Thread {
      * @param clients Llista de connexions (tantes connexions com clients connectants simultàneament).
      * @param server Servidor que controla els threads.
      */
-    public DedicatedServer(Socket sClient, LinkedList<DedicatedServer> clients, Server server) {
+    public DedicatedServer(Socket sClient, LinkedList<DedicatedServer> clients, Server server, Controller controlador) {
         this.isOn = false;
         this.sClient = sClient;
         this.clients = clients;
         this.server = server;
         this.clientUser = "";
+        this.controlador = controlador;
     }
 
     /**
@@ -225,6 +229,8 @@ public class DedicatedServer extends Thread {
                         //boolean isMatch = MIRAR SI FAS UN NOU MATCH i en aquest cas, afegirlo a la base de dades
                         boolean isMatch = true;
                         dataOutput.writeBoolean(isMatch);
+
+                        controlador.updateWindow();
                         break;
                     case CONNECT_DISLIKE: //TODO: Fas DISLIKE en el connect panel.
                         String source = dataInput.readUTF();

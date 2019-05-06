@@ -4,6 +4,7 @@ import model.entity.User;
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 import java.util.Vector;
 
 
@@ -13,9 +14,9 @@ public class JTop extends JPanel {
     private DefaultTableModel defaultTableModel;
     private Vector columnNames;
 
-    public JTop(User[] users){
+    public JTop(ArrayList<User> users){
 
-        this.users = users;
+        //this.users = users;
         defaultTableModel = new DefaultTableModel();
         TableModelListener[] listeners = defaultTableModel.getTableModelListeners();
 
@@ -25,16 +26,17 @@ public class JTop extends JPanel {
         // Column Names
         columnNames = new Vector();
         columnNames.addElement("Name");
-        columnNames.addElement("Password");
+        columnNames.addElement("Matches");
 
 
         // Data to be displayed in the JTable
 
-        Vector<String> element = new Vector<String>();
-        Vector<Vector> data = new Vector<Vector>();
-        for(int i = 0; i< users.length;i++){
-            element.addElement(users[i].getUsername());
-            element.addElement("Password" + i);
+
+        Vector<String> element = new Vector<>();
+        Vector<Vector> data = new Vector<>();
+        for(int i = 0; i< users.size() && i< 5;i++){
+            element.addElement(users.get(i).getUsername());
+            element.addElement(users.get(i).getUsername());
             defaultTableModel.addRow(element);
 
         }
@@ -47,25 +49,22 @@ public class JTop extends JPanel {
         jTable.setEnabled(false);
         add(new JScrollPane(jTable));
 
-        users[0] = new User("Hola", 18, true, "test@example.com", "Password1", 19, 20);
-        users[1] = new User("Anna", 18, true, "test@example.com", "Password1", 31, 40);
 
-        update(users);
     }
 
 
-    public void update(User[] users){
-        this.users = users;
+    public void updateTop5(ArrayList<User> users){
+        //this.users = users;
 
         defaultTableModel.setRowCount(0);
         Vector<String> element = new Vector<String>();
         Vector<Vector> data = new Vector<Vector>();
 
-        for(int i = 0; i< users.length;i++){
-            System.out.println(users[i].getUsername());
+        for(int i = 0; i< users.size() && i< 5;i++){
+            System.out.println(users.get(i).getUsername());
             element = new Vector<String>();
-            element.addElement(users[i].getUsername());
-            element.addElement("Password " + i);
+            element.addElement(users.get(i).getUsername());
+            element.addElement(Integer.toString(users.get(i).getMatches()));
             data.addElement(element);
 
         }
