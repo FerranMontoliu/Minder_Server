@@ -145,9 +145,7 @@ public class UserDAO {
         String query = "UPDATE users SET connected = '0' WHERE users.username = '" + username + "'";
         DBConnector.getInstance().executeQuery(query);
     }
-    //TODO: Ferran, tot just cridar aquesta funcio peta amb el missatge: "java.lang.NullPointerException
-    //TODO	                                                              at model.database.dao.UserDAO.getNextUser(UserDAO.java:174)"
-    //He provat de cridar-la havent borrat els usuaris vistos de la bbdd pero igualment peta.
+
     public String getNextUser(String username, int minAge, int maxAge, boolean isPremium, boolean likesCb, boolean likesJavab) {
         String query, user = null;
         int likesC = likesCb? 1: 0;
@@ -171,11 +169,11 @@ public class UserDAO {
                 }
             } else {
                 //Retorna els usuaris que t'han donat like a tu:
-                query = "SELECT u.username FROM users as u, views as v, liked ad l WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (l.username_2 = '" + username + "') AND (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
+                query = "SELECT u.username FROM users as u, views as v, liked as l WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (l.username_2 = '" + username + "') AND (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
                 try {
                     //Si no ha trobat cap user, et retorna el següent user que no hagis vist:
-                    if(!res.next()) { //TODO: Aqui peta
+                    if(!res.next()) {
                         query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
                         res = DBConnector.getInstance().selectQuery(query);
                         res.next();
@@ -187,7 +185,7 @@ public class UserDAO {
             }
         } else {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
-            if(maxAge == 0) {
+            if(maxAge == 0) { //TODO: no puguis sortit-te a tu mateix i bucle per a seguir veient usuaris vistos i no liked
                 query = "SELECT u.username FROM users as u " +
                         "WHERE (u.username NOT IN(SELECT v.username_2 FROM views as v WHERE v.username_1 = '" + username + "'))" +
                         "AND (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') LIMIT 1;";
