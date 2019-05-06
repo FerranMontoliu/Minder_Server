@@ -279,17 +279,26 @@ public class DedicatedServer extends Thread {
     private void sendToDestination(String receiver, Chat dbChat) {
         System.out.println("Size:"+clients.size());
         for(DedicatedServer ds: clients){
+            System.out.println("Receiver: "+receiver+" Sender: "+clientUser);
             if((ds.getClientUser().equals(receiver)) || (ds.getClientUser().equals(clientUser))){
                 System.out.println("En algun entro?");
-                ds.updateMessagesToClient(dbChat);
+                ds.updateMessagesToClient(dbChat, receiver, clientUser);
             }
 
         }
     }
 
-    private void updateMessagesToClient(Chat dbChat) {
+    private void updateMessagesToClient(Chat dbChat, String receiver, String sender) {
         try {
-            objectOut.writeObject(dbChat);
+            MatchDAO matchDAO = new MatchDAO();
+            boolean stillMatch = matchDAO.existsMatch(receiver, sender);
+            dataOutput.writeBoolean(stillMatch);
+            if(stillMatch){
+                objectOut.writeObject(dbChat);
+            }else{
+                ChatDAO chatDAO = new ChatDAO();
+                chatDAO.deleteMessages(receiver, sender);
+            }
         } catch (IOException e) {
         }
     }

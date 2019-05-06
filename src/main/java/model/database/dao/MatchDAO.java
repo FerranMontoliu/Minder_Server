@@ -207,4 +207,18 @@ public class MatchDAO {
     public void viewedMatch(String username1, String username2) {
         //TODO: SET bla bla bla
     }
+
+
+    public boolean existsMatch(String receiver, String sender) {
+        String query = "SELECT COUNT(*) FROM matchs WHERE (username_1 = '" + sender +"' AND username_2 = '" + receiver + "') OR (username_1 = '" + receiver + "' AND username_2 = '" + sender + "')";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        int i = 0;
+        try {
+            res.next();
+            i = res.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i > 0;
+    }
 }
