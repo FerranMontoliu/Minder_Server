@@ -185,32 +185,46 @@ public class UserDAO {
             }
         } else {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
-            if(maxAge == 0) { //TODO: bucle per a seguir veient usuaris vistos i no liked
+            if(maxAge == 0) {
                 query = "SELECT u.username FROM users as u " +
-                        "WHERE (u.username NOT IN(SELECT l.username_2 FROM likes as l WHERE l.username_1 = '" + username + "'))" +
-                        "AND (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') " +
-                        "AND (u.username <> " + username + ") " +
+                        "WHERE (u.username NOT IN(SELECT l.username_2 FROM liked as l WHERE l.username_1 = '" + username + "')) " +
+                        "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
+                        "AND (u.username <> '" + username + "') " +
                         "LIMIT 1;";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
-                if(res == null) {
-                    query = "SELECT u.username FROM users as u " +
-                            "WHERE (u.username NOT IN(SELECT v.username_2 FROM views as v WHERE v.username_1 = '" + username + "'))" +
-                            "AND (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') " +
-                            "AND (u.username <> " + username + ") " +
-                            "LIMIT 1;";
-                    res = DBConnector.getInstance().selectQuery(query);
-                }
                 try {
-                    res.next();
+                    if(!res.next()) {
+                        query = "SELECT u.username FROM users as u, liked as l " +
+                                "WHERE (l.username_1 = u.username) " +
+                                "AND (l.liked_bool = '0') " +
+                                "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
+                                "AND (u.username <> '" + username + "') " +
+                                "LIMIT 1;";
+                        res = DBConnector.getInstance().selectQuery(query);
+                    }
                     user = res.getString("username");
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             } else {
-                query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
+                query = "SELECT u.username FROM users as u, views as v " +
+                        "WHERE (u.username NOT IN(SELECT l.username_2 FROM liked as l WHERE l.username_1 = '" + username + "')) " +
+                        "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
+                        "AND (u.username <> '" + username + "') " +
+                        "AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') " +
+                        "LIMIT 1";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
                 try {
-                    res.next();
+                    if(!res.next()) {
+                        query = "SELECT u.username FROM users as u, liked as l " +
+                                "WHERE (l.username_1 = u.username) " +
+                                "AND (l.liked_bool = '0') " +
+                                "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
+                                "AND (u.username <> '" + username + "') " +
+                                "AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') " +
+                                "LIMIT 1;";
+                        res = DBConnector.getInstance().selectQuery(query);
+                    }
                     user = res.getString("username");
                 } catch (SQLException e) {
                     e.printStackTrace();
