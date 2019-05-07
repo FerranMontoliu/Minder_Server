@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class LikeDAO {
     public LikesLoader getUserLikes(String u) {
-        String query = "SELECT * FROM liked WHERE username_1 = '" + u + "';";
+        String query = "SELECT username_2 FROM liked WHERE username_1 = '" + u + "' AND liked_bool = '1';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         LikesLoader ll = new LikesLoader();
         try {
@@ -23,7 +23,7 @@ public class LikeDAO {
     }
 
     public LikesLoader getUserLikesMe(String u) {
-        String query = "SELECT * FROM liked WHERE username_2 = '" + u + "';";
+        String query = "SELECT username_1 FROM liked WHERE username_2 = '" + u + "' AND liked_bool = '1';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         LikesLoader ll = new LikesLoader();
         try {
@@ -44,12 +44,23 @@ public class LikeDAO {
      * @param u2 Usuari al qual s'ha donat el like.
      */
     public void addLike(String u1, String u2) {
-        String query = "INSERT INTO liked (username_1, username_2, liked_date) VALUES ('" + u1 + "', '" + u2 + "', CURDATE())";
+        String query = "INSERT INTO liked (username_1, username_2, liked_date, liked_bool) VALUES ('" + u1 + "', '" + u2 + "', CURDATE(), '1')";
+        DBConnector.getInstance().executeQuery(query);
+    }
+
+    /**
+     * Metode encarregat de registrar un nou dislike a un perfil a la base de dades.
+     *
+     * @param u1 Usuari que ha donat el dislike.
+     * @param u2 Usuari al qual s'ha donat el dislike.
+     */
+    public void addDislike(String u1, String u2) {
+        String query = "INSERT INTO liked (username_1, username_2, liked_date, liked_bool) VALUES ('" + u1 + "', '" + u2 + "', CURDATE(), '0')";
         DBConnector.getInstance().executeQuery(query);
     }
 
     public int getNumberOfLikes() {
-        String query = "SELECT COUNT(*) FROM liked";
+        String query = "SELECT COUNT(*) FROM liked WHERE liked_bool = '1'";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         int i = 0;
         try {

@@ -3,7 +3,6 @@ package model.database.dao;
 import model.database.DBConnector;
 import model.entity.MatchLoader;
 import model.entity.User;
-import model.entity.UserMatches;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -70,54 +69,42 @@ public class MatchDAO {
         //TODO: retornar els 5 users amb més matches (ASUMINT QUE EXISTEIXEN 5 USERS MÍNIM!).
 
         ArrayList<User> users = new ArrayList<>();
-        String query = "SELECT * FROM users";
+        String query = "SELECT username FROM users";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         ResultSet res1;
         int matches;
 
         try {
-            while (res.next()) {
+            while(res.next()) {
                 String name = res.getString("username");
 
-                query = "SELECT COUNT(*) FROM matchs WHERE username_1 = '" + name + "'";
+                query = "SELECT COUNT(*) FROM matchs WHERE username_1 = '" + name + "' OR username_2 = '" + name + "'";
                 res1 = DBConnector.getInstance().selectQuery(query);
-
                 res1.next();
                 matches = res1.getInt(1);
 
-                query = "SELECT COUNT(*) FROM matchs WHERE username_2 = '" + name + "'";
-
-
-                res1 = DBConnector.getInstance().selectQuery(query);
-
-                res1.next();
-                matches+= res1.getInt(1);
-
                 users.add(new User(name, matches));
-
             }
-
-            users.add(new User("Anna", 7));
-
-            Collections.sort(users, new Comparator<User>() {
-                @Override
-                public int compare(User o1, User o2) {
-
-                    if(o1.getMatches() < o2.getMatches()){
-                        return 1;
-                    }
-                    if(o1.getMatches() == o2.getMatches()){
-                        return 0;
-                    }
-                    return -1;
-                }
-            });
-
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
         }
 
-        System.out.println(users.get(0).getUsername());
+        users.add(new User("Anna", 7)); //Test
+
+        Collections.sort(users, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                if(o1.getMatches() < o2.getMatches()){
+                    return 1;
+                }
+                if(o1.getMatches() == o2.getMatches()){
+                    return 0;
+                }
+                return -1;
+            }
+        });
+
+        System.out.println(users.get(0).getUsername()); //Test
         return users;
     }
 
@@ -138,7 +125,7 @@ public class MatchDAO {
      */
     public int[] getLastDayMatches() throws SQLException {
         String username1, username2;
-        String query = "SELECT username_1,username_2 " +
+        String query = "SELECT username_1, username_2 " +
                 "FROM matchs " +
                 "WHERE DATE(match_date) = DATE(CURRENT_DATE)";
         ResultSet res = DBConnector.getInstance().selectQuery(query);

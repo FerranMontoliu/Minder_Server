@@ -9,19 +9,8 @@ import java.util.ArrayList;
 
 public class ViewDAO {
 
-    /**
-     * Metode encarregat de registrar una nova visualitzacio d'un perfil a la base de dades.
-     *
-     * @param u1 Usuari que ha vist el perfil.
-     * @param u2 Usuari del qual s'ha vist el perfil.
-     */
-    public void addViewed(String u1, String u2) {
-        String query = "INSERT INTO views (username_1, username_2, view_date) VALUES ('" + u1 + "', '" + u2 + "', '" + "2019-04-10" + "')";
-        DBConnector.getInstance().executeQuery(query);
-    }
-
     public ViewLoader getViewed(String u) {
-        String query = "SELECT * FROM views WHERE username_1 = '" + u + "';";
+        String query = "SELECT username_2 FROM liked WHERE username_1 = '" + u + "';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         ArrayList<String> likedUsers = new ArrayList<>();
         try {
