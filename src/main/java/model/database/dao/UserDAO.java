@@ -24,8 +24,8 @@ public class UserDAO {
     }
 
     /**
-     * Metode encarregat d'actualitzar la informacio d'un usuari.
-     * Tambe activa el camp completed en cas que sigui necessari.
+     * Metode encarregat d'actualitzar la informacio d'un usuari. Tambe activa el camp completed en cas que sigui necessari.
+     *
      * @param u Usuari del qual es vol actualitzar la informació.
      */
     public void updateInfoUser(User u) {
@@ -41,8 +41,8 @@ public class UserDAO {
     }
 
     /**
-     * Metode encarregat d'actualitzar les preferencies de compte d'un usuari. Aquestes
-     * preferencies inclouen: password, isPremium i age filter
+     * Metode encarregat d'actualitzar les preferencies de compte d'un usuari. Aquestes preferencies inclouen: password, isPremium i age filter.
+     *
      * @param u Usuari del qual es vol actualitzar la informació.
      */
     public void updatePreferences(User u){
@@ -60,6 +60,7 @@ public class UserDAO {
      * Funció que s'encarrega de comprovar si un usuari existeix o no en la base de dades.
      *
      * @param u Usuari del qual es vol comprovar l'existència.
+     *
      * @return Retorna true si existeix, false altrament.
      */
     public boolean existsUser(User u) {
@@ -84,6 +85,7 @@ public class UserDAO {
      * Funcio que retorna l'usuari complet de la base de dades que correspon a l'usuari incomplet que se li entra com a parametre.
      *
      * @param u Usuari del qual es vol extreure tota la info de la base de dades.
+     *
      * @return Usuari amb tota la seva informació de la base de dades.
      */
     public User getUser(User u) {
@@ -123,6 +125,46 @@ public class UserDAO {
         return dbUser;
     }
 
+    /**
+     * Funcio que retorna l'usuari parcial de la base de dades que correspon al String que li entra com a parametre.
+     *
+     * @param user Usuari del qual es vol extreure la info de la base de dades.
+     *
+     * @return Usuari amb la informacio necessaria per a mostrarse en la pestanya de connect.
+     */
+    public User getConnectUser(String user) {
+        String query = "SELECT * FROM users WHERE users.username = '" + user + "'";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        String username = null, photo = null, description = null, favSong = null, hobbiesString = null;
+        boolean likesJava = false, likesC = false;
+        int age = 0;
+        String[] hobbies = null;
+        try {
+            while(res.next()) {
+                username = res.getString("username");
+                age = res.getInt("age");
+                photo = res.getString("photo");
+                description = res.getString("description");
+                likesJava = res.getInt("likes_java") > 0;
+                likesC = res.getInt("likes_c") > 0;
+                favSong = res.getString("fav_song");
+                hobbiesString = res.getString("hobbies");
+                hobbies = hobbiesString.split(",");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        User dbUser = new User(false, username, age, false, null, null, 0, 0, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null);
+        return dbUser;
+    }
+
+    /**
+     * Funcio encarregada de mirar si un usuari esta connectat o no.
+     *
+     * @param username Usuari del qual volem veure si esta connectat.
+     *
+     * @return Retorna true si esta connectat, false altrament.
+     */
     public boolean isConnected(String username) {
         boolean connected = false;
         String query = "SELECT connected FROM users WHERE users.username = '" + username + "'";
@@ -136,16 +178,38 @@ public class UserDAO {
         return connected;
     }
 
+    /**
+     * Funcio encarregada de marcar a un usuari com a connectat.
+     *
+     * @param username Usuari que es vol connectar.
+     */
     public void userConnects(String username) {
         String query = "UPDATE users SET connected = '1' WHERE users.username = '" + username + "'";
         DBConnector.getInstance().executeQuery(query);
     }
 
+    /**
+     * Funcio encarregada de marcar a un usuari com a desconnectat.
+     *
+     * @param username Usuari que es vol desconnectar.
+     */
     public void userDisconnects(String username) {
         String query = "UPDATE users SET connected = '0' WHERE users.username = '" + username + "'";
         DBConnector.getInstance().executeQuery(query);
     }
 
+    /**
+     * Funcio encarregada de retornar el seguent usuari a mostrar en la pantalla de connect.
+     *
+     * @param username Nom de l'usuari que esta a la pantalla de connect.
+     * @param minAge Edat minima del filtre per edat de l'usuari.
+     * @param maxAge Edat maxima del filtre per edat de l'usuari (0 si no en te).
+     * @param isPremium Indica si l'usuari es Premium (true) o Normal (false).
+     * @param likesCb Indica si a l'usuari li agrada C (true) o no (false).
+     * @param likesJavab Indica si a l'usuari li agrada Java (true) o no (false).
+     *
+     * @return Retorna el seguent usuari a mostrar en la pantalla de connect (o null si no queden users a mostrar).
+     */
     public String getNextUser(String username, int minAge, int maxAge, boolean isPremium, boolean likesCb, boolean likesJavab) {
         String user = null;
         int likesC = likesCb? 1: 0;
@@ -168,6 +232,15 @@ public class UserDAO {
         return user;
     }
 
+    /**
+     * Funcio encarregada de retornar el seguent usuari a mostrar en la pantalla de connect en cas de no ser Premium i no tenir filtre per edat.
+     *
+     * @param username Nom de l'usuari que esta a la pantalla de connect.
+     * @param likesC Indica si a l'usuari li agrada C (1) o no (0).
+     * @param likesJava Indica si a l'usuari li agrada Java (1) o no (0).
+     *
+     * @return Retorna el seguent usuari a mostrar en la pantalla de connect (o null si no queden users a mostrar).
+     */
     private String getNextUserNoPremiumNoFilter(String username, int likesC, int likesJava) {
         String user = null;
         String query = "SELECT u.username FROM users as u " +
@@ -193,6 +266,17 @@ public class UserDAO {
         return user;
     }
 
+    /**
+     * Funcio encarregada de retornar el seguent usuari a mostrar en la pantalla de connect en cas de no ser Premium i tenir filtre per edat.
+     *
+     * @param username Nom de l'usuari que esta a la pantalla de connect.
+     * @param likesC Indica si a l'usuari li agrada C (1) o no (0).
+     * @param likesJava Indica si a l'usuari li agrada Java (1) o no (0).
+     * @param minAge Edat minima del filtre per edat de l'usuari.
+     * @param maxAge Edat maxima del filtre per edat de l'usuari.
+     *
+     * @return Retorna el seguent usuari a mostrar en la pantalla de connect (o null si no queden users a mostrar).
+     */
     private String getNextUserNoPremiumFilter(String username, int likesC, int likesJava, int minAge, int maxAge) {
         String user = null;
         String query = "SELECT u.username FROM users as u, views as v " +
@@ -220,6 +304,15 @@ public class UserDAO {
         return user;
     }
 
+    /**
+     * Funcio encarregada de retornar el seguent usuari a mostrar en la pantalla de connect en cas de ser Premium i no tenir filtre per edat.
+     *
+     * @param username Nom de l'usuari que esta a la pantalla de connect.
+     * @param likesC Indica si a l'usuari li agrada C (1) o no (0).
+     * @param likesJava Indica si a l'usuari li agrada Java (1) o no (0).
+     *
+     * @return Retorna el seguent usuari a mostrar en la pantalla de connect (o null si no queden users a mostrar).
+     */
     private String getNextUserPremiumNoFilter(String username, int likesC, int likesJava) {
         String user = null;
         String query = "SELECT u.username FROM users as u " +
@@ -242,6 +335,17 @@ public class UserDAO {
         return user;
     }
 
+    /**
+     * Funcio encarregada de retornar el seguent usuari a mostrar en la pantalla de connect en cas de ser Premium i tenir filtre per edat.
+     *
+     * @param username Nom de l'usuari que esta a la pantalla de connect.
+     * @param likesC Indica si a l'usuari li agrada C (1) o no (0).
+     * @param likesJava Indica si a l'usuari li agrada Java (1) o no (0).
+     * @param minAge Edat minima del filtre per edat de l'usuari.
+     * @param maxAge Edat maxima del filtre per edat de l'usuari.
+     *
+     * @return Retorna el seguent usuari a mostrar en la pantalla de connect (o null si no queden users a mostrar).
+     */
     private String getNextUserPremiumFilter(String username, int likesC, int likesJava, int minAge, int maxAge) {
         String user = null;
         String query = "SELECT u.username FROM users as u " +
