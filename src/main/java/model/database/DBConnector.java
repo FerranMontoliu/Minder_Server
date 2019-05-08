@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBConnector {
-    private final static String OS = System.getProperty("os.name");
+    private final static String OS = System.getProperty("os.name").toLowerCase();
     private static String username;
     private static String password;
     private static String db;
@@ -37,12 +37,15 @@ public class DBConnector {
      */
     public static DBConnector getInstance(){
         if(instance == null) {
-            if(OS.startsWith("Windows")) {
+            if(OS.contains("win")) {
                 //Windows users:
                 instance = new DBConnector("root", "", "minderdb", 3306);
-            } else {
-                //Mac or other OS users:
+            } else if (OS.contains("mac")){
+                //Mac users:
                 instance = new DBConnector("root", "root", "minderdb", 3306);
+            } else {
+                //Other OS users:
+                instance = new DBConnector("root", "", "minderdb", 3306);
             }
             instance.connect();
         }
