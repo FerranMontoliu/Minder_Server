@@ -13,6 +13,11 @@ public class Chart extends JPanel {
     private int prevX;
     private int prevY;
 
+    /**
+     * Constructor del Chart
+     * @param dia
+     * @param nom
+     */
     public Chart(int[] dia, String nom){
         this.data = dia;
         startX = 50;
@@ -24,10 +29,13 @@ public class Chart extends JPanel {
         prevX = startX;
         prevY = endY;
 
-
-
     }
 
+    /**
+     * Funcio que retorna el valor maxim de les dades del dia, mes o setmana
+     * @param dia
+     * @return
+     */
     private int maxValue(int[] dia) {
         int max = dia[0];
         for (int ktr = 0; ktr < dia.length; ktr++) {

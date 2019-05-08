@@ -160,6 +160,9 @@ public class JRegister extends JPanel {
         add(jp);
     }
 
+    /**
+     * Funcio que esborra el contingut dels JTextFields del panell del registre
+     */
     public void removeRegister(){
         jtfAge.setText("");
         jtfMail.setText("");
@@ -195,8 +198,10 @@ public class JRegister extends JPanel {
     }
 
 
-
-
+    /**
+     * Funcio que enregistra el controlador als elements de la finestra
+     * @param controller controlador
+     */
     public void registerController(ControllerRegister controller) {
         jbRegister.addActionListener(controller);
         jbRegister.setActionCommand("REGISTER");
@@ -205,6 +210,9 @@ public class JRegister extends JPanel {
         jcbViewPassword.setActionCommand("PASSWORD");
     }
 
+    /**
+     * Funcio que visualitza i/o amaga la contrassenya
+     */
     public void changeViewPassword() {
         if(jcbViewPassword.isSelected()){
 
@@ -218,6 +226,11 @@ public class JRegister extends JPanel {
 
         }
     }
+
+    /**
+     * Funcio que retorna la contrassenya de confirmacio
+     * @return
+     */
     public String getConfirmPassword() {
         return String.valueOf(jpfPassword2.getPassword());
     }

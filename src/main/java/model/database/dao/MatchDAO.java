@@ -92,8 +92,6 @@ public class MatchDAO {
             e.printStackTrace();
         }
 
-        users.add(new User("Anna", 7)); //Test
-
         Collections.sort(users, new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
@@ -107,7 +105,6 @@ public class MatchDAO {
             }
         });
 
-        System.out.println(users.get(0).getUsername()); //Test
         return users;
     }
 

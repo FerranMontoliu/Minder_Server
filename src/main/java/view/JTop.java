@@ -21,8 +21,6 @@ public class JTop extends JPanel {
         TableModelListener[] listeners = defaultTableModel.getTableModelListeners();
 
 
-
-
         // Column Names
         columnNames = new Vector();
         columnNames.addElement("Name");
@@ -30,8 +28,6 @@ public class JTop extends JPanel {
 
 
         // Data to be displayed in the JTable
-
-
         Vector<String> element = new Vector<>();
         Vector<Vector> data = new Vector<>();
         for(int i = 0; i< users.size() && i< 5;i++){
@@ -49,10 +45,13 @@ public class JTop extends JPanel {
         jTable.setEnabled(false);
         add(new JScrollPane(jTable));
 
-
     }
 
 
+    /**
+     * Fucio que actualitza la taula del Top5
+     * @param users
+     */
     public void updateTop5(ArrayList<User> users){
         //this.users = users;
 
