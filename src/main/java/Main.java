@@ -1,5 +1,4 @@
 import controller.Controller;
-import model.database.dao.MatchDAO;
 import model.entity.User;
 import network.Server;
 import view.WindowServer;
@@ -17,13 +16,13 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
 
-    //Tests de l'Anna:
+            //Tests de l'Anna:
             User u = new User("name", 18, true, "test@example.com", "Password1", 20, 21);
             int[] day = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,9,6,5,9,0,1};
             int[] week = {3,22,2,4,5,7,5};
             int[] month = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,1,5,3,9,8,6,12,3,4,7,8,1};
             ArrayList<User> users = new ArrayList<>();
-            for (int i = 0; i<5; i++){
+            for (int i = 0; i < 5; i++){
                 users.add(u);
             }
 
@@ -38,19 +37,6 @@ public class Main {
             Server server = new Server(model, controller);
             server.startServer();
 
-
-            //Aquí acaben els tests de l'Anna.
-
-            /*//Tests del Ferran:
-            User test = new User(true, "Pol Espurnes", "19", false, "polsuk@gmail.com", "hola", "60","90", "penis", "something", true, true, "frozen", null, null, null, null, null);
-            test.imageToBase64("data/image.jpg");
-            System.out.println("Penis: " + test.getPhoto());
-            UserDAO ud = new UserDAO();
-            ud.updateInfoUser(test);
-            //Fi.*/
-
-
-
             /*
             MatchDAO ma = new MatchDAO();
             ArrayList<User> us = ma.getTopFiveMostMatchedUsers();
@@ -60,16 +46,15 @@ public class Main {
             System.out.println(us.get(3).getUsername());
             System.out.println(us.size());
 
-             */
+            try {
+                ma.getLastDayMatches();
+                ma.getLastWeekMatches();
+                ma.getLastMonthMatches();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }*/
 
-            //try {
-              //  ma.getLastDayMatches();
-              //  ma.getLastWeekMatches();
-              //  ma.getLastMonthMatches();
-            //} catch (SQLException e) {
-              //  e.printStackTrace();
-            //}
-
+            //Aquí acaben els tests de l'Anna.
         });
     }
 }

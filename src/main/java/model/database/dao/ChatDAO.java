@@ -4,7 +4,6 @@ import model.database.DBConnector;
 import model.entity.Chat;
 import model.entity.Message;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
