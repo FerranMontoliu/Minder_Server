@@ -95,7 +95,6 @@ public class DedicatedServer extends Thread {
                 MatchDAO matchDAO = new MatchDAO();
                 ChatDAO chatDAO = new ChatDAO();
                 LikeDAO likeDAO = new LikeDAO();
-                ViewDAO viewDAO = new ViewDAO();
 
                 switch(func){
                     case LOGIN_USER:
@@ -225,7 +224,6 @@ public class DedicatedServer extends Thread {
                         String sender = dataInput.readUTF();
                         String liked = dataInput.readUTF();
                         likeDAO.addLike(sender, liked);
-                        viewDAO.addViewed(sender, liked);
                         //boolean isMatch = MIRAR SI FAS UN NOU MATCH i en aquest cas, afegirlo a la base de dades
                         boolean isMatch = true;
                         dataOutput.writeBoolean(isMatch);
@@ -235,7 +233,7 @@ public class DedicatedServer extends Thread {
                     case CONNECT_DISLIKE: //TODO: Fas DISLIKE en el connect panel.
                         String source = dataInput.readUTF();
                         String disliked = dataInput.readUTF();
-                        viewDAO.addViewed(source, disliked);
+                        likeDAO.addDislike(source, disliked);
                         //Nose si això s'ha de guardar, però si s'ha de fer només, cal escriure la comanda del DAO.
                         break;
                     case EDIT_PREFERENCES:

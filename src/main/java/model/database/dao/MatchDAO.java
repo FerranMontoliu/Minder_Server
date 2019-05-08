@@ -11,6 +11,13 @@ import java.util.*;
 
 public class MatchDAO {
 
+    /**
+     * Funcio encarregada de retornar tots els matchs d'un usuari.
+     *
+     * @param u Nom de l'usuari del qual es volen obtenir els matchs.
+     *
+     * @return Retorna una llista amb els noms dels usuaris amb els qual ha fet match l'usuari que entra com a parametre.
+     */
     public MatchLoader getUserMatches(String u) {
         String query = "SELECT * FROM matchs WHERE username_1 = '" + u + "';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
@@ -62,8 +69,9 @@ public class MatchDAO {
     }
 
     /**
-     * Funcio que retorna una llista amb els usuaris de la bbdd ordenats per nombre de matches
-     * @return
+     * Funcio que retorna una llista amb els usuaris de la bbdd ordenats per nombre de matchs.
+     *
+     * @return Llista que conte els 5 users amb mes matchs de la bbdd.
      */
     public ArrayList<User> getTopFiveMostMatchedUsers() {
         //TODO: retornar els 5 users amb més matches (ASUMINT QUE EXISTEIXEN 5 USERS MÍNIM!).
@@ -77,12 +85,7 @@ public class MatchDAO {
         try {
             while(res.next()) {
                 String name = res.getString("username");
-
-                query = "SELECT COUNT(*) FROM matchs WHERE username_1 = '" + name + "' OR username_2 = '" + name + "'";
-                res1 = DBConnector.getInstance().selectQuery(query);
-                res1.next();
-                matches = res1.getInt(1);
-
+                matches = getUserNumberOfMatches(name);
                 users.add(new User(name, matches));
             }
         } catch(SQLException e) {
@@ -108,14 +111,42 @@ public class MatchDAO {
         return users;
     }
 
+    /**
+     * Funcio que retorna el nombre de matchs que hi ha a la base de dades.
+     *
+     * @return Retorna el nombre de matchs que hi ha guardats a la base de dades.
+     */
     public int getNumberOfMatches() {
-        //TODO: SELECT COUNT bla bla
-        return 0;
+        String query = "SELECT COUNT(*) FROM matchs";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        int i = 0;
+        try {
+            res.next();
+            i = res.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
     }
 
+    /**
+     * Funcio que retorna el nombre de matchs d'un usuari.
+     *
+     * @param username Usuari del qual es vol obtenir el nombre de matchs.
+     *
+     * @return Retorna el nombre de matchs de l'usuari que entra com a parametre.
+     */
     public int getUserNumberOfMatches(String username) {
-        //TODO: SELECT COUNT bla bla
-        return 0;
+        String query = "SELECT COUNT(*) FROM matchs WHERE username_1 = '" + username + "' OR username_2 = '" + username + "'";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        int i = 0;
+        try {
+            res.next();
+            i = res.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
     }
 
     /**
@@ -190,13 +221,31 @@ public class MatchDAO {
         return null;
     }
 
+    /**
+     * Funcio encarregada de marcar un match com a visualitzat en la base de dades.
+     *
+     * @param username1 User 1 que conforma el match.
+     * @param username2 User 2 que conforma el match.
+     */
     public void viewedMatch(String username1, String username2) {
-        //TODO: SET bla bla bla
+        String query = "UPDATE matchs SET viewed = '1' " +
+                "WHERE (username_1 = '" + username1 + "' AND username_2 = '" + username2 + "') " +
+                "OR (username_1 = '" + username2 + "' AND username_2 = '" + username1 + "')";
+        DBConnector.getInstance().executeQuery(query);
     }
 
-
+    /**
+     * Funcio encarregada de comprovar si un match existeix en la base de dades.
+     *
+     * @param receiver User 1 que conforma el xat.
+     * @param sender User 2 que conforma el xat
+     *
+     * @return Retorna true si existeix match, false altrament.
+     */
     public boolean existsMatch(String receiver, String sender) {
-        String query = "SELECT COUNT(*) FROM matchs WHERE (username_1 = '" + sender +"' AND username_2 = '" + receiver + "') OR (username_1 = '" + receiver + "' AND username_2 = '" + sender + "')";
+        String query = "SELECT COUNT(*) FROM matchs " +
+                "WHERE (username_1 = '" + sender +"' AND username_2 = '" + receiver + "') " +
+                "OR (username_1 = '" + receiver + "' AND username_2 = '" + sender + "')";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         int i = 0;
         try {

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LikeDAO {
+    //TODO: eliminar??
     public LikesLoader getUserLikes(String u) {
         String query = "SELECT username_2 FROM liked WHERE username_1 = '" + u + "' AND liked_bool = '1';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
@@ -22,6 +23,7 @@ public class LikeDAO {
         return ll;
     }
 
+    //TODO: eliminar??
     public LikesLoader getUserLikesMe(String u) {
         String query = "SELECT username_1 FROM liked WHERE username_2 = '" + u + "' AND liked_bool = '1';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
@@ -59,8 +61,31 @@ public class LikeDAO {
         DBConnector.getInstance().executeQuery(query);
     }
 
+    /**
+     * Funcio encarregada de comptar quants likes hi ha a la base de dades.
+     *
+     * @return Nombre de likes de la base de dades.
+     */
     public int getNumberOfLikes() {
         String query = "SELECT COUNT(*) FROM liked WHERE liked_bool = '1'";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        int i = 0;
+        try {
+            res.next();
+            i = res.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+    /**
+     * Funcio encarregada de comptar quants likes hi ha a la base de dades.
+     *
+     * @return Nombre de visualitzacions de la base de dades.
+     */
+    public int getNumberOfViews() {
+        String query = "SELECT COUNT(*) FROM liked";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         int i = 0;
         try {
