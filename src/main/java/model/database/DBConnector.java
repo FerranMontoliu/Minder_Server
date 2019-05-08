@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBConnector {
+    private final static String OS = System.getProperty("os.name");
     private static String username;
     private static String password;
     private static String db;
@@ -17,7 +18,7 @@ public class DBConnector {
     private static DBConnector instance;
 
     /**
-     * Constructor de la classe encarregada de gestionar la connexió amb la base de dades.
+     * Constructor de la classe encarregada de gestionar la connexio amb la base de dades.
      */
     private DBConnector(String user, String pass, String db, int port) {
         this.username = user;
@@ -30,21 +31,26 @@ public class DBConnector {
     }
 
     /**
-     * Mètode encarregat de crear la instància de la connexió amb la nostra base de dades utilitzant el nom de l'admin, la seva password, el nom de la db i el seu port.
+     * Metode encarregat de crear la instancia de la connexio amb la nostra base de dades utilitzant el nom de l'admin, la seva password, el nom de la db i el seu port.
      *
      * @return Retorna la instància de la connexió.
      */
     public static DBConnector getInstance(){
         if(instance == null) {
-            instance = new DBConnector("root", "", "minderdb", 3306);
-            //instance = new DBConnector("root", "root", "minderdb", 3306); //MAC users
+            if(OS.startsWith("Windows")) {
+                //Windows users:
+                instance = new DBConnector("root", "", "minderdb", 3306);
+            } else {
+                //Mac or other OS users:
+                instance = new DBConnector("root", "root", "minderdb", 3306);
+            }
             instance.connect();
         }
         return instance;
     }
 
     /**
-     * Mètode encarregat d'establir la connexió amb la base de dades.
+     * Metode encarregat d'establir la connexio amb la base de dades.
      */
     public void connect() {
         try {
@@ -62,7 +68,7 @@ public class DBConnector {
     }
 
     /**
-     * Mètode encarregat d'executar una query d'nserció, eliminació o actualització d'informació.
+     * Metode encarregat d'executar una query d'nsercio, eliminacio o actualitzacio d'informacio.
      *
      * @param query Query que es vol executar.
      */
@@ -76,13 +82,12 @@ public class DBConnector {
     }
 
     /**
-     * Mètode encarregat d'executar una query de selecció.
+     * Metode encarregat d'executar una query de seleccio.
      *
      * @param query Query que es vol executar.
      * @return
      */
     public ResultSet selectQuery(String query) {
-        System.out.println(query);
         ResultSet rs = null;
         try {
             s =(Statement) conn.createStatement();
@@ -94,7 +99,7 @@ public class DBConnector {
     }
 
     /**
-     * Mètode que es crida quan es vol tancar la connexió amb la base de dades.
+     * Metode que es crida quan es vol tancar la connexio amb la base de dades.
      */
     public void disconnect() {
         //TODO: fer un windowlistener i cridat-la des del controller de la vista. Tancar també els threads amb els clients.

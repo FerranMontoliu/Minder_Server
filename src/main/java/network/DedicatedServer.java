@@ -6,15 +6,11 @@ import model.entity.Chat;
 import model.entity.MatchLoader;
 import model.entity.Message;
 import model.entity.User;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class DedicatedServer extends Thread {
@@ -110,9 +106,8 @@ public class DedicatedServer extends Thread {
                                 System.out.println(loginUser.getPassword());
                                 boolean sameUser = encoder.matches(loginUser.getPassword(), realUser.getPassword());
                                 dataOutput.writeBoolean(sameUser);
-
                                 if(sameUser) {
-                                    System.out.println("Són iguals");
+                                    System.out.println("Són iguals");//TODO: borrar en acabar de debugar.
                                     objectOut.writeObject(realUser);
                                 }
                             }
@@ -204,6 +199,7 @@ public class DedicatedServer extends Thread {
                             e1.printStackTrace();
                         }
                         break;
+
                     case CONNECT_USER: //TODO: Solicita un USER a visualitzar pel connect panel. Per acabar.
                         try {
                             User associatedUser = (User) objectIn.readObject();
@@ -212,14 +208,15 @@ public class DedicatedServer extends Thread {
                             System.out.println("nextUsername: "+nextUsername);
                             //User nextUser = getUserByUsername();
                             String[] hobbies = {"Hello", "World"};
+                            //User test = userDAO.getConnectUser(nextUsername);
                             User test = new User(true, nextUsername, 19, false, "polsuk@gmail.com", "hola", 60, 90,"$2a$10$Rbmxa1Y2Z7eZ07qAcgt84edrIpBxULv6emOxcbQV7MjzMCDMRVYWq", "something", true, true, "frozen", hobbies, null, null, null, null);
                             objectOut.writeObject(test);
                         } catch (ClassNotFoundException e8) {
                             e8.printStackTrace();
                         }
-
                         //TODO: demanar al userDAO la llista d'usuaris i llavors controlar quin es el següent usuari que li toca visualitzar
                         break;
+
                     case CONNECT_LIKE: //TODO: Fas LIKE en el connect panel.
                         String sender = dataInput.readUTF();
                         String liked = dataInput.readUTF();
@@ -227,15 +224,16 @@ public class DedicatedServer extends Thread {
                         //boolean isMatch = MIRAR SI FAS UN NOU MATCH i en aquest cas, afegirlo a la base de dades
                         boolean isMatch = true;
                         dataOutput.writeBoolean(isMatch);
-
                         controlador.updateWindow();
                         break;
+
                     case CONNECT_DISLIKE: //TODO: Fas DISLIKE en el connect panel.
                         String source = dataInput.readUTF();
                         String disliked = dataInput.readUTF();
                         likeDAO.addDislike(source, disliked);
                         //Nose si això s'ha de guardar, però si s'ha de fer només, cal escriure la comanda del DAO.
                         break;
+
                     case EDIT_PREFERENCES:
                         try {
                             User updatedUser = (User) objectIn.readObject();
@@ -243,12 +241,11 @@ public class DedicatedServer extends Thread {
                             userDAO.updatePreferences(updatedUser);
                             boolean editDone = true; //hi pot haver algun cas en que no es pugui fer el canvi?
                             dataOutput.writeBoolean(editDone);
-
                         } catch (ClassNotFoundException e9) {
                             e9.printStackTrace();
                         }
-
                         break;
+
                     default:
                         System.out.println("WTF està passant aquí?!");
                         break;
