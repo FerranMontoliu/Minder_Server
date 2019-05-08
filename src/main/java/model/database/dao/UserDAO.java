@@ -147,89 +147,120 @@ public class UserDAO {
     }
 
     public String getNextUser(String username, int minAge, int maxAge, boolean isPremium, boolean likesCb, boolean likesJavab) {
-        String query, user = null;
+        String user = null;
         int likesC = likesCb? 1: 0;
         int likesJava = likesJavab? 1: 0;
         if(isPremium) {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
             if(maxAge == 0) {
-                //Retorna els usuaris que t'han donat like a tu:
-                query = "SELECT u.username FROM users as u, views as v, liked as l WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (l.username_2 = '" + username + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
-                ResultSet res = DBConnector.getInstance().selectQuery(query);
-                try {
-                    //Si no ha trobat cap user, et retorna el següent user que no hagis vist:
-                    if(!res.next()) {
-                        query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
-                        res = DBConnector.getInstance().selectQuery(query);
-                        res.next();
-                    }
-                    user = res.getString("username");
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                user = getNextUserPremiumNoFilter(username, likesC, likesJava);
             } else {
-                //Retorna els usuaris que t'han donat like a tu:
-                query = "SELECT u.username FROM users as u, views as v, liked as l WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (l.username_2 = '" + username + "') AND (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
-                ResultSet res = DBConnector.getInstance().selectQuery(query);
-                try {
-                    //Si no ha trobat cap user, et retorna el següent user que no hagis vist:
-                    if(!res.next()) {
-                        query = "SELECT u.username FROM users as u, views as v WHERE (u.likes_c = '" + likesC + "' OR u.likes_java = '" + likesJava + "') AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') AND NOT EXISTS (v.username_1 = '" + username + "' AND v.username_2 = 'u.username') LIMIT 1";
-                        res = DBConnector.getInstance().selectQuery(query);
-                        res.next();
-                    }
-                    user = res.getString("username");
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                user = getNextUserPremiumFilter(username, likesC, likesJava, minAge, maxAge);
             }
         } else {
             //Si maxAge es 0 implica que no hi ha filtre per edat.
             if(maxAge == 0) {
-                query = "SELECT u.username FROM users as u " +
-                        "WHERE (u.username NOT IN(SELECT l.username_2 FROM liked as l WHERE l.username_1 = '" + username + "')) " +
+                user = getNextUserNoPremiumNoFilter(username, likesC, likesJava);
+            } else {
+                user = getNextUserNoPremiumFilter(username, likesC, likesJava, minAge, maxAge);
+            }
+        }
+        return user;
+    }
+
+    private String getNextUserNoPremiumNoFilter(String username, int likesC, int likesJava) {
+        String user = null;
+        String query = "SELECT u.username FROM users as u " +
+                "WHERE (u.username NOT IN(SELECT l.username_2 FROM liked as l WHERE l.username_1 = '" + username + "')) " +
+                "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
+                "AND (u.username <> '" + username + "') " +
+                "LIMIT 1;";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        try {
+            if(!res.next()) {
+                query = "SELECT u.username FROM users as u, liked as l " +
+                        "WHERE (l.username_1 = u.username) " +
+                        "AND (l.liked_bool = '0') " +
                         "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
                         "AND (u.username <> '" + username + "') " +
                         "LIMIT 1;";
-                ResultSet res = DBConnector.getInstance().selectQuery(query);
-                try {
-                    if(!res.next()) {
-                        query = "SELECT u.username FROM users as u, liked as l " +
-                                "WHERE (l.username_1 = u.username) " +
-                                "AND (l.liked_bool = '0') " +
-                                "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
-                                "AND (u.username <> '" + username + "') " +
-                                "LIMIT 1;";
-                        res = DBConnector.getInstance().selectQuery(query);
-                    }
-                    user = res.getString("username");
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                query = "SELECT u.username FROM users as u, views as v " +
-                        "WHERE (u.username NOT IN(SELECT l.username_2 FROM liked as l WHERE l.username_1 = '" + username + "')) " +
+                res = DBConnector.getInstance().selectQuery(query);
+            }
+            user = res.getString("username");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    private String getNextUserNoPremiumFilter(String username, int likesC, int likesJava, int minAge, int maxAge) {
+        String user = null;
+        String query = "SELECT u.username FROM users as u, views as v " +
+                "WHERE (u.username NOT IN(SELECT l.username_2 FROM liked as l WHERE l.username_1 = '" + username + "')) " +
+                "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
+                "AND (u.username <> '" + username + "') " +
+                "AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') " +
+                "LIMIT 1";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        try {
+            if(!res.next()) {
+                query = "SELECT u.username FROM users as u, liked as l " +
+                        "WHERE (l.username_1 = u.username) " +
+                        "AND (l.liked_bool = '0') " +
                         "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
                         "AND (u.username <> '" + username + "') " +
                         "AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') " +
-                        "LIMIT 1";
-                ResultSet res = DBConnector.getInstance().selectQuery(query);
-                try {
-                    if(!res.next()) {
-                        query = "SELECT u.username FROM users as u, liked as l " +
-                                "WHERE (l.username_1 = u.username) " +
-                                "AND (l.liked_bool = '0') " +
-                                "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
-                                "AND (u.username <> '" + username + "') " +
-                                "AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') " +
-                                "LIMIT 1;";
-                        res = DBConnector.getInstance().selectQuery(query);
-                    }
-                    user = res.getString("username");
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                        "LIMIT 1;";
+                res = DBConnector.getInstance().selectQuery(query);
             }
+            user = res.getString("username");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    private String getNextUserPremiumNoFilter(String username, int likesC, int likesJava) {
+        String user = null;
+        String query = "SELECT u.username FROM users as u " +
+                "WHERE (u.username NOT IN(SELECT l.username_2 FROM liked as l WHERE l.username_1 = '" + username + "')) " +
+                "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
+                "AND (u.username <> '" + username + "') " +
+                "AND (u.username IN(SELECT l.username_1 FROM liked as l WHERE l.username_2 = '" + username + "')) " +
+                "LIMIT 1;";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        try {
+            if(!res.next()) {
+                user = getNextUserNoPremiumNoFilter(username, likesC, likesJava);
+            } else {
+                user = res.getString("username");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    private String getNextUserPremiumFilter(String username, int likesC, int likesJava, int minAge, int maxAge) {
+        String user = null;
+        String query = "SELECT u.username FROM users as u " +
+                "WHERE (u.username NOT IN(SELECT l.username_2 FROM liked as l WHERE l.username_1 = '" + username + "')) " +
+                "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
+                "AND (u.username <> '" + username + "') " +
+                "AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') " +
+                "AND (u.username IN(SELECT l.username_1 FROM liked as l WHERE l.username_2 = '" + username + "')) " +
+                "LIMIT 1;";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        try {
+            if(!res.next()) {
+                user = getNextUserNoPremiumFilter(username, likesC, likesJava, minAge, maxAge);
+            } else {
+                user = res.getString("username");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return user;
     }
