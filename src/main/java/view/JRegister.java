@@ -24,7 +24,9 @@ public class JRegister extends JPanel {
     private char ecoChar;
 
 
-
+    /**
+     * Constructor del panell d'enregistrar
+     */
     public JRegister(){
         Dimension d = new Dimension(10000,200);
         setLayout(new GridLayout(19,2));
@@ -229,6 +231,10 @@ public class JRegister extends JPanel {
 
         }
     }
+    /**
+     * Funcio que retorna la contrassenya de confirmacio
+     * @return retorna la contrassenya
+     */
     public String getConfirmPassword() {
         return String.valueOf(jpfPassword2.getPassword());
     }

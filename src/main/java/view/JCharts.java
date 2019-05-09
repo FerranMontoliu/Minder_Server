@@ -15,19 +15,25 @@ public class JCharts extends JPanel {
     private Chart chartWeek;
     private Chart chartMonth;
 
+    /**
+     * Constructor del panell d'estadistiques
+     * @param dia array de matches de l'ultim dia
+     * @param setmana array de matches de l'ultima setmana
+     * @param mes array de matches de l'ultim mes
+     */
     public JCharts(int[]dia, int[]setmana, int []mes){
         JTabbedPane jtPane = new JTabbedPane();
 
         //Crear i afegir estadistiques del dia
-        chartDay = new Chart(dia, "Day");
+        chartDay = new Chart(dia);
         jtPane.addTab("Today",chartDay);
 
         //Crear i afegir estadistiques de la setmana
-        chartWeek = new Chart(setmana, "Week");
+        chartWeek = new Chart(setmana);
         jtPane.addTab("This week",chartWeek);
 
         //Crear i afegir estadistiques del mes
-        chartMonth =  new Chart(mes, "Month");
+        chartMonth =  new Chart(mes);
         jtPane.addTab("This Month",chartMonth);
 
 
@@ -39,14 +45,14 @@ public class JCharts extends JPanel {
 
     /**
      * Funcio per a actualitzar la informacio de les gràfiques
-     * @param day
-     * @param week
-     * @param month
+     * @param day array de matches de l'ultim dia
+     * @param week array de matches de l'ultima setmana
+     * @param month array de matches de l'ultim mes
      */
-    public void update(int[] day,int [] week, int[] month ){
-        chartDay.update(day, "Day");
-        chartMonth.update(week, "Week");
-        chartWeek.update(month, "Month");
+    public void updateData(int[] day,int [] week, int[] month ){
+        chartDay.updateData(day, "Day");
+        chartMonth.updateData(week, "Week");
+        chartWeek.updateData(month, "Month");
     }
 
 }

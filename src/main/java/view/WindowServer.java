@@ -11,6 +11,13 @@ public class WindowServer extends JFrame{
     private JRegister jRegister;
     private JTop jTop;
 
+    /**
+     * Constructor de la finestra
+     * @param week array de matches de l'ultima setmana
+     * @param month array de matches de l'ultim mes
+     * @param day array de matches de l'ultim dia
+     * @param users arraylist d'usuaris ordenats per numero de matches
+     */
     public WindowServer(int[] day, int[] week, int[] month, ArrayList<User> users){
 
         //Iniciar la finestra
@@ -42,24 +49,35 @@ public class WindowServer extends JFrame{
         //Afegir al panell principal el JTabbedPane
         getContentPane().add(jtPane);
 
-        //Actualitzar els atributs
-
 
     }
 
 
-
+    /**
+     * Funcio que actualitza la finestra del servidor
+     * @param week array de matches de l'ultima setmana
+     * @param month array de matches de l'ultim mes
+     * @param day array de matches de l'ultim dia
+     * @param top5 arraylist d'usuaris ordenats per numero de matches
+     */
     public void updateWindow(int[]week, int[]month, int[]day, ArrayList<User> top5){
-        jCharts.update(day, week, month);
+        jCharts.updateData(day, week, month);
         jTop.updateTop5(top5);
 
     }
 
-
+    /**
+     * Getter el panell de registre
+     * @return retorna el JRegister
+     */
     public JRegister getRegister(){
         return jRegister;
     }
 
+    /**
+     * Funcio que enregistra el controlador a la vista
+     * @param c controlador
+     */
     public void registerController(Controller c) {
         jRegister.registerController(c.getCr());
     }

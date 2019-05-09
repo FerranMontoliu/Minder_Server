@@ -15,10 +15,9 @@ public class Chart extends JPanel {
 
     /**
      * Constructor del Chart
-     * @param dia
-     * @param nom
+     * @param dia array de matches de cada dia o hora
      */
-    public Chart(int[] dia, String nom){
+    public Chart(int[] dia){
         this.data = dia;
         startX = 50;
         startY = 50;
@@ -33,8 +32,8 @@ public class Chart extends JPanel {
 
     /**
      * Funcio que retorna el valor maxim de les dades del dia, mes o setmana
-     * @param dia
-     * @return
+     * @param dia array de matches de cada dia o hora
+     * @return retorna el valor maxim de l'array
      */
     private int maxValue(int[] dia) {
         int max = dia[0];
@@ -119,7 +118,7 @@ public class Chart extends JPanel {
 
     /**
      * Funcio que defineix el tamany del panell
-     * @return
+     * @return retorna el tamany
      */
     @Override
     public Dimension getPreferredSize() {
@@ -133,10 +132,9 @@ public class Chart extends JPanel {
 
     /**
      * Funcio que actualitza les dades de la chart
-     * @param day
-     * @param name
+     * @param day nou array amb els matches
      */
-    public void update(int[] day, String name){
+    public void updateData(int[] day, String name){
         data = day;
     }
 }
