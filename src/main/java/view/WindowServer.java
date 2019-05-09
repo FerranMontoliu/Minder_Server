@@ -61,7 +61,7 @@ public class WindowServer extends JFrame{
      * @param top5 arraylist d'usuaris ordenats per numero de matches
      */
     public void updateWindow(int[]week, int[]month, int[]day, ArrayList<User> top5){
-        jCharts.update(day, week, month);
+        jCharts.updateData(day, week, month);
         jTop.updateTop5(top5);
 
     }

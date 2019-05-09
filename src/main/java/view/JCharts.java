@@ -49,10 +49,10 @@ public class JCharts extends JPanel {
      * @param week array de matches de l'ultima setmana
      * @param month array de matches de l'ultim mes
      */
-    public void update(int[] day,int [] week, int[] month ){
-        chartDay.update(day, "Day");
-        chartMonth.update(week, "Week");
-        chartWeek.update(month, "Month");
+    public void updateData(int[] day,int [] week, int[] month ){
+        chartDay.updateData(day, "Day");
+        chartMonth.updateData(week, "Week");
+        chartWeek.updateData(month, "Month");
     }
 
 }

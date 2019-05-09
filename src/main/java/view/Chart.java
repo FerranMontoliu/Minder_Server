@@ -132,10 +132,9 @@ public class Chart extends JPanel {
 
     /**
      * Funcio que actualitza les dades de la chart
-     * @param day
-     * @param name
+     * @param day nou array amb els matches
      */
-    public void update(int[] day, String name){
+    public void updateData(int[] day, String name){
         data = day;
     }
 }
