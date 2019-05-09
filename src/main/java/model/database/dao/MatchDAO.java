@@ -6,7 +6,6 @@ import model.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MatchDAO {
@@ -50,7 +49,7 @@ public class MatchDAO {
      * @param u2 Usuari que conforma el match.
      */
     public void addMatch(String u1, String u2) {
-        String query = "INSERT INTO matchs (username_1, username_2, match_date, viewed) VALUES ('" + u1 + "', '" + u2 + "', CURDATE(), '0')";
+        String query = "INSERT INTO matchs (username_1, username_2, match_date, viewed) VALUES ('" + u1 + "', '" + u2 + "', now(), '0')";
         DBConnector.getInstance().executeQuery(query);
     }
 

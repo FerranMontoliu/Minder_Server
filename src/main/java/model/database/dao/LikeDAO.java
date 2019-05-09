@@ -14,7 +14,7 @@ public class LikeDAO {
      * @param u2 Usuari al qual s'ha donat el like.
      */
     public void addLike(String u1, String u2) {
-        String query = "INSERT INTO liked (username_1, username_2, liked_date, liked_bool) VALUES ('" + u1 + "', '" + u2 + "', CURDATE(), '1')";
+        String query = "INSERT INTO liked (username_1, username_2, liked_date, liked_bool) VALUES ('" + u1 + "', '" + u2 + "', now(), '1')";
         DBConnector.getInstance().executeQuery(query);
     }
 
@@ -25,7 +25,7 @@ public class LikeDAO {
      * @param u2 Usuari al qual s'ha donat el dislike.
      */
     public void addDislike(String u1, String u2) {
-        String query = "INSERT INTO liked (username_1, username_2, liked_date, liked_bool) VALUES ('" + u1 + "', '" + u2 + "', CURDATE(), '0')";
+        String query = "INSERT INTO liked (username_1, username_2, liked_date, liked_bool) VALUES ('" + u1 + "', '" + u2 + "', now(), '0')";
         DBConnector.getInstance().executeQuery(query);
     }
 
@@ -51,7 +51,7 @@ public class LikeDAO {
     }
 
     public void updateDislike(String username1, String username2) {
-        String query = "UPDATE liked SET liked_date = CURDATE() WHERE username_1 = '" + username1 + "' AND username_2 = '" + username2 + "'";
+        String query = "UPDATE liked SET liked_date = now() WHERE username_1 = '" + username1 + "' AND username_2 = '" + username2 + "'";
         DBConnector.getInstance().executeQuery(query);
     }
 
