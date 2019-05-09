@@ -225,6 +225,7 @@ public class DedicatedServer extends Thread {
                         //boolean isMatch = MIRAR SI FAS UN NOU MATCH i en aquest cas, afegirlo a la base de dades
                         boolean isMatch = true;
                         dataOutput.writeBoolean(isMatch);
+                        //Actualitzar la vista
                         controlador.updateWindow();
                         break;
 
@@ -233,6 +234,8 @@ public class DedicatedServer extends Thread {
                         String disliked = dataInput.readUTF();
                         likeDAO.addDislike(source, disliked);
                         //Nose si això s'ha de guardar, però si s'ha de fer només, cal escriure la comanda del DAO.
+                        //Actualitzar la vista
+                        controlador.updateWindow();
                         break;
 
                     case EDIT_PREFERENCES:

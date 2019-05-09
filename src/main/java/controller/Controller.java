@@ -34,15 +34,11 @@ public class Controller implements ActionListener {
     }
 
     public void updateWindow() {
-        int[] week = {2, 2, 4, 5, 7, 8, 9, 6, 3, 2, 4, 8, 9, 7, 5, 4, 2, 2, 9, 6, 5, 9, 0, 1, 2};
-        int[] month = {3, 22, 2, 4, 5, 7, 5};
-        int[] day = {2, 2, 4, 5, 7, 8, 9, 6, 3, 2, 4, 8, 9, 7, 5, 4, 2, 2, 1, 5, 3, 9, 8, 6, 12, 3, 4, 56, 7, 8, 1, 12};
 
         MatchDAO ma = new MatchDAO();
 
         ArrayList<User> u = ma.getTopFiveMostMatchedUsers();
-        System.out.println(u.get(0).getUsername());
-        view.updateWindow(week, month, day,u );
+        view.updateWindow(ma.getLastMonthMatches(),ma.getLastWeekMatches(), ma.getLastDayMatches(),u );
 
     }
 }

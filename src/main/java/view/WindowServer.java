@@ -13,12 +13,20 @@ public class WindowServer extends JFrame{
 
     /**
      * Constructor de la finestra
-     * @param week array de matches de l'ultima setmana
-     * @param month array de matches de l'ultim mes
-     * @param day array de matches de l'ultim dia
-     * @param users arraylist d'usuaris ordenats per numero de matches
      */
-    public WindowServer(int[] day, int[] week, int[] month, ArrayList<User> users){
+    public WindowServer(){
+
+        //Parametres randoms per crear l'estructura que no s'arribaran a mostrar.
+        //tot just despres al tenir la bbdd es carregaran els valors reals.
+        User u = new User("name", 18, true, "test@example.com", "Password1", 20, 21);
+        int[] day = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,9,6,5,9,0};
+        int[] week = {3,22,2,4,5,7,5};
+        int[] month = {2,2,4,5,7,8,9,6,3,2,4,8,9,7,5,4,2,2,1,5,3,9,8,6,12,3,4,7,8,1};
+        ArrayList<User> users = new ArrayList<>();
+        for (int i = 0; i < 5; i++){
+            users.add(u);
+        }
+
 
         //Iniciar la finestra
         setTitle("Server");

@@ -23,7 +23,7 @@ public class Chart extends JPanel {
         startY = 50;
         endX = 400;
         endY = 400;
-        unitX = (endX -startX)/dia.length;
+        unitX = (endX -startX)/(dia.length -1);
         unitY = (endY - startY) / maxValue(dia);
         prevX = startX;
         prevY = endY;
@@ -57,7 +57,7 @@ public class Chart extends JPanel {
 
     /**
      * Funcio que pinta el panell
-     * @param g
+     * @param g graphic
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -69,10 +69,10 @@ public class Chart extends JPanel {
         startY = 50;
         endX = 400;
         endY =400;
-        unitX = (endX -startX)/data.length;
+        unitX = (endX -startX)/(data.length -1);
         unitY = (endY - startY) / maxValue(data);
         prevX = startX;
-        prevY = endY;
+        prevY = (endY - (data[0] * unitY));
 
         //Loops que pinten la graella
         g2d.setColor(new Color(123, 140, 208));
@@ -106,13 +106,13 @@ public class Chart extends JPanel {
             g2d.drawString(Integer.toString(data.length) + " days ", endX, endY + 20);
 
         }
-        g2d.drawString( Integer.toString(0) ,startX, endY+20);
+        g2d.drawString( Integer.toString(1) ,startX, endY+20);
 
 
         //Línies de les coordenades de color vermell
         g2d.setColor(Color.RED);
-        for (int y : data) {
-            g2d.drawLine(prevX, prevY, prevX += unitX, prevY = (endY - (y * unitY)));
+        for (int y = 1; y< data.length; y++) {
+            g2d.drawLine(prevX, prevY, prevX += unitX, prevY = (endY - (data[y] * unitY)));
         }
     }
 
@@ -123,10 +123,6 @@ public class Chart extends JPanel {
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(endX + 50, endY + 50);
-    }
-
-    public void setData(int[] dia) {
-        this.data = dia;
     }
 
 
