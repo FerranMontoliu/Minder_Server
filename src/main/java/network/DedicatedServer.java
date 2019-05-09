@@ -27,6 +27,7 @@ public class DedicatedServer extends Thread {
     private static final char CONNECT_DISLIKE = 'j';
     private static final char CONNECT_USER = 'k';
     private static final char EDIT_PREFERENCES = 'l';
+    private static final char USER_INFO = 'm';
 
     private boolean isOn;
     private Socket sClient;
@@ -244,6 +245,11 @@ public class DedicatedServer extends Thread {
                         } catch (ClassNotFoundException e9) {
                             e9.printStackTrace();
                         }
+                        break;
+                    case USER_INFO:
+                        String username = dataInput.readUTF();
+                        User infoUser = userDAO.getConnectUser(username);
+                        objectOut.writeObject(infoUser);
                         break;
 
                     default:
