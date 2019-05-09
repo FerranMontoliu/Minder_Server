@@ -1,43 +1,11 @@
 package model.database.dao;
 
 import model.database.DBConnector;
-import model.entity.LikesLoader;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LikeDAO {
-    //TODO: eliminar??
-    public LikesLoader getUserLikes(String u) {
-        String query = "SELECT username_2 FROM liked WHERE username_1 = '" + u + "' AND liked_bool = '1';";
-        ResultSet res = DBConnector.getInstance().selectQuery(query);
-        LikesLoader ll = new LikesLoader();
-        try {
-            while(res.next()) {
-                String likedUser = res.getString("username_2");
-                ll.addLike(likedUser);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return ll;
-    }
-
-    //TODO: eliminar??
-    public LikesLoader getUserLikesMe(String u) {
-        String query = "SELECT username_1 FROM liked WHERE username_2 = '" + u + "' AND liked_bool = '1';";
-        ResultSet res = DBConnector.getInstance().selectQuery(query);
-        LikesLoader ll = new LikesLoader();
-        try {
-            while(res.next()) {
-                String likedUser = res.getString("username_1");
-                ll.addLike(likedUser);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return ll;
-    }
 
     /**
      * Metode encarregat de registrar un nou like a un perfil a la base de dades.
@@ -58,6 +26,32 @@ public class LikeDAO {
      */
     public void addDislike(String u1, String u2) {
         String query = "INSERT INTO liked (username_1, username_2, liked_date, liked_bool) VALUES ('" + u1 + "', '" + u2 + "', CURDATE(), '0')";
+        DBConnector.getInstance().executeQuery(query);
+    }
+
+    /**
+     * Funcio que comprova si ja s'ha conat dislike a un usuari anteriorment.
+     *
+     * @param username1 Usuari que dona el dislike.
+     * @param username2 Usuari que rep el dislike.
+     *
+     * @return Retorna true si existeix, false altrament.
+     */
+    public boolean existsDislike(String username1, String username2) {
+        String query = "SELECT COUNT(*) FROM liked WHERE username_1 = '" + username1 + "' AND username_2 = '" + username2 + "'";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
+        int i = 0;
+        try {
+            res.next();
+            i = res.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return i > 0;
+    }
+
+    public void updateDislike(String username1, String username2) {
+        String query = "UPDATE liked SET liked_date = CURDATE() WHERE username_1 = '" + username1 + "' AND username_2 = '" + username2 + "'";
         DBConnector.getInstance().executeQuery(query);
     }
 

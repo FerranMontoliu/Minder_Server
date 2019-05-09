@@ -50,10 +50,7 @@ public class MatchDAO {
      * @param u2 Usuari que conforma el match.
      */
     public void addMatch(String u1, String u2) {
-        String format = "MM-dd-yyyy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        String date = simpleDateFormat.format(new Date());
-        String query = "INSERT INTO matchs (username_1, username_2, match_date, viewed) VALUES ('" + u1 + "', '" + u2 + "', '" + date + "', '0')";
+        String query = "INSERT INTO matchs (username_1, username_2, match_date, viewed) VALUES ('" + u1 + "', '" + u2 + "', CURDATE(), '0')";
         DBConnector.getInstance().executeQuery(query);
     }
 
