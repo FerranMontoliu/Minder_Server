@@ -117,14 +117,11 @@ public class JRegister extends JPanel {
         return null;
     }
 
-    //TODO: incloure desplegables per al filtre d'edat: aqui hi ha el codi que s'ha sobreescrit amb el commit de l'Agustí,
-    //TODO: que s'hauria d'adequar al disseny actual
     /**
      * Metode que crea els dos JComboBox (desplegables) amb les etiquetes corresponents a edat minima i maxima (de 18 a 100 anys)
      */
     private void createAgeFilters() {
-        //MINIMUM AGE
-        //Min age comboBox
+        //Minimum Age
         jcbMinAgeFilter = new JComboBox<>();
         jcbMinAgeFilter.setEditable(false);
         jcbMinAgeFilter.setPreferredSize(new Dimension(100, 30));
@@ -134,7 +131,6 @@ public class JRegister extends JPanel {
         }
         add(jcbMinAgeFilter);
         //MAXIMUM AGE
-        JLabel a = new JLabel("                                 ");
         //Max age comboBox
         jcbMaxAgeFilter = new JComboBox<>();
         jcbMaxAgeFilter.setEditable(false);
@@ -160,20 +156,17 @@ public class JRegister extends JPanel {
         add(jp);
     }
 
-    /**
-     * Funcio que esborra el contingut dels JTextFields del panell del registre
-     */
     public void removeRegister(){
         jtfAge.setText("");
         jtfMail.setText("");
         jtfName.setText("");
         jpfPassword.setText("");
         jpfPassword2.setText("");
-
         jrbNoPremium.setSelected(true);
 
         jcbC.setSelected(false);
         jcbJava.setSelected(false);
+        this.resetJComboBox();
 
     }
     public String getUsername() {
@@ -196,12 +189,25 @@ public class JRegister extends JPanel {
             JOptionPane.showMessageDialog(this, "At least one field(s) contain errors!", "Minder", JOptionPane.ERROR_MESSAGE);
         }
     }
+    public int getMinimumAge() {
+        return (int) jcbMinAgeFilter.getSelectedItem();
+    }
+    public int getMaximumAge() {
+        return (int) jcbMaxAgeFilter.getSelectedItem();
+    }
+    public void resetJComboBox() {
+        jcbMinAgeFilter.setSelectedIndex(0);
+        jcbMaxAgeFilter.setSelectedIndex(0);
+    }
+    public boolean isPremium() {
+        if(jrbPremium.getText().equals("Yes")) {
+            System.out.println("sifhdaida");
+            return true;
+        }
+        return false;
+    }
 
 
-    /**
-     * Funcio que enregistra el controlador als elements de la finestra
-     * @param controller controlador
-     */
     public void registerController(ControllerRegister controller) {
         jbRegister.addActionListener(controller);
         jbRegister.setActionCommand("REGISTER");
@@ -210,9 +216,6 @@ public class JRegister extends JPanel {
         jcbViewPassword.setActionCommand("PASSWORD");
     }
 
-    /**
-     * Funcio que visualitza i/o amaga la contrassenya
-     */
     public void changeViewPassword() {
         if(jcbViewPassword.isSelected()){
 
@@ -226,11 +229,6 @@ public class JRegister extends JPanel {
 
         }
     }
-
-    /**
-     * Funcio que retorna la contrassenya de confirmacio
-     * @return
-     */
     public String getConfirmPassword() {
         return String.valueOf(jpfPassword2.getPassword());
     }
