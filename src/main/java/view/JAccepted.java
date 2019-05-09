@@ -29,6 +29,11 @@ public class JAccepted extends JPanel {
     private int viewed; //No cal realment ?
     private int accepted;
 
+    /**
+     * Constructor del panell d'enregistrar
+     * @param acceptats numero de perfils d'accpetats
+     * @param vistos numero de perfils vistos
+     */
     public JAccepted(int acceptats, int vistos) {
 
         this.setLayout(new BorderLayout());
@@ -118,8 +123,8 @@ public class JAccepted extends JPanel {
 
     /**
      * Mètode que pinta les barres amb les seves altures corresponents
-     * @param viewed
-     * @param accepted
+     * @param viewed numero de perfils visualitzats
+     * @param accepted numero de perfils acceptats
      */
     public void redrawGraphs(int viewed, int accepted) {
         barChart.paintBars(viewed, accepted);

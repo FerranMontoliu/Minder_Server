@@ -14,6 +14,10 @@ public class JTop extends JPanel {
     private DefaultTableModel defaultTableModel;
     private Vector columnNames;
 
+    /**
+     * Constructor del panell dels Top5 usuaris
+     * @param users array d'usuaris ordenats per numero de matches
+     */
     public JTop(ArrayList<User> users){
 
         //this.users = users;
@@ -50,7 +54,7 @@ public class JTop extends JPanel {
 
     /**
      * Fucio que actualitza la taula del Top5
-     * @param users
+     * @param users array d'usuaris ordenats per ordre de matches
      */
     public void updateTop5(ArrayList<User> users){
         //this.users = users;
