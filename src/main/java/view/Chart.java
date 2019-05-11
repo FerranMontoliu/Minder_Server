@@ -2,6 +2,9 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Classeq que implementa la gràfica de les estadístiques dia-setmana-mes
+ */
 public class Chart extends JPanel {
     private int[] data ;
     private int startX ;

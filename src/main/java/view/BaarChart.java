@@ -15,8 +15,12 @@ public class BaarChart extends JPanel {
     public void addBar(Color color, int value) {
         bars.put(color, value);
     }
-    @Override
 
+    /**
+     * Mètode que crea una barra gràfica
+     * @param g
+     */
+    @Override
     protected void paintComponent(Graphics g) {
 
         int max = Integer.MIN_VALUE;
@@ -40,13 +44,17 @@ public class BaarChart extends JPanel {
         }
     }
 
+    /**
+     * Mètode que retorna la mida desitjada de la barra
+     * @return
+     */
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(bars.size() * 100 + 2, 500);
     }
 
     /**
-     * Mètode que pinta les barres
+     * Mètode que pinta les barres de la mida desitjada
      * @param viewed
      * @param accepted
      */

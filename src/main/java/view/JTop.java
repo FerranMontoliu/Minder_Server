@@ -7,10 +7,12 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Vector;
 
-
+/**
+ * Classe que implementa la taula del top-5 d'usuaris en funció del nombre de matches
+ */
 public class JTop extends JPanel {
+
     private JTable jTable;
-    private User[] users;
     private DefaultTableModel defaultTableModel;
     private Vector columnNames;
 

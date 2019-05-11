@@ -5,6 +5,9 @@ import model.entity.User;
 import javax.swing.*;
 import java.util.ArrayList;
 
+/**
+ * Classe que implementa la finestra del servidor, la qual extén de JFrame
+ */
 public class WindowServer extends JFrame{
 
     private JCharts jCharts;
