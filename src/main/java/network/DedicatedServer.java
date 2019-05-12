@@ -220,6 +220,7 @@ public class DedicatedServer extends Thread {
                         //boolean isMatch = MIRAR SI FAS UN NOU MATCH i en aquest cas, afegirlo a la base de dades
                         boolean isMatch = true;
                         dataOutput.writeBoolean(isMatch);
+                        System.out.println("Liked before: "+isMatch);
                         //Actualitzar la vista
                         controlador.updateWindow();
                         break;

@@ -243,7 +243,7 @@ public class UserDAO {
      */
     private String getNextUserNoPremiumNoFilter(String username, int likesC, int likesJava) {
         String user = null;
-        String query = "SELECT u.username FROM users as u" +
+        String query = "SELECT u.username FROM users as u " +
                 "WHERE (u.username NOT IN(SELECT l.username_2 FROM liked as l WHERE l.username_1 = '" + username + "')) " +
                 "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
                 "AND (u.username <> '" + username + "') " +
@@ -252,10 +252,11 @@ public class UserDAO {
         try {
             if(!res.next()) {
                 query = "SELECT u.username FROM users as u, liked as l " +
-                        "WHERE (l.username_1 = u.username) " +
-                        "AND (l.liked_bool = '0') " +
+                        "WHERE (l.username_1 = '" + username +
+                        "') AND (l.username_2 = u.username) AND " +
+                        "(l.liked_bool = '0') " +
                         "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
-                        "AND (u.username <> '" + username + "') ORDER BY l.liked_date " +
+                        "ORDER BY l.liked_date " +
                         "LIMIT 1;";
                 res = DBConnector.getInstance().selectQuery(query);
                 if(res.next()) {
@@ -283,18 +284,19 @@ public class UserDAO {
      */
     private String getNextUserNoPremiumFilter(String username, int likesC, int likesJava, int minAge, int maxAge) {
         String user = null;
-        String query = "SELECT u.username FROM users as u, liked as l" +
+        String query = "SELECT u.username FROM users as u " +
                 "WHERE (u.username NOT IN(SELECT l.username_2 FROM liked as l WHERE l.username_1 = '" + username + "')) " +
                 "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
                 "AND (u.username <> '" + username + "') " +
-                "AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') ORDER BY l.liked_date " +
+                "AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "')" +
                 "LIMIT 1;";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         try {
             if(!res.next()) {
                 query = "SELECT u.username FROM users as u, liked as l " +
-                        "WHERE (l.username_1 = u.username) " +
-                        "AND (l.liked_bool = '0') " +
+                        "WHERE (l.username_1 = '" + username +
+                        "') AND (l.username_2 = u.username) AND " +
+                        "(l.liked_bool = '0') " +
                         "AND ((u.likes_c = '" + likesC + "' AND u.likes_c = '1') OR (u.likes_java = '" + likesJava + "' AND u.likes_java = '1')) " +
                         "AND (u.username <> '" + username + "') " +
                         "AND (u.age BETWEEN '" + minAge + "' AND '" + maxAge + "') " +
