@@ -299,7 +299,7 @@ public class User implements Serializable {
      *
      * @param username String que definira el nom de la imatge a descarregar.
      */
-    public void base64ToImage(String username) {
+    public void base64ToImage(String destination, String username) {
         try {
             try{
                 String base64Image = photo.split(",")[1];
