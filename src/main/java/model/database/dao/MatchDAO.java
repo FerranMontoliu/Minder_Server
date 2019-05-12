@@ -43,6 +43,41 @@ public class MatchDAO {
     }
 
     /**
+     * Metode que busca si a un usuari (Sender) li ha donat like anteriorment un altre usuari (receiver), i per tant saber si
+     * hi ha d'haver match, en cas de que li hagi donat like anteriorment. Si no existeix cap relacio de viewed entre els dos o
+     * l'anterior li ha donat dislike, no sera cap match.
+     * @param receiver usuari que es mostra pel panell connect actualment
+     * @param sender usuari actual que vol conectar amb altres usuaris
+     * @return retorna true en cas que sigui un match i false quan no ho sigui
+     */
+    public boolean isMatch(String receiver, String sender){ //u2 ha de ser l'usuari associated i u1 el connect
+        //Es mira si existeix alguna relacio de viewed en que el sender hagi estat vist per el receiver.
+        String queryExists = "SELECT COUNT(*) FROM liked WHERE liked.username_1 = '" + receiver + "' AND liked.username_2 = '" + sender +"'";
+        ResultSet resExists = DBConnector.getInstance().selectQuery(queryExists);
+        String query;
+        try {
+            resExists.next();
+            int e = resExists.getInt(1);
+            //Si no hi ha hagut cap relacio, directament no hi haura match
+            if (e == 0){
+                return false;
+            //si hi ha hagut relacio, el resultat dependra de si el receiver li va donar like o dislike al sender
+            }else{
+                query = "SELECT liked_bool FROM liked WHERE (username_1 = '"+ receiver +"' AND username_2 = '"+ sender +"')";
+                ResultSet res = DBConnector.getInstance().selectQuery(query);
+
+                boolean i;
+                res.next();
+                i = (res.getInt(1) == 1)? true:false;
+                return i;
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    /**
      * Metode encarregat d'afegir un like a la base de dades.
      *
      * @param u1 Usuari que conforma el match.

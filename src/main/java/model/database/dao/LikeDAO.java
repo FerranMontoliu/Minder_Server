@@ -8,8 +8,8 @@ import java.sql.SQLException;
 public class LikeDAO {
 
     /**
-     * Metode encarregat de registrar un nou like a un perfil a la base de dades.
-     *
+     * Metode encarregat de registrar un nou like a un perfil a la base de dades o be d'actualitzar la relacio de viewed
+     * en cas que ja s'haguessin vist aquests dos usuaris anteriorment.
      * @param u1 Usuari que ha donat el like.
      * @param u2 Usuari al qual s'ha donat el like.
      */
@@ -35,7 +35,8 @@ public class LikeDAO {
     }
 
     /**
-     * Metode encarregat de registrar un nou dislike a un perfil a la base de dades.
+     * Metode encarregat de registrar un nou dislike a un perfil a la base de dades o be d'actualitzar la relacio de viewed
+     * en cas que ja s'haguessin vist aquests dos usuaris anteriorment.
      *
      * @param u1 Usuari que ha donat el dislike.
      * @param u2 Usuari al qual s'ha donat el dislike.
