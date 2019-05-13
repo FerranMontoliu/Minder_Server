@@ -73,7 +73,11 @@ public class Chart extends JPanel {
         endX = 400;
         endY =400;
         unitX = (endX -startX)/(data.length -1);
-        unitY = (endY - startY) / maxValue(data);
+        if(maxValue(data) == 0){
+            unitY = endY - startY;
+        }else{
+            unitY = (endY - startY) / maxValue(data);
+        }
         prevX = startX;
         prevY = (endY - (data[0] * unitY));
 

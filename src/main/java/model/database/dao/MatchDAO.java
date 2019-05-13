@@ -222,7 +222,7 @@ public class MatchDAO {
         for(int i = 0; i< 7; i++){
                 String query = "SELECT COUNT(*) " +
                         "FROM matchs " +
-                        "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( 7-i ) +" DAY));";
+                        "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( 6-i ) +" DAY));";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
 
             try {
@@ -250,7 +250,7 @@ public class MatchDAO {
         for(int i = 0; i< 30; i++){
             String query = "SELECT COUNT(*) " +
                     "FROM matchs " +
-                    "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( 30-i ) +" DAY));";
+                    "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( 29-i ) +" DAY));";
             ResultSet res = DBConnector.getInstance().selectQuery(query);
 
             try {
