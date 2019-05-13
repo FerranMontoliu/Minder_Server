@@ -148,6 +148,7 @@ public class DedicatedServer extends Thread {
                             User u4 = (User) objectIn.readObject();
                             User u5 = (User) objectIn.readObject();
                             matchDAO.addMatch(u4.getUsername(), u5.getUsername());
+                            controlador.updateWindow();
                         } catch (ClassNotFoundException e4) {
                             e4.printStackTrace();
                         }
@@ -159,6 +160,8 @@ public class DedicatedServer extends Thread {
                             String deleted = dataInput.readUTF();
                             matchDAO.deleteMatch(sender, deleted);
                             chatDAO.deleteMessages(sender, deleted);
+                            controlador.updateWindow();
+
                         } catch (IOException e5) {
                             e5.printStackTrace();
                         }
@@ -220,8 +223,6 @@ public class DedicatedServer extends Thread {
 
                         boolean isMatch = matchDAO.isMatch(liked, sender);
                         dataOutput.writeBoolean(isMatch);
-
-                        controlador.updateWindow();
                         break;
 
                     case CONNECT_DISLIKE: //TODO: Fas DISLIKE en el connect panel.
@@ -230,7 +231,6 @@ public class DedicatedServer extends Thread {
                         likeDAO.addDislike(source, disliked);
                         //Nose si això s'ha de guardar, però si s'ha de fer només, cal escriure la comanda del DAO.
                         //Actualitzar la vista
-                        controlador.updateWindow();
                         break;
 
                     case EDIT_PREFERENCES:
