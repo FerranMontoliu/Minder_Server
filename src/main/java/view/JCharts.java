@@ -53,6 +53,10 @@ public class JCharts extends JPanel {
         chartDay.updateData(day, "Day");
         chartMonth.updateData(week, "Week");
         chartWeek.updateData(month, "Month");
+        chartDay.repaint();
+        chartMonth.repaint();
+        chartWeek.repaint();
+
     }
 
 }

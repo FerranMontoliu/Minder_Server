@@ -74,6 +74,7 @@ public class WindowServer extends JFrame{
     public void updateWindow(int[]week, int[]month, int[]day, ArrayList<User> top5){
         jCharts.updateData(day, week, month);
         jTop.updateTop5(top5);
+        System.out.println("Nous matches update");
 
     }
 

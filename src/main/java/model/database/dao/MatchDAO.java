@@ -184,16 +184,14 @@ public class MatchDAO {
      */
     public int[] getLastDayMatches() {
 
-        int[] day = {2, 2, 4, 5, 7, 8, 9, 6, 3, 2, 4, 8, 9, 7, 5, 4, 2, 2, 9, 6, 5, 9, 0, 1};
 
-        /*
         int[] dies = new int[24];
 
         for(int i = 0; i< 24; i++){
             String query = "SELECT COUNT(*) " +
                     "FROM matchs " +
-                    "WHERE DAY(match_date) = DAY(DATE_ADD(NOW()) AND" +
-                    "HOUR(match_date) = HOUR(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( 24-i ) +" HOUR));";
+                    "WHERE DAY(match_date) = DAY(NOW()) AND " +
+                    "HOUR(match_date) = HOUR(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( 23-i ) +" HOUR));";
             ResultSet res = DBConnector.getInstance().selectQuery(query);
 
             try {
@@ -206,8 +204,7 @@ public class MatchDAO {
 
         }
 
-         */
-        return day;
+        return dies;
     }
 
     /**
