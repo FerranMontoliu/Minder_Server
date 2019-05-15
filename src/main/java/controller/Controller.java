@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class Controller implements ActionListener {
 
     private WindowServer view;
-    private JRegister jRegister;
     private ControllerRegister cr;
 
     /**
@@ -24,8 +23,7 @@ public class Controller implements ActionListener {
      */
     public Controller(WindowServer view){
         this.view = view;
-        this.jRegister = view.getRegister();
-        cr = new ControllerRegister(view);  //TODO: NO TRENCA PARADIGMES?????
+        cr = new ControllerRegister(view);
     }
 
     /**

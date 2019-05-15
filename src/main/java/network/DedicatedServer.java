@@ -114,7 +114,7 @@ public class DedicatedServer extends Thread {
                                     objectOut.writeObject(realUser);
                                 }
                             }
-                        } catch (ClassNotFoundException e1) {
+                        } catch(ClassNotFoundException e1) {
                             e1.printStackTrace();
                         }
                         break;
@@ -124,13 +124,13 @@ public class DedicatedServer extends Thread {
                             User registeringUser = (User) objectIn.readObject();
                             boolean usernameExistsR = userDAO.existsUser(registeringUser);
                             boolean mailExistsR = userDAO.existsUser(new User(registeringUser.getMail(), registeringUser.getPassword()));
-                            if((!usernameExistsR) && (!mailExistsR)){
+                            if((!usernameExistsR) && (!mailExistsR)) {
                                 dataOutput.writeBoolean(true);
                                 userDAO.addUser(registeringUser);
-                            }else{
+                            } else {
                                 dataOutput.writeBoolean(false);
                             }
-                        } catch (ClassNotFoundException e2) {
+                        } catch(ClassNotFoundException e2) {
                             e2.printStackTrace();
                         }
                         break;
@@ -140,7 +140,7 @@ public class DedicatedServer extends Thread {
                             User u3 = (User) objectIn.readObject();
                             userDAO.updateInfoUser(u3);
                             dataOutput.writeBoolean(true);
-                        } catch (ClassNotFoundException e3) {
+                        } catch(ClassNotFoundException e3) {
                             e3.printStackTrace();
                         }
                         break;
@@ -151,7 +151,7 @@ public class DedicatedServer extends Thread {
                             User u5 = (User) objectIn.readObject();
                             matchDAO.addMatch(u4.getUsername(), u5.getUsername());
                             controlador.updateWindow();
-                        } catch (ClassNotFoundException e4) {
+                        } catch(ClassNotFoundException e4) {
                             e4.printStackTrace();
                         }
                         break;
@@ -164,7 +164,7 @@ public class DedicatedServer extends Thread {
                             chatDAO.deleteMessages(sender, deleted);
                             controlador.updateWindow();
 
-                        } catch (IOException e5) {
+                        } catch(IOException e5) {
                             e5.printStackTrace();
                         }
                         break;
@@ -176,17 +176,17 @@ public class DedicatedServer extends Thread {
                             Chat storedChat = chatDAO.loadChat(sender, receiver);
                             boolean existsChat = storedChat.getMessages().size() > 0;
                             dataOutput.writeBoolean(existsChat);
-                            if(existsChat){
+                            if(existsChat) {
                                 objectOut.writeObject(storedChat);
                             }
-                        } catch (IOException e6) {
+                        } catch(IOException e6) {
                             e6.printStackTrace();
                         }
                         break;
 
                     case SEND_MESSAGE:
                         clientUser = dataInput.readUTF();
-                        while (isOn) {
+                        while(isOn) {
                             Message message = (Message) objectIn.readObject();
                             String receiver = message.getDestination();
                             System.out.println(message.toString());
@@ -201,7 +201,7 @@ public class DedicatedServer extends Thread {
                             String username = dataInput.readUTF();
                             MatchLoader matchLoader = matchDAO.getUserMatches(username);
                             objectOut.writeObject(matchLoader);
-                        }catch(IOException e1){
+                        } catch(IOException e1) {
                             e1.printStackTrace();
                         }
                         break;
@@ -212,7 +212,7 @@ public class DedicatedServer extends Thread {
                             String nextUsername = userDAO.getNextUser(associatedUser.getUsername(), associatedUser.getMinAge(), associatedUser.getMaxAge(), associatedUser.isPremium(), associatedUser.getLikesC(), associatedUser.getLikesJava());
                             User nextUser = userDAO.getConnectUser(nextUsername);
                             objectOut.writeObject(nextUser);
-                        } catch (ClassNotFoundException e8) {
+                        } catch(ClassNotFoundException e8) {
                             e8.printStackTrace();
                         }
                         break;
@@ -235,11 +235,10 @@ public class DedicatedServer extends Thread {
                     case EDIT_PREFERENCES:
                         try {
                             User updatedUser = (User) objectIn.readObject();
-                            System.out.println("update pref: "+updatedUser.getUsername() + updatedUser.getMaxAge());
                             userDAO.updatePreferences(updatedUser);
                             boolean editDone = true;
                             dataOutput.writeBoolean(editDone);
-                        } catch (ClassNotFoundException e9) {
+                        } catch(ClassNotFoundException e9) {
                             e9.printStackTrace();
                         }
                         break;
@@ -256,7 +255,7 @@ public class DedicatedServer extends Thread {
                         break;
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch(IOException | ClassNotFoundException e) {
             clients.remove(this);
         } finally {
             try {
@@ -281,17 +280,27 @@ public class DedicatedServer extends Thread {
         return clientUser;
     }
 
+    /**
+     * Metode encarregat d'enviar un xat al receptor.
+     *
+     * @param receiver Receptor del xat.
+     * @param dbChat Xat entre dos usuaris (un dels quals és el "receiver").
+     */
     private void sendToDestination(String receiver, Chat dbChat) {
-        System.out.println("Size:"+clients.size());
         for(DedicatedServer ds: clients){
-            System.out.println("Receiver: "+receiver+" Sender: "+clientUser);
             if((ds.getClientUser().equals(receiver)) || (ds.getClientUser().equals(clientUser))){
-                System.out.println("En algun entro?");
                 ds.updateMessagesToClient(dbChat, receiver, clientUser);
             }
         }
     }
 
+    /**
+     * Metode encarregat d'actualitzar un xat al client.
+     *
+     * @param dbChat Xat entre dos usuaris (el "sender" i el "receiver").
+     * @param receiver Receptor del xat.
+     * @param sender Emissor del xat.
+     */
     private void updateMessagesToClient(Chat dbChat, String receiver, String sender) {
         try {
             MatchDAO matchDAO = new MatchDAO();

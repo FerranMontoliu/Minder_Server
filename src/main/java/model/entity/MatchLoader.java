@@ -10,15 +10,16 @@ public class MatchLoader implements Serializable {
     private LinkedList<String> matchedUsernames;
 
     /**
-     * Constructor per defecte
+     * Constructor per defecte.
      */
     public MatchLoader(){
         matchedUsernames = new LinkedList<>();
     }
 
     /**
-     * Getter del atribut matchedUsernames
-     * @return atribut matchedUsernames
+     * Getter de l'atribut matchedUsernames.
+     *
+     * @return Llista de noms d'usuaris amb els quals s'ha fet match.
      */
     public LinkedList<String> getMatchedUsernames() {
         return matchedUsernames;
@@ -26,13 +27,10 @@ public class MatchLoader implements Serializable {
 
     /**
      * Metode que afegeix un usuari mes al MatchLoader.
+     *
      * @param username usuari nou amb el que s'ha fet match.
      */
     public void addMatch(String username){
         matchedUsernames.add(username);
-    }
-
-    public boolean hasMatchs(){
-        return (matchedUsernames.size() > 0);
     }
 }

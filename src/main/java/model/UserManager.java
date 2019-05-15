@@ -9,23 +9,24 @@ public class UserManager {
      * Funció que s'encarrega de comprovar si l'usuari és major d'edat o no.
      *
      * @return Retorna true si es major d'edat, false sino.
+     *
+     * @throws InvalidFormatException Es tira si el format de les dades no es correcte.
      */
     public static void isAdult(String age) throws InvalidFormatException {
-        try{
+        try {
             int a = getAge(age);
-            if(a < 18){
+            if(a < 18) {
                 throw new InvalidFormatException("In order to register you have to be at least 18");
             }
-        }catch (NumberFormatException e1){
+        } catch(NumberFormatException e1) {
             throw new InvalidFormatException("Age field must be a number");
         }
-
     }
 
     /**
-     * Funcio que s'encarrega de comprovar si el format del mail es correcte o no.
+     * Metode que s'encarrega de comprovar si el format del mail es correcte o no.
      *
-     * @return Retorna true si el format es correcte, false sino.
+     * @throws InvalidFormatException Es tira si el format de les dades no es correcte.
      */
     public static void mailCorrectFormat(String mail) throws InvalidFormatException {
         EmailValidator v = EmailValidator.getInstance();
@@ -34,8 +35,15 @@ public class UserManager {
         }
     }
 
+    /**
+     * Funcio encarregada de comprovar si el format del mail es correcte en el sign in.
+     *
+     * @param usernameField String que conte el mail.
+     *
+     * @return true si es correcte, false altrament.
+     */
     public static boolean mailInSignIn(String usernameField){
-        try{
+        try {
             mailCorrectFormat(usernameField);
             return true;
         } catch (InvalidFormatException e) {
@@ -44,9 +52,12 @@ public class UserManager {
     }
 
     /**
-     * Funcio que s'encarrega de comprovar si la password concorda amb el camp de confirmacio de password.
+     * Metode que s'encarrega de comprovar si la password concorda amb el camp de confirmacio de password.
      *
-     * @return Retorna true si concorda, false sino.
+     * @param password Password que s'ha introduit.
+     * @param passwordConfirmation Password confirmation que s'ha introduit.
+     *
+     * @throws InvalidFormatException Es tira si el format de les dades no es correcte.
      */
     public static void passwordConfirm(String password, String passwordConfirmation) throws InvalidFormatException {
         if(!password.equals(passwordConfirmation)){
@@ -55,9 +66,11 @@ public class UserManager {
     }
 
     /**
-     * Funció que s'encarrega de comprovar si el format de la password és correcte o no
+     * Funcio que s'encarrega de comprovar si el format de la password es correcte o no.
      *
-     * @return Retorna true si el format és correcte, false sinó.
+     * @param password Password de la qual es vol comprovar el format.
+     *
+     * @throws InvalidFormatException Es tira si el format de les dades no es correcte.
      */
     public static void passwordCorrectFormat(String password) throws InvalidFormatException{
         boolean hasUppercase = !password.equals(password.toLowerCase());
@@ -71,8 +84,12 @@ public class UserManager {
     }
 
     /**
-     * Funció que s'encarrega de comprovar si la password es correcta o no quan un es registra.
-     * @return Retorna true si es correcta, false sino.
+     * Funcio que s'encarrega de comprovar si la password es correcta o no quan un es registra.
+     *
+     * @param password Password que ha introduit l'usuari.
+     * @param passwordConfirmation Confirmacio de password que ha introduit l'usuari.
+     *
+     * @throws InvalidFormatException Es tira si el format de les dades no es correcte.
      */
     public static void signUpPasswordIsCorrect(String password,String passwordConfirmation) throws InvalidFormatException {
         passwordConfirm(password, passwordConfirmation);
@@ -81,27 +98,45 @@ public class UserManager {
 
     /**
      * Getter de l'edat de l'usuari.
-     * @return Retorna un int que conté l'edat de l'usuari.
+     *
+     * @return Retorna un int que conte l'edat de l'usuari.
      */
     public static int getAge(String age) throws NumberFormatException{
-        int a = Integer.parseInt(age);
-        return a;
+        return Integer.parseInt(age);
     }
 
+    /**
+     * Mira si un camp esta buit o no.
+     *
+     * @param fieldContent Contingut del camp que s'esta comprovant.
+     * @param fieldName Nom del camp que s'esta comprovant.
+     *
+     * @throws EmptyTextFieldException Es tira si el camp esta buit.
+     */
     public static void isEmpty(String fieldContent, String fieldName) throws EmptyTextFieldException {
         if(fieldContent.isEmpty()){
-            throw new EmptyTextFieldException("The field "+fieldName+" cannot be empty!");
+            throw new EmptyTextFieldException("The field " + fieldName + " cannot be empty!");
         }
     }
 
+    /**
+     * Mira si s'ha seleccionat alguna dada en tots els camps de l'edit panel.
+     *
+     * @param img Foto del perfil de l'usuari.
+     * @param description Descripcio del perfil de l'usuari.
+     * @param java Indica si a l'usuari li agrada Java o no.
+     * @param c Indica si a l'usuari li agrada C o no.
+     *
+     * @throws InvalidFormatException Es tira si el format de les dades no es correcte.
+     */
     public static void checkEditProfileNewData(ImageIcon img, String description, boolean java, boolean c) throws InvalidFormatException {
-        if(img == null){
+        if(img == null) {
             throw new InvalidFormatException("An image must be selected!");
         }
-        if(description.isEmpty()){
+        if(description.isEmpty()) {
             throw new InvalidFormatException("Description field must be added!");
         }
-        if((java == false)&&(c == false)){
+        if(!java &&!c) {
             throw new InvalidFormatException("A favourite programming language must be added!");
         }
     }

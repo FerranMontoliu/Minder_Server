@@ -9,9 +9,9 @@ import java.io.FileReader;
 
 public class Json {
     /**
-     * Funció encarregada de parsejar el Json per a extreure'n la informació.
+     * Funcio encarregada de parsejar el Json per a extreure'n la informacio.
      *
-     * @return Retorna un ServerConfig que conté tota la informació del Json.
+     * @return Retorna un ServerConfig que conte tota la informacio del Json.
      */
     public static ServerConfig parseJson() {
         ServerConfig c = null;

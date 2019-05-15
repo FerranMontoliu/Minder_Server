@@ -6,18 +6,29 @@ import java.util.LinkedList;
 public class Chat implements Serializable {
     private LinkedList<Message> messages;
 
+    /**
+     * Constructor de la classe xat.
+     *
+     * @param messages Llista de missatges que formen el xat.
+     */
     public Chat(LinkedList<Message> messages) {
         this.messages = messages;
     }
 
+    /**
+     * Getter de la llista de missatges que formen el xat.
+     *
+     * @return Llista de missatges que formen el xat.
+     */
     public LinkedList<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(LinkedList<Message> messages) {
-        this.messages = messages;
-    }
-
+    /**
+     * Funcio que retorna l'ultim missatge de la llista.
+     *
+     * @return Retorna l'ultim usuari de la llista de missatges.
+     */
     public String getNewMessage() {
         return messages.getLast().toString();
     }

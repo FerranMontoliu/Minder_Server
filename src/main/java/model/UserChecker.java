@@ -6,19 +6,18 @@ import org.apache.commons.validator.routines.EmailValidator;
  * Classe que comprova els camps en el sign-up server per tal de comprovar si són correctes
  */
 public class UserChecker {
-
     /**
-     * Metode que comprova si MIN_AGE < MAX_AGE
-     * @param min
-     * @param max
-     * @return
+     * Metode que comprova si MIN_AGE <= MAX_AGE
+     *
+     * @param min Edat minima del filtre per edat.
+     * @param max Edat maxima del filtre per edat.
+     *
+     * @return True si min <= max, false altrament
      */
     public boolean checkAgeFilters(int min, int max) {
-        if(min < max) {
-            return true;
-        }
-        return false;
+        return min <= max;
     }
+
     /**
      * Metode que comprova si el mail compleix el format
      *
@@ -38,10 +37,7 @@ public class UserChecker {
      * @return Retorna true si concorda, false sino.
      */
     public boolean passwordConfirm(String password, String passwordConfirmation) {
-        if(!password.equals(passwordConfirmation)){
-            return false;
-        }
-        return true;
+        return password.equals(passwordConfirmation);
     }
 
     /**
@@ -55,9 +51,6 @@ public class UserChecker {
         boolean hasNumber  = password.matches(".*\\d.*");
         boolean isLongEnough = password.length() > 7;
 
-        if(!(hasUppercase && hasLowercase && hasNumber && isLongEnough)){
-            return false;
-        }
-        return true;
+        return (hasUppercase && hasLowercase && hasNumber && isLongEnough);
     }
 }

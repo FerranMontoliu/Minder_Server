@@ -1,9 +1,10 @@
 package view;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 /**
- * Classeq que implementa la gràfica de les estadístiques dia-setmana-mes
+ * Classe que implementa la grafica de les estadístiques diaries-setmanals-mensuals.
  */
 public class Chart extends JPanel {
     private int[] data ;
@@ -17,8 +18,9 @@ public class Chart extends JPanel {
     private int prevY;
 
     /**
-     * Constructor del Chart
-     * @param dia array de matches de cada dia o hora
+     * Constructor del Chart.
+     *
+     * @param dia array de matches de cada dia o hora.
      */
     public Chart(int[] dia){
         this.data = dia;
@@ -26,41 +28,42 @@ public class Chart extends JPanel {
         startY = 50;
         endX = 400;
         endY = 400;
-        unitX = (endX -startX)/(dia.length -1);
-        unitY = (endY - startY) / maxValue(dia);
-        prevX = startX;
-        prevY = endY;
-
+        unitX = (350)/(dia.length -1);
+        unitY = (350) / maxValue(dia);
+        prevX = 50;
+        prevY = 400;
     }
 
     /**
-     * Funcio que retorna el valor maxim de les dades del dia, mes o setmana
-     * @param dia array de matches de cada dia o hora
-     * @return retorna el valor maxim de l'array
+     * Funcio que retorna el valor maxim de les dades del dia, mes o setmana.
+     *
+     * @param dia array de matches de cada dia o hora.
+     *
+     * @return retorna el valor maxim de l'array.
      */
     private int maxValue(int[] dia) {
-        int max = dia[0];
-        for (int ktr = 0; ktr < dia.length; ktr++) {
-            if (dia[ktr] > max) {
-                max = dia[ktr];
-            }
-        }
-        return max;
-    }
-
-    private int minValue(int[] dia) {
-        int min = dia[0];
-        for (int ktr = 0; ktr < dia.length; ktr++) {
-            if (dia[ktr] < min) {
-                min = dia[ktr];
-            }
-        }
-        return min;
+        int[] aux = dia;
+        Arrays.sort(aux);
+        return aux[aux.length - 1];
     }
 
     /**
-     * Funcio que pinta el panell
-     * @param g graphic
+     * Funcio que retorna el valor minim de les dades del dia, mes o setmana.
+     *
+     * @param dia array de matches de cada dia o hora.
+     *
+     * @return retorna el valor minim de l'array.
+     */
+    private int minValue(int[] dia) {
+        int[] aux = dia;
+        Arrays.sort(aux);
+        return aux[0];
+    }
+
+    /**
+     * Funcio que pinta un component de la grafica.
+     *
+     * @param g Grafica a la que el pinta.
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -71,15 +74,15 @@ public class Chart extends JPanel {
         startX = 50;
         startY = 50;
         endX = 400;
-        endY =400;
-        unitX = (endX -startX)/(data.length -1);
-        if(maxValue(data) == 0){
-            unitY = endY - startY;
+        endY = 400;
+        unitX = 350/(data.length - 1);
+        if(maxValue(data) == 0) {
+            unitY = 350;
         }else{
-            unitY = (endY - startY) / maxValue(data);
+            unitY = 350 / maxValue(data);
         }
-        prevX = startX;
-        prevY = (endY - (data[0] * unitY));
+        prevX = 50;
+        prevY = (400 - (data[0] * unitY));
 
         //Loops que pinten la graella
         g2d.setColor(new Color(123, 140, 208));
@@ -94,38 +97,37 @@ public class Chart extends JPanel {
 
         //Linies i numeros de la taula de color negre
         g2d.setColor(Color.BLACK);
-        g2d.drawString( Integer.toString(maxValue(data)),startX-20, startY+20);
-        g2d.drawString("Matches",startX-50, startX-4);
-        g2d.drawString( Integer.toString(0) ,startX-20, endY);
-        g2d.drawLine(startX  , startY, startX, endY);
+        g2d.drawString( Integer.toString(maxValue(data)),startX - 20, startY + 20);
+        g2d.drawString("Matches",startX - 50, startX - 4);
+        g2d.drawString( Integer.toString(0) ,startX - 20, endY);
+        g2d.drawLine(startX , startY, startX, endY);
         g2d.drawLine(startX, endY, endX, endY);
         g2d.drawLine(endX, startY, endX, endY);
         g2d.drawLine(startX, startY, endX, startY);
 
         if(data.length == 7) {
-            g2d.drawString(Integer.toString(data.length) + " days ", endX, endY + 20);
+            g2d.drawString((data.length) + " days ", endX, endY + 20);
         }
         if(data.length == 24) {
-            g2d.drawString(Integer.toString(data.length) + " hours ", endX, endY + 20);
-
+            g2d.drawString((data.length) + " hours ", endX, endY + 20);
         }
         if(data.length > 24) {
-            g2d.drawString(Integer.toString(data.length) + " days ", endX, endY + 20);
+            g2d.drawString((data.length) + " days ", endX, endY + 20);
 
         }
         g2d.drawString( Integer.toString(1) ,startX, endY+20);
 
-
         //Línies de les coordenades de color vermell
         g2d.setColor(Color.RED);
-        for (int y = 1; y< data.length; y++) {
+        for(int y = 1; y < data.length; y++) {
             g2d.drawLine(prevX, prevY, prevX += unitX, prevY = (endY - (data[y] * unitY)));
         }
     }
 
     /**
      * Funcio que defineix el tamany del panell
-     * @return retorna el tamany
+     *
+     * @return Dimensions del panell
      */
     @Override
     public Dimension getPreferredSize() {
@@ -134,10 +136,11 @@ public class Chart extends JPanel {
 
 
     /**
-     * Funcio que actualitza les dades de la chart
-     * @param day nou array amb els matches
+     * Funcio que actualitza les dades de la grafica.
+     *
+     * @param day Array amb la nova informacio
      */
-    public void updateData(int[] day, String name){
+    public void updateData(int[] day){
         data = day;
     }
 }

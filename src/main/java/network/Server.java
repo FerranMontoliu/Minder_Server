@@ -25,6 +25,7 @@ public class Server extends Thread {
      * Constructor del servidor.
      *
      * @param model Llista de productes amb tota la informació d'aquests.
+     * @param controlador Controlador del servidor.
      */
     public Server(ArrayList<User> model, Controller controlador) {
         try {
@@ -36,7 +37,7 @@ public class Server extends Thread {
             this.dServers = new LinkedList<>();
 
             this.controlador = controlador;
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }

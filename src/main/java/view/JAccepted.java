@@ -24,7 +24,7 @@ public class JAccepted extends JPanel {
 
     private JTextPane jtpane;
     private JTextPane jtpane2;
-    private BaarChart barChart;
+    private BarChart barChart;
     private JPanel jpBarres, jpQuesito;
     private int viewed; //No cal realment ?
     private int accepted;
@@ -44,7 +44,7 @@ public class JAccepted extends JPanel {
         jpQuesito = new JPanel();
         jpBarres = new JPanel();
 
-        barChart = new BaarChart();
+        barChart = new BarChart();
 
         DefaultPieDataset dataset = new DefaultPieDataset();
         dataset.setValue("Acceptats", acceptats);

@@ -6,27 +6,31 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Classe que implementa la creació de les barres gràfiques de la 1a pàgina (Viewed / Accepted)
+ * Classe que implementa la creacio de les barres grafiques de la 1a pagina (Viewed / Accepted).
  */
-public class BaarChart extends JPanel {
+public class BarChart extends JPanel {
 
     private Map<Color, Integer> bars = new LinkedHashMap<>();
 
+    /**
+     * Metode que afegeix una barra a la grafica.
+     *
+     * @param color Color de la barra.
+     * @param value Valor de la barra.
+     */
     public void addBar(Color color, int value) {
         bars.put(color, value);
     }
 
     /**
-     * Mètode que crea una barra gràfica
-     * @param g
+     * Metode que pinta un component a la grafica.
+     *
+     * @param g Grafica a la que s'ha de pintar el component.
      */
     @Override
     protected void paintComponent(Graphics g) {
-
         int max = Integer.MIN_VALUE;
-
-        for (Integer value : bars.values()) {
-
+        for(Integer value: bars.values()) {
             max = Math.max(max, value);
         }
 
@@ -45,8 +49,9 @@ public class BaarChart extends JPanel {
     }
 
     /**
-     * Mètode que retorna la mida desitjada de la barra
-     * @return
+     * Funcio que retorna la mida desitjada de la barra.
+     *
+     * @return Dimensio de la barra.
      */
     @Override
     public Dimension getPreferredSize() {
@@ -54,9 +59,10 @@ public class BaarChart extends JPanel {
     }
 
     /**
-     * Mètode que pinta les barres de la mida desitjada
-     * @param viewed
-     * @param accepted
+     * Metode que pinta les barres de la mida desitjada.
+     *
+     * @param viewed Barra d'usuaris visualitzats.
+     * @param accepted Barra d'usuaris acceptats.
      */
     public void paintBars(int viewed, int accepted) {
         bars.clear();

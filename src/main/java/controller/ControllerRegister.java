@@ -19,18 +19,17 @@ public class ControllerRegister implements ActionListener {
 
 
     /**
-     * Metode que crea el controlador
-     * @param view : Vista del servidor
+     * Constructor del controlador del registre
+     * @param view Vista del servidor
      */
     public ControllerRegister (WindowServer view) {
         userManager = new UserChecker();
         jRegister = view.getRegister();
-
     }
 
     /**
-     * Metode usat quan l'usuari prem el botó de registrar-se des del server
-     * @param e: Event quan es produeix una acció
+     * Metode usat quan l'usuari fa una accio en la vista del registre del servidor
+     * @param e Event quan es produeix una accio
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -39,64 +38,64 @@ public class ControllerRegister implements ActionListener {
 
         switch (command) {
             case "REGISTER":
-                correct = true;
-
                 //Comprovació Username
-                if(jRegister.getUsername().length() == 0) {
-                    correct = false;
-                }
+                correct = jRegister.getUsername().length() > 0;
+
                 //Comprovació Age
                 String a = jRegister.getAge();
-                if(a.length() > 0 & a.matches(".*\\d.*")) {
+                if(a.length() > 0 && a.matches(".*\\d.*")) {
                     if (Integer.valueOf(a) < 18) {
                         correct = false;
                     }
-                }else {
+                } else {
                     correct = false;
                 }
 
-                //Comprovació Mail
+                //Comprovació Mail:
                 if(!(userManager.mailCorrectFormat(jRegister.getMail()))) {
                     correct = false;
                 }
-                //Comprovació Password
+                //Comprovació Password:
                 if(!(userManager.passwordCorrectFormat(jRegister.getPassword()))) {
                     correct = false;
                 }
-                if(!(userManager.passwordConfirm(jRegister.getPassword(),jRegister.getConfirmPassword()))) {
+                //Comprovacio password confirmation:
+                if(!(userManager.passwordConfirm(jRegister.getPassword(), jRegister.getConfirmPassword()))) {
                     correct = false;
                 }
-                if(!(userManager.checkAgeFilters(jRegister.getMinimumAge(),jRegister.getMaximumAge()))) {
+                //Comprovacio filtre per edat:
+                if(!(userManager.checkAgeFilters(jRegister.getMinimumAge(), jRegister.getMaximumAge()))) {
                     correct = false;
                 }
                 //SignUp correcte, es pot passar a la base de dades per afegir-se
                 if(correct) {
                     throwCorrectMessage();
                     jRegister.isPremium();
-                    User u = new User(jRegister.getUsername(),Integer.valueOf(jRegister.getAge()),jRegister.isPremium(), jRegister.getMail(), encoder.encode(jRegister.getPassword()), jRegister.getMinimumAge(), jRegister.getMaximumAge());
+                    User u = new User(jRegister.getUsername(),Integer.valueOf(jRegister.getAge()), jRegister.isPremium(), jRegister.getMail(), encoder.encode(jRegister.getPassword()), jRegister.getMinimumAge(), jRegister.getMaximumAge());
                     UserDAO userDAO = new UserDAO();
                     userDAO.addUser(u);
-                }
-                else {
+                } else {
                     throwErrorMessage();
                 }
                 jRegister.removeRegister();
+                break;
 
-            case "PASSWORD": //Mostrar / No Mostrar Password
+            case "PASSWORD": //Mostrar o amagar Password
                 jRegister.changeViewPassword();
+                break;
         }
 
     }
 
     /**
-     * Mètode que crida una funció de la vista per mostrar missatge d'error en el signup
+     * Metode que crida una funcio de la vista per mostrar missatge d'error en el signup
      */
     private void throwErrorMessage() {
         jRegister.showMessage(false);
     }
 
     /**
-     * Mètode que crida una funció de la vista per mostrar el missatge de signup correcte
+     * Metode que crida una funcio de la vista per mostrar el missatge de signup correcte
      */
     private void throwCorrectMessage() {
         jRegister.showMessage(true);
