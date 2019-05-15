@@ -17,31 +17,14 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
 
             WindowServer view = new WindowServer();
-            Controller controller = new Controller(view,view.getRegister());
+            Controller controller = new Controller(view);
             view.registerController(controller);
             controller.updateWindow();
             view.setVisible(true);
 
-
             ArrayList<User> model = new ArrayList<>();
             Server server = new Server(model, controller);
             server.startServer();
-
-
-            /*
-            MatchDAO ma = new MatchDAO();
-
-            try {
-                System.out.println("Last days");
-                ma.getLastDayMatches();
-                ma.getLastWeekMatches();
-                ma.getLastMonthMatches();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-
-             */
         });
     }
 }

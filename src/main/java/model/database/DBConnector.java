@@ -19,13 +19,18 @@ public class DBConnector {
 
     /**
      * Constructor de la classe encarregada de gestionar la connexio amb la base de dades.
+     *
+     * @param user Nom de l'usuari que accedeix a la bbdd.
+     * @param pass Password de l'usuari que accedeix a la bbdd.
+     * @param db Nom de la bbdd a la que es connecta.
+     * @param port Port pel qual s'accedeix a la bbdd.
      */
     private DBConnector(String user, String pass, String db, int port) {
         this.username = user;
         this.password = pass;
         this.db = db;
         this.port = port;
-        this.url += ":"+port+"/";
+        this.url += ":" + port + "/";
         this.url += db;
         this.instance = null;
     }
@@ -37,6 +42,7 @@ public class DBConnector {
      */
     public static DBConnector getInstance(){
         if(instance == null) {
+            //Mira quin es el SO de l'usuari i es connecta d'una manera o una altra depenent d'aquest factor (XAMPP o MAMPP).
             if(OS.contains("win")) {
                 //Windows users:
                 instance = new DBConnector("root", "", "minderdb", 3306);
@@ -65,9 +71,8 @@ public class DBConnector {
         } catch(SQLException ex) {
             System.out.println("Problema al connectar-nos a la BBDD --> " + url);
         } catch(ClassNotFoundException ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
-
     }
 
     /**
@@ -88,13 +93,14 @@ public class DBConnector {
      * Metode encarregat d'executar una query de seleccio.
      *
      * @param query Query que es vol executar.
-     * @return
+     *
+     * @return Retorna el resultat de la query.
      */
     public ResultSet selectQuery(String query) {
         ResultSet rs = null;
         try {
             s =(Statement) conn.createStatement();
-            rs = s.executeQuery (query);
+            rs = s.executeQuery(query);
         } catch(SQLException ex) {
             System.out.println("Problema al Recuperar les dades --> " + ex.getSQLState());
         }
@@ -106,6 +112,7 @@ public class DBConnector {
      */
     public void disconnect() {
         //TODO: fer un windowlistener i cridat-la des del controller de la vista. Tancar també els threads amb els clients.
+        //TODO: MAI CRIDEM AQUESTA FUNCIÓ!!!
         try {
             conn.close();
         } catch(SQLException e) {

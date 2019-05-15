@@ -19,41 +19,38 @@ public class Controller implements ActionListener {
     private ControllerRegister cr;
 
     /**
-     * Mètode
-     * @param view: Vista
-     * @param jRegister: Panell per fer signup
+     * Constructor del controlador
+     * @param view Vista del servidor
      */
-    public Controller(WindowServer view, JRegister jRegister){
+    public Controller(WindowServer view){
         this.view = view;
-        cr = new ControllerRegister(view);
-        this.jRegister = jRegister;
+        this.jRegister = view.getRegister();
+        cr = new ControllerRegister(view);  //TODO: NO TRENCA PARADIGMES?????
     }
 
     /**
-     * Mètode que retorna el Controlador
-     * @return
+     * Getter del controlador de la vista.
+     * @return Retorna el controlador.
      */
     public ControllerRegister getCr() {
         return cr;
     }
 
     /**
-     * Mètode que regula l'acció quan l'usuari interacciona amb la vista
-     * @param e: Event
+     * Metode que regula l'acció quan l'usuari interacciona amb la vista
+     * @param e Event que fa trigger.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        //TODO: AIXÒ ESTÀ BUIT AMICS!!
     }
 
     /**
-     * Mètode que actualitza les gràfiques de dia-setmana-mes
+     * Metode que actualitza les grafiques de dia-setmana-mes.
      */
     public void updateWindow() {
-
         MatchDAO ma = new MatchDAO();
-
         ArrayList<User> u = ma.getTopFiveMostMatchedUsers();
-        view.updateWindow(ma.getLastMonthMatches(),ma.getLastWeekMatches(), ma.getLastDayMatches(),u );
-
+        view.updateWindow(ma.getLastMonthMatches(), ma.getLastWeekMatches(), ma.getLastDayMatches(), u);
     }
 }

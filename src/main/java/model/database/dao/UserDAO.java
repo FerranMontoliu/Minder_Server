@@ -17,9 +17,7 @@ public class UserDAO {
         int isPremium = u.isPremium()? 1: 0;
         int likesC = u.getLikesC()? 1: 0;
         int likesJava = u.getLikesJava()? 1: 0;
-        int minAge = u.getMinAge();
-        int maxAge = u.getMaxAge();
-        String query = "INSERT INTO users(username, mail, completed, age, premium, password, photo, description, likes_java, likes_c, fav_song, hobbies, connected, minAge, maxAge) VALUES ('" + u.getUsername() + "', '" + u.getMail() + "', '0', '" + u.getAge() + "', '" + isPremium + "', '" + u.getPassword() + "', 'null', 'null', '" + likesJava + "', '" + likesC + "', 'null', 'null', '0', '" + minAge + "', '" + maxAge +"')";
+        String query = "INSERT INTO users(username, mail, completed, age, premium, password, photo, description, likes_java, likes_c, fav_song, hobbies, connected, minAge, maxAge) VALUES ('" + u.getUsername() + "', '" + u.getMail() + "', '0', '" + u.getAge() + "', '" + isPremium + "', '" + u.getPassword() + "', 'null', 'null', '" + likesJava + "', '" + likesC + "', 'null', 'null', '0', '" + u.getMinAge() + "', '" + u.getMaxAge() +"')";
         DBConnector.getInstance().executeQuery(query);
     }
 
@@ -65,12 +63,14 @@ public class UserDAO {
      */
     public boolean existsUser(User u) {
         String query;
+
         if(u.getUsername() != null) {
             query = "SELECT COUNT(*) FROM users WHERE users.username = '" + u.getUsername() + "'";
         } else {
             query = "SELECT COUNT(*) FROM users WHERE users.mail = '" + u.getMail() + "'";
         }
         ResultSet res = DBConnector.getInstance().selectQuery(query);
+
         int i = 0;
         try {
             res.next();
@@ -96,6 +96,7 @@ public class UserDAO {
             query = "SELECT * FROM users WHERE users.mail = '" + u.getMail() + "'";
         }
         ResultSet res = DBConnector.getInstance().selectQuery(query);
+
         String username = null, mail = null, password = null, photo = null, description = null, favSong = null, hobbiesString = null;
         boolean completed = false, premium = false, likesJava = false, likesC = false;
         int age = 0, maxAge = 0, minAge = 0;
@@ -121,8 +122,7 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        User dbUser = new User(completed, username, age, premium, mail, password, minAge, maxAge, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null);
-        return dbUser;
+        return (new User(completed, username, age, premium, mail, password, minAge, maxAge, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null));
     }
 
     /**
@@ -154,8 +154,7 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        User dbUser = new User(false, username, age, false, null, null, 0, 0, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null);
-        return dbUser;
+        return (new User(false, username, age, false, null, null, 0, 0, photo, description, likesJava, likesC, favSong, hobbies, null, null, null, null));
     }
 
     /**

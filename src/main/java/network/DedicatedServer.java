@@ -28,6 +28,7 @@ public class DedicatedServer extends Thread {
     private static final char CONNECT_USER = 'k';
     private static final char EDIT_PREFERENCES = 'l';
     private static final char USER_INFO = 'm';
+    private static final char USER_DISCONNECTS = 'n';
 
     private boolean isOn;
     private Socket sClient;
@@ -106,9 +107,10 @@ public class DedicatedServer extends Thread {
                                 System.out.println(realUser.getPassword());
                                 System.out.println(loginUser.getPassword());
                                 boolean sameUser = encoder.matches(loginUser.getPassword(), realUser.getPassword());
-                                dataOutput.writeBoolean(sameUser);
-                                if(sameUser) {
-                                    System.out.println("Són iguals");//TODO: borrar en acabar de debugar.
+                                boolean isConnected = userDAO.isConnected(realUser.getUsername());
+                                dataOutput.writeBoolean(sameUser && !isConnected);
+                                if(sameUser && !isConnected) {
+                                    userDAO.userConnects(realUser.getUsername());
                                     objectOut.writeObject(realUser);
                                 }
                             }
@@ -204,7 +206,7 @@ public class DedicatedServer extends Thread {
                         }
                         break;
 
-                    case CONNECT_USER: //TODO: Solicita un USER a visualitzar pel connect panel. Per acabar.
+                    case CONNECT_USER:
                         try {
                             User associatedUser = (User) objectIn.readObject();
                             String nextUsername = userDAO.getNextUser(associatedUser.getUsername(), associatedUser.getMinAge(), associatedUser.getMaxAge(), associatedUser.isPremium(), associatedUser.getLikesC(), associatedUser.getLikesJava());
@@ -213,10 +215,9 @@ public class DedicatedServer extends Thread {
                         } catch (ClassNotFoundException e8) {
                             e8.printStackTrace();
                         }
-                        //TODO: demanar al userDAO la llista d'usuaris i llavors controlar quin es el següent usuari que li toca visualitzar
                         break;
 
-                    case CONNECT_LIKE: //TODO: Fas LIKE en el connect panel.
+                    case CONNECT_LIKE:
                         String sender = dataInput.readUTF();
                         String liked = dataInput.readUTF();
                         likeDAO.addLike(sender, liked);
@@ -225,12 +226,10 @@ public class DedicatedServer extends Thread {
                         dataOutput.writeBoolean(isMatch);
                         break;
 
-                    case CONNECT_DISLIKE: //TODO: Fas DISLIKE en el connect panel.
+                    case CONNECT_DISLIKE:
                         String source = dataInput.readUTF();
                         String disliked = dataInput.readUTF();
                         likeDAO.addDislike(source, disliked);
-                        //Nose si això s'ha de guardar, però si s'ha de fer només, cal escriure la comanda del DAO.
-                        //Actualitzar la vista
                         break;
 
                     case EDIT_PREFERENCES:
@@ -238,20 +237,22 @@ public class DedicatedServer extends Thread {
                             User updatedUser = (User) objectIn.readObject();
                             System.out.println("update pref: "+updatedUser.getUsername() + updatedUser.getMaxAge());
                             userDAO.updatePreferences(updatedUser);
-                            boolean editDone = true; //hi pot haver algun cas en que no es pugui fer el canvi?
+                            boolean editDone = true;
                             dataOutput.writeBoolean(editDone);
                         } catch (ClassNotFoundException e9) {
                             e9.printStackTrace();
                         }
                         break;
+
                     case USER_INFO:
                         String username = dataInput.readUTF();
                         User infoUser = userDAO.getConnectUser(username);
                         objectOut.writeObject(infoUser);
                         break;
 
-                    default:
-                        System.out.println("WTF està passant aquí?!");
+                    case USER_DISCONNECTS:  //TODO: FALTA IMPLEMENTAR EL MATEIX PERÒ AL CLIENT!!
+                        String userDisc = dataInput.readUTF();
+                        userDAO.userDisconnects(userDisc);
                         break;
                 }
             }
@@ -260,24 +261,23 @@ public class DedicatedServer extends Thread {
         } finally {
             try {
                 dataOutput.close();
-            } catch (IOException e) {}
-            try {
                 dataInput.close();
-            } catch (IOException e) {}
-            try {
-                objectOut.close();
-            } catch (IOException e) {}
-            try {
                 objectIn.close();
-            } catch (IOException e) {}
-            try {
+                objectOut.close();
                 sClient.close();
-            } catch (IOException e) {}
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
             clients.remove(this);
         }
     }
 
-    public String getClientUser() {
+    /**
+     * Getter de l'usuari que esta connectat.
+     *
+     * @return Nom de l'usuari que esta connectat.
+     */
+    private String getClientUser() {
         return clientUser;
     }
 
@@ -289,7 +289,6 @@ public class DedicatedServer extends Thread {
                 System.out.println("En algun entro?");
                 ds.updateMessagesToClient(dbChat, receiver, clientUser);
             }
-
         }
     }
 
@@ -298,38 +297,14 @@ public class DedicatedServer extends Thread {
             MatchDAO matchDAO = new MatchDAO();
             boolean stillMatch = matchDAO.existsMatch(receiver, sender);
             dataOutput.writeBoolean(stillMatch);
-            if(stillMatch){
+            if(stillMatch) {
                 objectOut.writeObject(dbChat);
-            }else{
+            } else {
                 ChatDAO chatDAO = new ChatDAO();
                 chatDAO.deleteMessages(receiver, sender);
             }
-        } catch (IOException e) {
-        }
-    }
-
-    /**
-     * Getter del canal de sortida.
-     *
-     * @return Canal de sortida.
-     */
-    private ObjectOutputStream getOutChannel() {
-        return objectOut;
-    }
-
-    /**
-     * Metode encarregat d'enviar les noves dades actualitzades a tots els clients que hi ha connectats al servidor.
-     */
-    private void updateAllClients() {
-        ObjectOutputStream outStream;
-        for(DedicatedServer dServer : clients) {
-            outStream = dServer.getOutChannel();
-            try {
-                outStream.reset();
-                outStream.writeObject(new User("",""));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch(IOException e) {
+            e.printStackTrace();
         }
     }
 }

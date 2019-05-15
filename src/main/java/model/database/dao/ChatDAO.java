@@ -24,14 +24,11 @@ public class ChatDAO {
         String query = "SELECT * FROM chats WHERE (username_1 = '" + u1 + "' AND username_2 = '" + u2 + "') OR (username_1 = '" + u2 + "' AND username_2 = '" + u1 + "');";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         LinkedList<Message> xat = new LinkedList<>();
-        String source, destination, message, date;
-        String pattern = "MM/dd/yyyy HH:mm";
-        DateFormat df = new SimpleDateFormat(pattern);
         try {
             while(res.next()) {
-                source = res.getString("username_1");
-                destination = res.getString("username_2");
-                message = res.getString("message");
+                String source = res.getString("username_1");
+                String destination = res.getString("username_2");
+                String message = res.getString("message");
                 String d = res.getString("message_date");
                 Message m = new Message(source, message, destination, d);
                 xat.add(m);
@@ -39,8 +36,7 @@ public class ChatDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Chat c = new Chat(xat);
-        return c;
+        return (new Chat(xat));
     }
 
     /**
