@@ -289,7 +289,7 @@ public class DedicatedServer extends Thread {
      * Metode que es crida per enviar un missatge.
      *
      * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException Es tira quan s'intenta llegir un objecte d'una classe pero no es troba aquesta classe.
      */
     private void sendMessage() throws IOException, ClassNotFoundException {
         ChatDAO chatDAO = new ChatDAO();
@@ -303,6 +303,9 @@ public class DedicatedServer extends Thread {
         }
     }
 
+    /**
+     * Metode que es crida quan es vol carregar un xat nou sencer.
+     */
     private void loadChat() {
         ChatDAO chatDAO = new ChatDAO();
         try {
@@ -319,6 +322,9 @@ public class DedicatedServer extends Thread {
         }
     }
 
+    /**
+     * Metode que es crida quan un usuari fa unmatch amb un altre.
+     */
     private void userUnmatched() {
         MatchDAO matchDAO = new MatchDAO();
         ChatDAO chatDAO = new ChatDAO();
@@ -333,6 +339,11 @@ public class DedicatedServer extends Thread {
         }
     }
 
+    /**
+     * Metode que es crida quan un usuari fa match amb un altre.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     */
     private void userMatched() throws IOException {
         MatchDAO matchDAO = new MatchDAO();
         try {
@@ -345,6 +356,11 @@ public class DedicatedServer extends Thread {
         }
     }
 
+    /**
+     * Metode que es crida quan un usuari vol editar les dades del seu perfil.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     */
     private void editProfile() throws IOException {
         UserDAO userDAO = new UserDAO();
         try {
@@ -356,6 +372,11 @@ public class DedicatedServer extends Thread {
         }
     }
 
+    /**
+     * Metode que es crida quan es vol registrar un usuari en la bbdd.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     */
     private void registerUser() throws  IOException {
         UserDAO userDAO = new UserDAO();
         try {
@@ -373,6 +394,11 @@ public class DedicatedServer extends Thread {
         }
     }
 
+    /**
+     * Metode que es crida quan un usuari intenta fer login des del client.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     */
     private void loginUser() throws IOException {
         UserDAO userDAO = new UserDAO();
         boolean userExistsL;
