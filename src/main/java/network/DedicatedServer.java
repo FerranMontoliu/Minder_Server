@@ -207,6 +207,11 @@ public class DedicatedServer extends Thread {
         objectOut.writeObject(infoUser);
     }
 
+    /**
+     * Metode que cridem quan volem editar les preferencies d'un usuari.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     */
     private void editPreferences() throws IOException {
         UserDAO userDAO = new UserDAO();
         try {
@@ -219,6 +224,11 @@ public class DedicatedServer extends Thread {
         }
     }
 
+    /**
+     * Metode que cridem quan volem obtenir el seguent usuari a mostrar en el panell de fer matchs del client.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     */
     private void connectUser() throws IOException {
         UserDAO userDAO = new UserDAO();
         try {
@@ -231,6 +241,11 @@ public class DedicatedServer extends Thread {
         }
     }
 
+    /**
+     * Metode que es crida quan es fica dislike a un usuari en el panell de match.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     */
     private void connectDislike() throws IOException {
         LikeDAO likeDAO = new LikeDAO();
 
@@ -239,6 +254,11 @@ public class DedicatedServer extends Thread {
         likeDAO.addDislike(source, disliked);
     }
 
+    /**
+     * Metode que es crida quan es fica like a un usuari en el panell de match.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     */
     private void connectLike() throws IOException {
         LikeDAO likeDAO = new LikeDAO();
         MatchDAO matchDAO = new MatchDAO();
@@ -251,6 +271,9 @@ public class DedicatedServer extends Thread {
         dataOutput.writeBoolean(isMatch);
     }
 
+    /**
+     * Metode que es crida per obtenir la llista de matchs d'un usuari de la bbdd.
+     */
     private void userMatchList() {
         MatchDAO matchDAO = new MatchDAO();
         try {
@@ -262,6 +285,12 @@ public class DedicatedServer extends Thread {
         }
     }
 
+    /**
+     * Metode que es crida per enviar un missatge.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     * @throws ClassNotFoundException
+     */
     private void sendMessage() throws IOException, ClassNotFoundException {
         ChatDAO chatDAO = new ChatDAO();
         clientUser = dataInput.readUTF();

@@ -42,7 +42,7 @@ public class Chart extends JPanel {
      * @return retorna el valor maxim de l'array.
      */
     private int maxValue(int[] dia) {
-        int[] aux = dia;
+        int[] aux = dia.clone();
         Arrays.sort(aux);
         return aux[aux.length - 1];
     }
@@ -55,7 +55,7 @@ public class Chart extends JPanel {
      * @return retorna el valor minim de l'array.
      */
     private int minValue(int[] dia) {
-        int[] aux = dia;
+        int[] aux = dia.clone();
         Arrays.sort(aux);
         return aux[0];
     }
