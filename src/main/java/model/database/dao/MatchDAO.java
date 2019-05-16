@@ -191,13 +191,12 @@ public class MatchDAO {
             String query = "SELECT COUNT(*) " +
                     "FROM matchs " +
                     "WHERE DAY(match_date) = DAY(NOW()) AND " +
-                    "HOUR(match_date) = HOUR(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( 23-i ) +" HOUR));";
+                    "HOUR(match_date) = HOUR(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( i ) +" HOUR));";
             ResultSet res = DBConnector.getInstance().selectQuery(query);
 
             try {
                 res.next();
                 dies[i] = res.getInt(1);
-                System.out.println(dies[i]);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
