@@ -3,6 +3,7 @@ package view;
 import controller.ControllerRegister;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 /**
@@ -31,7 +32,7 @@ public class JRegister extends JPanel {
      */
     public JRegister(){
         Dimension d = new Dimension(10000,200);
-        setLayout(new GridLayout(19,2));
+        setLayout(new GridLayout(18,2));
 
         //Inicialitzar els elements
         GridBagConstraints gbc = new GridBagConstraints();
@@ -66,7 +67,9 @@ public class JRegister extends JPanel {
         gbc.gridy = 0;
         gbc.gridx = 0;
         gbc.gridy = 1;
-        add(new JLabel("--------------------------------------------- Sign Up ---------------------------------------------"));
+        TitledBorder tb = new TitledBorder("Signup");
+        tb.setTitleColor(new Color(7,23,80));
+        this.setBorder(tb);
         add(new JLabel("Username"),gbc);
         add(jtfName);
         add(new JLabel("Age"));
@@ -100,7 +103,10 @@ public class JRegister extends JPanel {
         JPanel jpRadioButton = new JPanel();
         jpRadioButton.add(jrbPremium);
         jpRadioButton.add(jrbNoPremium);
-        add (new JLabel(a+a+"  Premium Membership"));
+
+        JLabel jl3 = new JLabel("Premium Membership:");
+        jl3.setHorizontalAlignment(JLabel.CENTER);
+        add(jl3);
         add(jpRadioButton);
         this.createAgeFilters();
 
@@ -122,13 +128,21 @@ public class JRegister extends JPanel {
         for (int i = 18; i <= 100; ++i) {
             jcbMinAgeFilter.addItem(i);
         }
-        add(jcbMinAgeFilter);
+        JPanel jp13 = new JPanel();
+        jp13.setLayout(new BoxLayout(jp13,0));
+        JLabel jl13 = new JLabel(a+a+"   ");
+        jp13.add(jl13);
+        jp13.add(jcbMinAgeFilter);
 
         //MAXIMUM Age
         jcbMaxAgeFilter = new JComboBox<>();
         jcbMaxAgeFilter.setEditable(false);
         jcbMaxAgeFilter.setPreferredSize(new Dimension(100, 30));
         jcbMaxAgeFilter.setMaximumSize(jcbMaxAgeFilter.getPreferredSize());
+
+        ((JLabel)jcbMinAgeFilter.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        ((JLabel)jcbMaxAgeFilter.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        //jcbMinAgeFilter.setAlignmentX(SwingConstants.CENTER);
 
         for (int i = 18; i <= 100; ++i) {
             jcbMaxAgeFilter.addItem(i);
@@ -137,16 +151,22 @@ public class JRegister extends JPanel {
         JPanel jp2 = new JPanel();
 
         jp2.setLayout(new BoxLayout(jp2,0));
-        jp2.add(new JLabel("                                                                                      "));
-        jp2.add(jcbMinAgeFilter);
+        //jp2.add(jcbMinAgeFilter,BorderLayout.CENTER);
         JPanel jp = new JPanel();
 
         jp.setLayout(new BoxLayout(jp,0));
-        jp.add(new JLabel("                                                                                      "));
+        JLabel jl4 = new JLabel(a+a+"   ");
+        jp.add(jl4);
         jp.add(jcbMaxAgeFilter);
-        add(new JLabel(a+a+"       Minimum age: "));
-        add(jp2);
-        add(new JLabel(a+a+"       Maximum age:"));
+        JLabel jl = new JLabel("Minimum age:");
+        jl.setHorizontalAlignment(JLabel.CENTER);
+        add(jl);
+        add(jp13);
+
+        JLabel jl2 = new JLabel("Maximum age:");
+        jl2.setHorizontalAlignment(JLabel.CENTER);
+        //add(jp2,BorderLayout.CENTER);
+        add(jl2);
         add(jp);
     }
 

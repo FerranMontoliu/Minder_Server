@@ -8,6 +8,7 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -26,7 +27,7 @@ public class JAccepted extends JPanel {
     private JTextPane jtpane2;
     private BarChart barChart;
     private JPanel jpBarres, jpQuesito;
-    private int viewed; //No cal realment ?
+    private int viewed;
     private int accepted;
 
     /**
@@ -37,7 +38,9 @@ public class JAccepted extends JPanel {
     public JAccepted(int acceptats, int vistos) {
 
         this.setLayout(new BorderLayout());
-
+        TitledBorder border = new TitledBorder("Accepted / Viewed Graph");
+        border.setTitleColor(new Color(13, 71, 150));
+        this.setBorder(border);
         jtpane = new JTextPane();
         jtpane2 = new JTextPane();
 
@@ -68,7 +71,7 @@ public class JAccepted extends JPanel {
         JLabel jlabel = new JLabel(a+a+a+a+a+a+"Accepted / Viewed Users Graph Bar");
         Font f = jlabel.getFont();
 
-        this.redrawGraphs(13,25); //TODO: Viewed, Accepted PER DEFECTE
+        this.redrawGraphs(20,20); //TODO: Viewed, Accepted PER DEFECTE
 
         StyledDocument doc = (StyledDocument) jtpane.getDocument();
         jtpane.setOpaque(false);
@@ -131,7 +134,6 @@ public class JAccepted extends JPanel {
         jpBarres.add(barChart);
         this.setGraphText(viewed, accepted);
     }
-
     public void updateBars(int numberOfViews, int numberOfLikes){
         barChart.paintBars(numberOfViews, numberOfLikes);
         jpBarres.add(barChart);
