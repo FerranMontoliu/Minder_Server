@@ -66,7 +66,6 @@ public class JTop extends JPanel {
         Vector<Vector> data = new Vector<Vector>();
 
         for(int i = 0; i< users.size() && i< 5;i++){
-            System.out.println(users.get(i).getUsername());
             element = new Vector<String>();
             element.addElement(users.get(i).getUsername());
             element.addElement(Integer.toString(users.get(i).getMatches()));
