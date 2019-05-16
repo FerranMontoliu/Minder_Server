@@ -89,185 +89,270 @@ public class DedicatedServer extends Thread {
             while(isOn) {
                 //Llegir char que indica quin missatge rebrà el servidor:
                 char func = dataInput.readChar();
-                UserDAO userDAO = new UserDAO();
-                MatchDAO matchDAO = new MatchDAO();
-                ChatDAO chatDAO = new ChatDAO();
-                LikeDAO likeDAO = new LikeDAO();
 
                 switch(func){
                     case LOGIN_USER:
-                        boolean userExistsL;
-                        try {
-                            User loginUser = (User) objectIn.readObject();
-                            userExistsL = userDAO.existsUser(loginUser);
-                            dataOutput.writeBoolean(userExistsL);
-                            if(userExistsL) {
-                                User realUser = userDAO.getUser(loginUser);
-                                PasswordEncoder encoder = new BCryptPasswordEncoder();
-                                System.out.println(realUser.getPassword());
-                                System.out.println(loginUser.getPassword());
-                                boolean sameUser = encoder.matches(loginUser.getPassword(), realUser.getPassword());
-                                boolean isConnected = userDAO.isConnected(realUser.getUsername());
-                                dataOutput.writeBoolean(sameUser && !isConnected);
-                                if(sameUser && !isConnected) {
-                                    userDAO.userConnects(realUser.getUsername());
-                                    objectOut.writeObject(realUser);
-                                }
-                            }
-                        } catch(ClassNotFoundException e1) {
-                            e1.printStackTrace();
-                        }
+                        loginUser();
                         break;
 
                     case REGISTER_USER:
-                        try {
-                            User registeringUser = (User) objectIn.readObject();
-                            boolean usernameExistsR = userDAO.existsUser(registeringUser);
-                            boolean mailExistsR = userDAO.existsUser(new User(registeringUser.getMail(), registeringUser.getPassword()));
-                            if((!usernameExistsR) && (!mailExistsR)) {
-                                dataOutput.writeBoolean(true);
-                                userDAO.addUser(registeringUser);
-                            } else {
-                                dataOutput.writeBoolean(false);
-                            }
-                        } catch(ClassNotFoundException e2) {
-                            e2.printStackTrace();
-                        }
+                        registerUser();
                         break;
 
                     case EDIT_PROFILE:
-                        try {
-                            User u3 = (User) objectIn.readObject();
-                            userDAO.updateInfoUser(u3);
-                            dataOutput.writeBoolean(true);
-                        } catch(ClassNotFoundException e3) {
-                            e3.printStackTrace();
-                        }
+                        editProfile();
                         break;
 
                     case USER_MATCHED:
-                        try {
-                            User u4 = (User) objectIn.readObject();
-                            User u5 = (User) objectIn.readObject();
-                            matchDAO.addMatch(u4.getUsername(), u5.getUsername());
-                            controlador.updateWindow();
-                        } catch(ClassNotFoundException e4) {
-                            e4.printStackTrace();
-                        }
+                        userMatched();
                         break;
 
                     case USER_UNMATCHED:
-                        try {
-                            String sender = dataInput.readUTF();
-                            String deleted = dataInput.readUTF();
-                            matchDAO.deleteMatch(sender, deleted);
-                            chatDAO.deleteMessages(sender, deleted);
-                            controlador.updateWindow();
-
-                        } catch(IOException e5) {
-                            e5.printStackTrace();
-                        }
+                        userUnmatched();
                         break;
 
                     case LOAD_CHAT:
-                        try {
-                            String sender = dataInput.readUTF();
-                            String receiver = dataInput.readUTF();
-                            Chat storedChat = chatDAO.loadChat(sender, receiver);
-                            boolean existsChat = storedChat.getMessages().size() > 0;
-                            dataOutput.writeBoolean(existsChat);
-                            if(existsChat) {
-                                objectOut.writeObject(storedChat);
-                            }
-                        } catch(IOException e6) {
-                            e6.printStackTrace();
-                        }
+                        loadChat();
                         break;
 
                     case SEND_MESSAGE:
-                        clientUser = dataInput.readUTF();
-                        while(isOn) {
-                            Message message = (Message) objectIn.readObject();
-                            String receiver = message.getDestination();
-                            System.out.println(message.toString());
-                            chatDAO.sendMessage(message);
-                            Chat storedChat = chatDAO.loadChat(clientUser, receiver);
-                            sendToDestination(receiver, storedChat);
-                        }
+                        sendMessage();
                         break;
 
                     case USER_MATCH_LIST:
-                        try {
-                            String username = dataInput.readUTF();
-                            MatchLoader matchLoader = matchDAO.getUserMatches(username);
-                            objectOut.writeObject(matchLoader);
-                        } catch(IOException e1) {
-                            e1.printStackTrace();
-                        }
+                        userMatchList();
                         break;
 
                     case CONNECT_USER:
-                        try {
-                            User associatedUser = (User) objectIn.readObject();
-                            String nextUsername = userDAO.getNextUser(associatedUser.getUsername(), associatedUser.getMinAge(), associatedUser.getMaxAge(), associatedUser.isPremium(), associatedUser.getLikesC(), associatedUser.getLikesJava());
-                            User nextUser = userDAO.getConnectUser(nextUsername);
-                            objectOut.writeObject(nextUser);
-                        } catch(ClassNotFoundException e8) {
-                            e8.printStackTrace();
-                        }
+                        connectUser();
                         break;
 
                     case CONNECT_LIKE:
-                        String sender = dataInput.readUTF();
-                        String liked = dataInput.readUTF();
-                        likeDAO.addLike(sender, liked);
-
-                        boolean isMatch = matchDAO.isMatch(liked, sender);
-                        dataOutput.writeBoolean(isMatch);
+                        connectLike();
                         break;
 
                     case CONNECT_DISLIKE:
-                        String source = dataInput.readUTF();
-                        String disliked = dataInput.readUTF();
-                        likeDAO.addDislike(source, disliked);
+                        connectDislike();
                         break;
 
                     case EDIT_PREFERENCES:
-                        try {
-                            User updatedUser = (User) objectIn.readObject();
-                            userDAO.updatePreferences(updatedUser);
-                            boolean editDone = true;
-                            dataOutput.writeBoolean(editDone);
-                        } catch(ClassNotFoundException e9) {
-                            e9.printStackTrace();
-                        }
+                        editPreferences();
                         break;
 
                     case USER_INFO:
-                        String username = dataInput.readUTF();
-                        User infoUser = userDAO.getConnectUser(username);
-                        objectOut.writeObject(infoUser);
+                        userInfo();
                         break;
 
-                    case USER_DISCONNECTS:  //TODO: FALTA IMPLEMENTAR EL MATEIX PERÒ AL CLIENT!!
-                        String userDisc = dataInput.readUTF();
-                        userDAO.userDisconnects(userDisc);
+                    case USER_DISCONNECTS:
+                        userDisconnects();
                         break;
                 }
             }
         } catch(IOException | ClassNotFoundException e) {
             clients.remove(this);
         } finally {
+            //Tanquem streams:
             try {
                 dataOutput.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            try {
                 dataInput.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            try {
                 objectIn.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            try {
                 objectOut.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+
+            //Tanquem socket:
+            try {
                 sClient.close();
             } catch(IOException e) {
                 e.printStackTrace();
             }
             clients.remove(this);
+        }
+    }
+
+    private void userDisconnects() throws IOException {
+        UserDAO userDAO = new UserDAO();
+        String userDisc = dataInput.readUTF();
+        userDAO.userDisconnects(userDisc);
+    }
+
+    private void userInfo() throws IOException {
+        UserDAO userDAO = new UserDAO();
+        String username = dataInput.readUTF();
+        User infoUser = userDAO.getConnectUser(username);
+        objectOut.writeObject(infoUser);
+    }
+
+    private void editPreferences() throws IOException {
+        UserDAO userDAO = new UserDAO();
+        try {
+            User updatedUser = (User) objectIn.readObject();
+            userDAO.updatePreferences(updatedUser);
+            boolean editDone = true;
+            dataOutput.writeBoolean(editDone);
+        } catch(ClassNotFoundException e9) {
+            e9.printStackTrace();
+        }
+    }
+
+    private void connectUser() throws IOException {
+        UserDAO userDAO = new UserDAO();
+        try {
+            User associatedUser = (User) objectIn.readObject();
+            String nextUsername = userDAO.getNextUser(associatedUser.getUsername(), associatedUser.getMinAge(), associatedUser.getMaxAge(), associatedUser.isPremium(), associatedUser.getLikesC(), associatedUser.getLikesJava());
+            User nextUser = userDAO.getConnectUser(nextUsername);
+            objectOut.writeObject(nextUser);
+        } catch(ClassNotFoundException e8) {
+            e8.printStackTrace();
+        }
+    }
+
+    private void connectDislike() throws IOException {
+        LikeDAO likeDAO = new LikeDAO();
+
+        String source = dataInput.readUTF();
+        String disliked = dataInput.readUTF();
+        likeDAO.addDislike(source, disliked);
+    }
+
+    private void connectLike() throws IOException {
+        LikeDAO likeDAO = new LikeDAO();
+        MatchDAO matchDAO = new MatchDAO();
+
+        String sender = dataInput.readUTF();
+        String liked = dataInput.readUTF();
+        likeDAO.addLike(sender, liked);
+
+        boolean isMatch = matchDAO.isMatch(liked, sender);
+        dataOutput.writeBoolean(isMatch);
+    }
+
+    private void userMatchList() {
+        MatchDAO matchDAO = new MatchDAO();
+        try {
+            String username = dataInput.readUTF();
+            MatchLoader matchLoader = matchDAO.getUserMatches(username);
+            objectOut.writeObject(matchLoader);
+        } catch(IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private void sendMessage() throws IOException, ClassNotFoundException {
+        ChatDAO chatDAO = new ChatDAO();
+        clientUser = dataInput.readUTF();
+        while(isOn) {
+            Message message = (Message) objectIn.readObject();
+            String receiver = message.getDestination();
+            chatDAO.sendMessage(message);
+            Chat storedChat = chatDAO.loadChat(clientUser, receiver);
+            sendToDestination(receiver, storedChat);
+        }
+    }
+
+    private void loadChat() {
+        ChatDAO chatDAO = new ChatDAO();
+        try {
+            String sender = dataInput.readUTF();
+            String receiver = dataInput.readUTF();
+            Chat storedChat = chatDAO.loadChat(sender, receiver);
+            boolean existsChat = storedChat.getMessages().size() > 0;
+            dataOutput.writeBoolean(existsChat);
+            if(existsChat) {
+                objectOut.writeObject(storedChat);
+            }
+        } catch(IOException e6) {
+            e6.printStackTrace();
+        }
+    }
+
+    private void userUnmatched() {
+        MatchDAO matchDAO = new MatchDAO();
+        ChatDAO chatDAO = new ChatDAO();
+        try {
+            String sender = dataInput.readUTF();
+            String deleted = dataInput.readUTF();
+            matchDAO.deleteMatch(sender, deleted);
+            chatDAO.deleteMessages(sender, deleted);
+            controlador.updateWindow();
+        } catch(IOException e5) {
+            e5.printStackTrace();
+        }
+    }
+
+    private void userMatched() throws IOException {
+        MatchDAO matchDAO = new MatchDAO();
+        try {
+            User u4 = (User) objectIn.readObject();
+            User u5 = (User) objectIn.readObject();
+            matchDAO.addMatch(u4.getUsername(), u5.getUsername());
+            controlador.updateWindow();
+        } catch(ClassNotFoundException e4) {
+            e4.printStackTrace();
+        }
+    }
+
+    private void editProfile() throws IOException {
+        UserDAO userDAO = new UserDAO();
+        try {
+            User u3 = (User) objectIn.readObject();
+            userDAO.updateInfoUser(u3);
+            dataOutput.writeBoolean(true);
+        } catch(ClassNotFoundException e3) {
+            e3.printStackTrace();
+        }
+    }
+
+    private void registerUser() throws  IOException {
+        UserDAO userDAO = new UserDAO();
+        try {
+            User registeringUser = (User) objectIn.readObject();
+            boolean usernameExistsR = userDAO.existsUser(registeringUser);
+            boolean mailExistsR = userDAO.existsUser(new User(registeringUser.getMail(), registeringUser.getPassword()));
+            if((!usernameExistsR) && (!mailExistsR)) {
+                dataOutput.writeBoolean(true);
+                userDAO.addUser(registeringUser);
+            } else {
+                dataOutput.writeBoolean(false);
+            }
+        } catch(ClassNotFoundException e2) {
+            e2.printStackTrace();
+        }
+    }
+
+    private void loginUser() throws IOException {
+        UserDAO userDAO = new UserDAO();
+        boolean userExistsL;
+        try {
+            User loginUser = (User) objectIn.readObject();
+            userExistsL = userDAO.existsUser(loginUser);
+            dataOutput.writeBoolean(userExistsL);
+            if(userExistsL) {
+                User realUser = userDAO.getUser(loginUser);
+                PasswordEncoder encoder = new BCryptPasswordEncoder();
+                boolean sameUser = encoder.matches(loginUser.getPassword(), realUser.getPassword());
+                boolean isConnected = userDAO.isConnected(realUser.getUsername());
+                dataOutput.writeBoolean(sameUser && !isConnected);
+                if(sameUser && !isConnected) {
+                    userDAO.userConnects(realUser.getUsername());
+                    objectOut.writeObject(realUser);
+                }
+            }
+        } catch(ClassNotFoundException e1) {
+            e1.printStackTrace();
         }
     }
 
