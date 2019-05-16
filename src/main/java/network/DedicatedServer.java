@@ -81,6 +81,7 @@ public class DedicatedServer extends Thread {
      */
     public void run() {
         try {
+            //Obrim els streams d'entrada i sortida:
             dataInput = new DataInputStream(sClient.getInputStream());
             dataOutput = new DataOutputStream(sClient.getOutputStream());
             objectIn = new ObjectInputStream(sClient.getInputStream());
@@ -183,12 +184,22 @@ public class DedicatedServer extends Thread {
         }
     }
 
+    /**
+     * Metode que cridem quan l'usuari es vol desconnectar de la bbdd.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     */
     private void userDisconnects() throws IOException {
         UserDAO userDAO = new UserDAO();
         String userDisc = dataInput.readUTF();
         userDAO.userDisconnects(userDisc);
     }
 
+    /**
+     * Metode que cridem quan volem enviar la info d'un usuari.
+     *
+     * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     */
     private void userInfo() throws IOException {
         UserDAO userDAO = new UserDAO();
         String username = dataInput.readUTF();

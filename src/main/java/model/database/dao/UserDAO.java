@@ -166,7 +166,7 @@ public class UserDAO {
      */
     public boolean isConnected(String username) {
         boolean connected = false;
-        String query = "SELECT connected FROM users WHERE users.username = '" + username + "'";
+        String query = "SELECT connected FROM users WHERE users.username = '" + username + "';";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         try {
             res.next();
@@ -183,7 +183,7 @@ public class UserDAO {
      * @param username Usuari que es vol connectar.
      */
     public void userConnects(String username) {
-        String query = "UPDATE users SET connected = '1' WHERE users.username = '" + username + "'";
+        String query = "UPDATE users SET connected = '1' WHERE users.username = '" + username + "';";
         DBConnector.getInstance().executeQuery(query);
     }
 
@@ -193,7 +193,7 @@ public class UserDAO {
      * @param username Usuari que es vol desconnectar.
      */
     public void userDisconnects(String username) {
-        String query = "UPDATE users SET connected = '0' WHERE users.username = '" + username + "'";
+        String query = "UPDATE users SET connected = '0' WHERE users.username = '" + username + "';";
         DBConnector.getInstance().executeQuery(query);
     }
 
