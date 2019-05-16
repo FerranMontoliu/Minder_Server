@@ -45,19 +45,19 @@ public class WindowServer extends JFrame{
 
         //Panell d'Acceptats/Visualitzar
          jAcceptats = new JAccepted(5,7);
-        jtPane.addTab("Accepted/Viewed",jAcceptats );
+        jtPane.addTab("Accepted/Viewed", jAcceptats);
 
         //Panell de Registrar
         jRegister = new JRegister();
-        jtPane.addTab("Sign Up",jRegister );
+        jtPane.addTab("Sign Up", jRegister);
 
         //Panell d'estadístiques
         jCharts = new JCharts(day, week, month);
-        jtPane.addTab("Statistics",jCharts );
+        jtPane.addTab("Statistics", jCharts);
 
         //Panell Top 5
         jTop = new JTop(users);
-        jtPane.addTab("Top 5",jTop);
+        jtPane.addTab("Top 5", jTop);
 
         //Afegir al panell principal el JTabbedPane
         getContentPane().add(jtPane);

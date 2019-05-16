@@ -188,10 +188,11 @@ public class DedicatedServer extends Thread {
      * Metode que cridem quan l'usuari es vol desconnectar de la bbdd.
      *
      * @throws IOException Es tira quan hi ha hagut algun error enviant o rebent dades pels streams.
+     * @throws ClassNotFoundException Es tira quan s'intenta llegir un objecte d'una classe pero no es troba aquesta classe.
      */
-    private void userDisconnects() throws IOException {
+    private void userDisconnects() throws IOException, ClassNotFoundException {
         UserDAO userDAO = new UserDAO();
-        String userDisc = dataInput.readUTF();
+        String userDisc = (String) objectIn.readObject();
         userDAO.userDisconnects(userDisc);
     }
 
