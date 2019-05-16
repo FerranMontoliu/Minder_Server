@@ -50,9 +50,9 @@ public class JCharts extends JPanel {
      * @param month array de matches de l'ultim mes
      */
     public void updateData(int[] day,int [] week, int[] month ){
-        chartDay.updateData(day, "Day");
-        chartMonth.updateData(week, "Week");
-        chartWeek.updateData(month, "Month");
+        chartDay.updateData(day);
+        chartMonth.updateData(week);
+        chartWeek.updateData(month);
         chartDay.repaint();
         chartMonth.repaint();
         chartWeek.repaint();
