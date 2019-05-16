@@ -13,6 +13,8 @@ public class WindowServer extends JFrame{
     private JCharts jCharts;
     private JRegister jRegister;
     private JTop jTop;
+    private JAccepted jAcceptats;
+    private BarChart jBarChart;
 
     /**
      * Constructor de la finestra
@@ -42,8 +44,8 @@ public class WindowServer extends JFrame{
         JTabbedPane jtPane = new JTabbedPane();
 
         //Panell d'Acceptats/Visualitzar
-        JAccepted jpAcceptats = new JAccepted(5,7);
-        jtPane.addTab("Accepted/Viewed",jpAcceptats );
+         jAcceptats = new JAccepted(5,7);
+        jtPane.addTab("Accepted/Viewed",jAcceptats );
 
         //Panell de Registrar
         jRegister = new JRegister();
@@ -74,7 +76,6 @@ public class WindowServer extends JFrame{
     public void updateWindow(int[]week, int[]month, int[]day, ArrayList<User> top5){
         jCharts.updateData(day, week, month);
         jTop.updateTop5(top5);
-        System.out.println("Nous matches update");
 
     }
 
@@ -92,5 +93,11 @@ public class WindowServer extends JFrame{
      */
     public void registerController(Controller c) {
         jRegister.registerController(c.getCr());
+    }
+
+    public void updateBars(int numberOfViews, int numberOfLikes) {
+
+       jAcceptats.updateBars(numberOfViews, numberOfLikes);
+
     }
 }

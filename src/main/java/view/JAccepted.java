@@ -132,5 +132,14 @@ public class JAccepted extends JPanel {
         this.setGraphText(viewed, accepted);
     }
 
+    public void updateBars(int numberOfViews, int numberOfLikes){
+        barChart.paintBars(numberOfViews, numberOfLikes);
+        jpBarres.add(barChart);
+        this.setGraphText(viewed, accepted);
+
+
+    }
+
+
 }
 
