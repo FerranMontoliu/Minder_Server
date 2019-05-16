@@ -57,14 +57,20 @@ public class MatchDAO {
         String query;
         try {
             resExists.next();
+            int e = resExists.getInt(1);
             //Si no hi ha hagut cap relacio, directament no hi haura match
-            //Si l'altre user t'havia donat like, hi ha match
-            if(resExists.getInt(1) > 0) {
+            if (e == 0){
+                return false;
+            //si hi ha hagut relacio, el resultat dependra de si el receiver li va donar like o dislike al sender
+            }else{
                 query = "SELECT liked_bool FROM liked WHERE (username_1 = '"+ receiver +"' AND username_2 = '"+ sender +"')";
                 ResultSet res = DBConnector.getInstance().selectQuery(query);
 
+                boolean i;
                 res.next();
-                return res.getInt(1) == 1;
+                i = (res.getInt(1) == 1)? true:false;
+                return i;
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,13 +102,15 @@ public class MatchDAO {
     /**
      * Funcio que retorna una llista amb els usuaris de la bbdd ordenats per nombre de matchs.
      *
-     * @return Llista que conte els 5 users (maxim) amb mes matchs de la bbdd.
+     * @return Llista que conte els 5 users amb mes matchs de la bbdd.
      */
     public ArrayList<User> getTopFiveMostMatchedUsers() {
+        //TODO: retornar els 5 users amb més matches (ASUMINT QUE EXISTEIXEN 5 USERS MÍNIM!).
+
         ArrayList<User> users = new ArrayList<>();
-        ArrayList<User> usersFinal = new ArrayList<>();
         String query = "SELECT username FROM users";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
+        ResultSet res1;
         int matches;
 
         try {
@@ -115,20 +123,38 @@ public class MatchDAO {
             e.printStackTrace();
         }
 
-        Collections.sort(users, (o1, o2) -> {
-            if(o1.getMatches() < o2.getMatches()){
-                return 1;
+        Collections.sort(users, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                if(o1.getMatches() < o2.getMatches()){
+                    return 1;
+                }
+                if(o1.getMatches() == o2.getMatches()){
+                    return 0;
+                }
+                return -1;
             }
-            if(o1.getMatches() == o2.getMatches()){
-                return 0;
-            }
-            return -1;
         });
+
+        return users;
+    }
+
+    /**
+     * Funcio que retorna el nombre de matchs que hi ha a la base de dades.
+     *
+     * @return Retorna el nombre de matchs que hi ha guardats a la base de dades.
+     */
+    public int getNumberOfMatches() {
+        String query = "SELECT COUNT(*) FROM matchs";
+        ResultSet res = DBConnector.getInstance().selectQuery(query);
         int i = 0;
-        while(i < 5 && i < users.size()) {
-            usersFinal.add(users.get(i++));
+        try {
+            res.next();
+            i = res.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return usersFinal;
+        return i;
     }
 
     /**
@@ -138,7 +164,7 @@ public class MatchDAO {
      *
      * @return Retorna el nombre de matchs de l'usuari que entra com a parametre.
      */
-    private int getUserNumberOfMatches(String username) {
+    public int getUserNumberOfMatches(String username) {
         String query = "SELECT COUNT(*) FROM matchs WHERE username_1 = '" + username + "' OR username_2 = '" + username + "'";
         ResultSet res = DBConnector.getInstance().selectQuery(query);
         int i = 0;
@@ -152,43 +178,49 @@ public class MatchDAO {
     }
 
     /**
-     * Metode que retorna el nombre de matchs que hi ha hagut durant el dia, separats per hores.
-     *
-     * @return Array d'enters que conte el nombre de matchs que hi ha hagut durant el dia, separats per hores.
+     * Metode que retorna (modificar tipus de variable de retorn al gust) els noms dels usuaris que han fet match durant
+     * el dia que s'executa aquesta query
+     * @return
      */
     public int[] getLastDayMatches() {
-        int[] hores = new int[24];
+
+
+        int[] dies = new int[24];
 
         for(int i = 0; i< 24; i++){
             String query = "SELECT COUNT(*) " +
                     "FROM matchs " +
                     "WHERE DAY(match_date) = DAY(NOW()) AND " +
-                    "HOUR(match_date) = HOUR(DATE_ADD(NOW(), INTERVAL -" + ( 23 - i ) +" HOUR));";
+                    "HOUR(match_date) = HOUR(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( 23-i ) +" HOUR));";
             ResultSet res = DBConnector.getInstance().selectQuery(query);
 
             try {
                 res.next();
-                hores[i] = res.getInt(1);
+                dies[i] = res.getInt(1);
+                System.out.println(dies[i]);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         }
-        return hores;
+
+        return dies;
     }
 
     /**
-     * Metode que retorna el nombre de matchs que hi ha hagut durant la setmana, separats per dies.
-     *
-     * @return Array d'enters que conte el nombre de matchs que hi ha hagut durant la setmana, separats per dies.
+     * Metode que retorna (modificar tipus de variable de retorn al gust) els noms dels usuaris i data que han fet
+     * match durant la setmana que s'executa aquesta query
+     * @return
      */
     public int[] getLastWeekMatches() {
+
         int[] dies = new int[7];
 
-        for(int i = 0; i< 7; i++) {
-            String query = "SELECT COUNT(*) " +
-                    "FROM matchs " +
-                    "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + (6 - i) + " DAY));";
-            ResultSet res = DBConnector.getInstance().selectQuery(query);
+        for(int i = 0; i< 7; i++){
+                String query = "SELECT COUNT(*) " +
+                        "FROM matchs " +
+                        "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( 6-i ) +" DAY));";
+                ResultSet res = DBConnector.getInstance().selectQuery(query);
 
             try {
                 res.next();
@@ -196,22 +228,26 @@ public class MatchDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         }
+
+
         return dies;
     }
 
     /**
-     * Metode que retorna el nombre de matchs que hi ha hagut durant el mes, separats per dies.
-     *
-     * @return Array d'enters que conte el nombre de matchs que hi ha hagut durant el mes, separats per dies.
+     * Metode que retorna (modificar tipus de variable de retorn al gust) els noms dels usuaris i data que han fet
+     * match durant l'ultim mes des de que s'executa aquesta query
+     * @return
      */
     public int[] getLastMonthMatches() {
+
         int[] dies = new int[30];
 
         for(int i = 0; i< 30; i++){
             String query = "SELECT COUNT(*) " +
                     "FROM matchs " +
-                    "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + ( 29 - i ) +" DAY));";
+                    "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + Integer.toString( 29-i ) +" DAY));";
             ResultSet res = DBConnector.getInstance().selectQuery(query);
 
             try {
@@ -220,7 +256,10 @@ public class MatchDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         }
+
+
         return dies;
     }
 
