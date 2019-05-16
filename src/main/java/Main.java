@@ -20,6 +20,7 @@ public class Main {
             Controller controller = new Controller(view);
             view.registerController(controller);
             controller.updateWindow();
+            controller.updateBars();
             view.setVisible(true);
 
             ArrayList<User> model = new ArrayList<>();

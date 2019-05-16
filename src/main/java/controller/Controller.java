@@ -1,5 +1,6 @@
 package controller;
 
+import model.database.dao.LikeDAO;
 import model.database.dao.MatchDAO;
 import model.entity.User;
 import view.JRegister;
@@ -50,5 +51,10 @@ public class Controller implements ActionListener {
         MatchDAO ma = new MatchDAO();
         ArrayList<User> u = ma.getTopFiveMostMatchedUsers();
         view.updateWindow(ma.getLastMonthMatches(), ma.getLastWeekMatches(), ma.getLastDayMatches(), u);
+    }
+
+    public void updateBars() {
+        LikeDAO li = new LikeDAO();
+        view.updateBars(li.getNumberOfViews(), li.getNumberOfLikes());
     }
 }
