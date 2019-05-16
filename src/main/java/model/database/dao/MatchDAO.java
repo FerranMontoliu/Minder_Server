@@ -180,7 +180,7 @@ public class MatchDAO {
      */
     public int[] getLastDayMatches() {
         int[] hores = new int[24];
-        for(int i = 0; i< 24; i++){
+        for(int i = 0; i < 24; i++){
             String query = "SELECT COUNT(*) " +
                     "FROM matchs " +
                     "WHERE DAY(match_date) = DAY(NOW()) AND " +
@@ -203,11 +203,11 @@ public class MatchDAO {
      */
     public int[] getLastWeekMatches() {
         int[] dies = new int[7];
-        for(int i = 0; i< 7; i++){
-                String query = "SELECT COUNT(*) " +
-                        "FROM matchs " +
-                        "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + (6 - i) + " DAY));";
-                ResultSet res = DBConnector.getInstance().selectQuery(query);
+        for(int i = 0; i < 7; i++){
+            String query = "SELECT COUNT(*) " +
+                    "FROM matchs " +
+                    "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + (6 - i) + " DAY));";
+            ResultSet res = DBConnector.getInstance().selectQuery(query);
             try {
                 res.next();
                 dies[i] = res.getInt(1);
@@ -225,7 +225,7 @@ public class MatchDAO {
      */
     public int[] getLastMonthMatches() {
         int[] dies = new int[30];
-        for(int i = 0; i< 30; i++){
+        for(int i = 0; i < 30; i++){
             String query = "SELECT COUNT(*) " +
                     "FROM matchs " +
                     "WHERE DAY(match_date) = DAY(DATE_ADD(NOW(), INTERVAL -" + (29 - i) + " DAY));";
