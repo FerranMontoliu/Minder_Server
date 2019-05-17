@@ -73,8 +73,9 @@ public class ControllerRegister implements ActionListener {
                 if(correct) {
                     throwCorrectMessage();
                     jRegister.isPremium();
+                    int maxAge = jRegister.isNoFilterChecked()? 0: jRegister.getMaximumAge();
                     //User u = new User(jRegister.getUsername(),Integer.valueOf(jRegister.getAge()),jRegister.isPremium(), jRegister.getMail(), "Minder19"/*encoder.encode(jRegister.getPassword())*/, jRegister.getMinimumAge(), jRegister.getMaximumAge());
-                    User u = new User(jRegister.getUsername(),Integer.valueOf(jRegister.getAge()),jRegister.isPremium(), jRegister.getMail(),encoder.encode(jRegister.getPassword()), jRegister.getMinimumAge(), jRegister.getMaximumAge());
+                    User u = new User(jRegister.getUsername(),Integer.valueOf(jRegister.getAge()),jRegister.isPremium(), jRegister.getMail(),encoder.encode(jRegister.getPassword()), jRegister.getMinimumAge(), maxAge);
                     UserDAO userDAO = new UserDAO();
                     if(!userDAO.existsUser(u)) userDAO.addUser(u);
 
@@ -84,8 +85,18 @@ public class ControllerRegister implements ActionListener {
                 }
                 jRegister.removeRegister();
 
+                break;
+
             case "PASSWORD": //Mostrar / No Mostrar Password
                 jRegister.changeViewPassword();
+                break;
+
+            case "NO FILTER":
+                if (jRegister.isNoFilterChecked()){
+                    jRegister.enableFilter(false);
+                }else{
+                    jRegister.enableFilter(true);
+                }
         }
 
     }

@@ -3,6 +3,7 @@ import controller.Controller;
 import model.entity.User;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -35,6 +36,7 @@ public class WindowServer extends JFrame{
         setTitle("Server");
         setSize(800, 600);
         setResizable(true);
+        setMinimumSize(new Dimension(550, 600));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //indica que fara quan s'apreti la X al tancar. Si no es posa, estanca la finestra pero no es para el programa
         setLocationRelativeTo(null); //indica on apareix la finestra al obrirse. NULL sera al mig
 

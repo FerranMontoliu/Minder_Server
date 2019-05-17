@@ -23,6 +23,8 @@ public class JRegister extends JPanel {
     private JCheckBox jcbViewPassword;
     private JComboBox jcbMinAgeFilter;
     private JComboBox jcbMaxAgeFilter;
+    private JCheckBox jcbNoFilter;
+    private GridBagConstraints gbc;
     private char ecoChar;
     private static String a;
 
@@ -31,55 +33,30 @@ public class JRegister extends JPanel {
      * Constructor del panell sense paràmetres
      */
     public JRegister(){
-        Dimension d = new Dimension(10000,200);
-        setLayout(new GridLayout(18,2));
+        createPreferences();
+        mergeFields();
+        createPasswordField();
+        createPremiumOptions();
+        createAgeFilters();
+        createRegisterOption();
+    }
 
-        //Inicialitzar els elements
-        GridBagConstraints gbc = new GridBagConstraints();
-        jpRegister = new JPanel(new GridBagLayout());
-        jtfAge = new JTextField();
-        jtfAge.setPreferredSize(d);
-        jtfName = new JTextField();
-        jtfName.setPreferredSize(d);
-        jpfPassword = new JPasswordField();
-        jpfPassword.setPreferredSize(d);
-        jtfMail = new JTextField();
-        jtfMail.setPreferredSize(d);
-        jpfPassword2 = new JPasswordField();
-        jpfPassword2.setPreferredSize(d);
-        jrbPremium = new JRadioButton("Yes");
-        jrbNoPremium = new JRadioButton("No");
+    /**
+     * Metode que inclou el boto de registre al panell
+     */
+    private void createRegisterOption() {
         jbRegister = new JButton("Sign-Up",new ImageIcon("icons/sign_up.png"));
-        a = "                                        ";
-        jcbViewPassword = new JCheckBox();
+        jpRegister.add(jbRegister);
+        add(jpRegister);
+    }
 
-        //Grup de radioButtons
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(jrbNoPremium);
-        bg.add(jrbPremium);
-        jrbNoPremium.setSelected(true);
-
-
+    /**
+     * Metode que genera els camps de contrassenya i confirmacio de contrassenya, aixi com del button que permet visualitzar
+     * el contingut d'aquests camps, que s'amaguen sota uns caracters predefinits pel sistema operatiu
+     */
+    private void createPasswordField() {
         //Guardar el eco del Password
         ecoChar = jpfPassword.getEchoChar();
-
-        //Afegir components al panell
-        gbc.gridy = 0;
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        TitledBorder tb = new TitledBorder("Signup");
-        tb.setTitleColor(new Color(7,23,80));
-        this.setBorder(tb);
-        add(new JLabel("Username"),gbc);
-        add(jtfName);
-        add(new JLabel("Age"));
-        add(jtfAge);
-        add(new JLabel("Mail"),gbc);
-        add(jtfMail);
-        add(new JLabel("Password"),gbc);
-        add(jpfPassword);
-        add(new JLabel("Confirm Password"),gbc);
-        add(jpfPassword2);
 
         JPanel jpViewPassword = new JPanel(new GridBagLayout());
         gbc.gridy = 0;
@@ -100,6 +77,44 @@ public class JRegister extends JPanel {
         JPanel jp = new JPanel(new GridBagLayout());
         jp.setMinimumSize(new Dimension(1000,100));
 
+    }
+
+    /**
+     * Metode que afegeix els camps principals d'informacio a escriure sota un panell enquadrat amb un TitleBorder
+     */
+    private void mergeFields() {
+
+        gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        TitledBorder tb = new TitledBorder("Signup");
+        tb.setTitleColor(new Color(7,23,80));
+        this.setBorder(tb);
+        add(new JLabel("Username"),gbc);
+        add(jtfName);
+        add(new JLabel("Age"));
+        add(jtfAge);
+        add(new JLabel("Mail"),gbc);
+        add(jtfMail);
+        add(new JLabel("Password"),gbc);
+        add(jpfPassword);
+        add(new JLabel("Confirm Password"),gbc);
+        add(jpfPassword2);
+    }
+
+    /**
+     * Metode que crea els botos de Premium i no premium (sel.leccionant per defecte no premium)
+     */
+    private void createPremiumOptions() {
+        jrbPremium = new JRadioButton("Yes");
+        jrbNoPremium = new JRadioButton("No");
+
+        //Grup de radioButtons
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(jrbNoPremium);
+        bg.add(jrbPremium);
+        jrbNoPremium.setSelected(true);
+
         JPanel jpRadioButton = new JPanel();
         jpRadioButton.add(jrbPremium);
         jpRadioButton.add(jrbNoPremium);
@@ -108,11 +123,31 @@ public class JRegister extends JPanel {
         jl3.setHorizontalAlignment(JLabel.CENTER);
         add(jl3);
         add(jpRadioButton);
-        this.createAgeFilters();
+    }
 
-        jpRegister.add(jbRegister);
-        add(jpRegister);
+    /**
+     * Metode que crea les preferencies d'aquest panell
+     */
+    private void createPreferences() {
+        Dimension d = new Dimension(10000,200);
+        setLayout(new GridLayout(19,2));
 
+        //Inicialitzar els elements
+
+        jpRegister = new JPanel(new GridBagLayout());
+        jtfAge = new JTextField();
+        jtfAge.setPreferredSize(d);
+        jtfName = new JTextField();
+        jtfName.setPreferredSize(d);
+        jpfPassword = new JPasswordField();
+        jpfPassword.setPreferredSize(d);
+        jtfMail = new JTextField();
+        jtfMail.setPreferredSize(d);
+        jpfPassword2 = new JPasswordField();
+        jpfPassword2.setPreferredSize(d);
+        a = "                                        ";
+        jcbViewPassword = new JCheckBox();
+        gbc = new GridBagConstraints();
 
     }
 
@@ -123,51 +158,43 @@ public class JRegister extends JPanel {
         //MINIMUM Age
         jcbMinAgeFilter = new JComboBox<>();
         jcbMinAgeFilter.setEditable(false);
-        jcbMinAgeFilter.setPreferredSize(new Dimension(100, 30));
-        jcbMinAgeFilter.setMaximumSize(jcbMinAgeFilter.getPreferredSize());
+        ((JLabel)jcbMinAgeFilter.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        jcbMinAgeFilter.setAlignmentX(SwingConstants.CENTER);
+        jcbMinAgeFilter.setSize(20, 30);
+
+        //omplim el comboBox amb les edats de 18 a 100
         for (int i = 18; i <= 100; ++i) {
             jcbMinAgeFilter.addItem(i);
         }
-        JPanel jp13 = new JPanel();
-        jp13.setLayout(new BoxLayout(jp13,0));
-        JLabel jl13 = new JLabel(a+a+"   ");
-        jp13.add(jl13);
-        jp13.add(jcbMinAgeFilter);
 
         //MAXIMUM Age
         jcbMaxAgeFilter = new JComboBox<>();
         jcbMaxAgeFilter.setEditable(false);
-        jcbMaxAgeFilter.setPreferredSize(new Dimension(100, 30));
-        jcbMaxAgeFilter.setMaximumSize(jcbMaxAgeFilter.getPreferredSize());
-
-        ((JLabel)jcbMinAgeFilter.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         ((JLabel)jcbMaxAgeFilter.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
-        //jcbMinAgeFilter.setAlignmentX(SwingConstants.CENTER);
+        jcbMaxAgeFilter.setAlignmentX(SwingConstants.CENTER);
+        jcbMaxAgeFilter.setSize(20, 30);
 
         for (int i = 18; i <= 100; ++i) {
             jcbMaxAgeFilter.addItem(i);
         }
 
         JPanel jp2 = new JPanel();
-
         jp2.setLayout(new BoxLayout(jp2,0));
-        //jp2.add(jcbMinAgeFilter,BorderLayout.CENTER);
-        JPanel jp = new JPanel();
 
-        jp.setLayout(new BoxLayout(jp,0));
-        JLabel jl4 = new JLabel(a+a+"   ");
-        jp.add(jl4);
-        jp.add(jcbMaxAgeFilter);
         JLabel jl = new JLabel("Minimum age:");
         jl.setHorizontalAlignment(JLabel.CENTER);
         add(jl);
-        add(jp13);
+        add(jcbMinAgeFilter);
 
         JLabel jl2 = new JLabel("Maximum age:");
         jl2.setHorizontalAlignment(JLabel.CENTER);
-        //add(jp2,BorderLayout.CENTER);
         add(jl2);
-        add(jp);
+        add(jcbMaxAgeFilter);
+
+        //No filter checkBox
+        jcbNoFilter = new JCheckBox("I don't want any age filter");
+        jcbNoFilter.setHorizontalAlignment(SwingConstants.CENTER);
+        add(jcbNoFilter);
     }
 
     /**
@@ -181,7 +208,7 @@ public class JRegister extends JPanel {
         jpfPassword2.setText("");
         jrbNoPremium.setSelected(true);
 
-        this.resetJComboBox(); //Mètode de la classe
+        resetJComboBox(); //Mètode de la classe
 
     }
 
@@ -275,6 +302,9 @@ public class JRegister extends JPanel {
 
         jcbViewPassword.addActionListener(controller);
         jcbViewPassword.setActionCommand("PASSWORD");
+
+        jcbNoFilter.addActionListener(controller);
+        jcbNoFilter.setActionCommand("NO FILTER");
     }
 
     /**
@@ -299,5 +329,25 @@ public class JRegister extends JPanel {
      */
     public String getConfirmPassword() {
         return String.valueOf(jpfPassword2.getPassword());
+    }
+
+    /**
+     * Getter del CheckBox que indica si l'usuari vol utilitzar el filtre d'edat o no
+     *
+     * @return true en cas que l'usuari no vulgui cap filtre d'edat, false en cas de que haguem de fer cas dels valors
+     * continguts als  ComboBox
+     */
+    public boolean isNoFilterChecked(){
+        return jcbNoFilter.isSelected();
+    }
+
+    /**
+     * Metode que habilita o desabilita el filtre d'edat (els dos desplegables) per tal que l'usuari pugui modificar-los
+     *
+     * @param b indica si volem habilitar (true) o desabilitar (false) l'edicio dels desplegables
+     */
+    public void enableFilter(boolean b) {
+        jcbMinAgeFilter.setEnabled(b);
+        jcbMaxAgeFilter.setEnabled(b);
     }
 }
