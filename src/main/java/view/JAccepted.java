@@ -106,18 +106,18 @@ public class JAccepted extends JPanel {
     }
 
     /**
-     * Mètode que actualitza el text de la part inferior de la pantalla (acceptats / visualitzats)
+     * Metode que actualitza el text de la part inferior de la pantalla (acceptats / visualitzats)
+     *
+     * @param viewed Nombre d'usuaris visualitzats.
+     * @param accepted Nombre d'usuaris acceptats.
      */
     public void setGraphText(int viewed, int accepted) {
-        try {
-            jtpane.getDocument().insertString(0,"                                                                  "+viewed+ " user profiles have been viewed   - ", null);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+        float f = 0;
+        if(accepted != 0) {
+            f = (viewed/accepted) * 100;
         }
         try {
-            float a = (float) viewed;
-            float b = (float) accepted;
-            float f = (b/a)*100;
+            jtpane.getDocument().insertString(0,"                                                                  "+viewed+ " user profiles have been viewed   - ", null);
             jtpane2.getDocument().insertString(0,"                                                                  "+accepted+ " users have been accepted ("+f+" %) - ", null);
         } catch (BadLocationException e) {
             e.printStackTrace();
