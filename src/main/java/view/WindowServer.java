@@ -20,7 +20,6 @@ public class WindowServer extends JFrame{
      * Constructor de la finestra
      */
     public WindowServer(){
-
         //Parametres randoms per crear l'estructura que no s'arribaran a mostrar.
         //tot just despres al tenir la bbdd es carregaran els valors reals.
         User u = new User("name", 18, true, "test@example.com", "Password1", 20, 21);
@@ -31,7 +30,6 @@ public class WindowServer extends JFrame{
         for (int i = 0; i < 5; i++){
             users.add(u);
         }
-
 
         //Iniciar la finestra
         setTitle("Server");
@@ -61,8 +59,6 @@ public class WindowServer extends JFrame{
 
         //Afegir al panell principal el JTabbedPane
         getContentPane().add(jtPane);
-
-
     }
 
 
@@ -76,7 +72,6 @@ public class WindowServer extends JFrame{
     public void updateWindow(int[]week, int[]month, int[]day, ArrayList<User> top5){
         jCharts.updateData(day, week, month);
         jTop.updateTop5(top5);
-
     }
 
     /**
@@ -95,9 +90,13 @@ public class WindowServer extends JFrame{
         jRegister.registerController(c.getCr());
     }
 
+    /**
+     * Metode que actualitza les barres.
+     *
+     * @param numberOfViews Nombre d'usuaris visulitzats.
+     * @param numberOfLikes Nombre d'usuaris acceptats.
+     */
     public void updateBars(int numberOfViews, int numberOfLikes) {
-
-       jAcceptats.updateBars(numberOfViews, numberOfLikes);
-
+       jAcceptats.redrawGraphs(numberOfViews, numberOfLikes);
     }
 }
