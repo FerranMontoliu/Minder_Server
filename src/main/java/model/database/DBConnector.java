@@ -111,8 +111,6 @@ public class DBConnector {
      * Metode que es crida quan es vol tancar la connexio amb la base de dades.
      */
     public void disconnect() {
-        //TODO: fer un windowlistener i cridat-la des del controller de la vista. Tancar també els threads amb els clients.
-        //TODO: MAI CRIDEM AQUESTA FUNCIÓ!!!
         try {
             conn.close();
         } catch(SQLException e) {

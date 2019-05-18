@@ -41,7 +41,6 @@ public class Controller implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        //TODO: AIXÒ ESTÀ BUIT AMICS!!
     }
 
     /**
