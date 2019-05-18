@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Classe que representa un missatge de chat.
+ */
 public class Message implements Serializable {
     private String source;
     private String text;

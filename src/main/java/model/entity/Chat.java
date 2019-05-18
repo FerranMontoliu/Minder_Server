@@ -3,6 +3,9 @@ package model.entity;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+/**
+ * Classe que representa un chat que conte una llista de missatges.
+ */
 public class Chat implements Serializable {
     private LinkedList<Message> messages;
 

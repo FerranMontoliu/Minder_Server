@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Base64;
 
+/**
+ * Classe que representa un usuari del Minder. Aquest es guarda a la base de dades.
+ */
 public class User implements Serializable {
 
     private boolean completed;
@@ -36,7 +39,7 @@ public class User implements Serializable {
 
 
     /**
-     * Constructor que ompla TOTS els camps de l'usuari.
+     * Constructor que omple TOTS els camps de l'usuari.
      *
      * @param completed Indica si l'usuari ha completat el seu perfil o no.
      * @param username Nom de l'usuari.
