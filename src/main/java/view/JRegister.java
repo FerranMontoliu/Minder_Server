@@ -26,7 +26,6 @@ public class JRegister extends JPanel {
     private JCheckBox jcbNoFilter;
     private GridBagConstraints gbc;
     private char ecoChar;
-    private static String a;
 
 
     /**
@@ -145,7 +144,6 @@ public class JRegister extends JPanel {
         jtfMail.setPreferredSize(d);
         jpfPassword2 = new JPasswordField();
         jpfPassword2.setPreferredSize(d);
-        a = "                                        ";
         jcbViewPassword = new JCheckBox();
         gbc = new GridBagConstraints();
 
