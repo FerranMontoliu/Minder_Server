@@ -75,14 +75,12 @@ public class JRegister extends JPanel {
         add(jpViewPassword);
         JPanel jp = new JPanel(new GridBagLayout());
         jp.setMinimumSize(new Dimension(1000,100));
-
     }
 
     /**
      * Metode que afegeix els camps principals d'informacio a escriure sota un panell enquadrat amb un TitleBorder
      */
     private void mergeFields() {
-
         gbc.gridy = 0;
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -132,7 +130,6 @@ public class JRegister extends JPanel {
         setLayout(new GridLayout(19,2));
 
         //Inicialitzar els elements
-
         jpRegister = new JPanel(new GridBagLayout());
         jtfAge = new JTextField();
         jtfAge.setPreferredSize(d);
@@ -146,7 +143,6 @@ public class JRegister extends JPanel {
         jpfPassword2.setPreferredSize(d);
         jcbViewPassword = new JCheckBox();
         gbc = new GridBagConstraints();
-
     }
 
     /**
@@ -205,74 +201,78 @@ public class JRegister extends JPanel {
         jpfPassword.setText("");
         jpfPassword2.setText("");
         jrbNoPremium.setSelected(true);
-
-        resetJComboBox(); //Mètode de la classe
-
+        resetJComboBox();
     }
 
     /**
-     * Mètode que retorna el nom del username
-     * @return: String Username
+     * Getter del nom de l'usuari.
+     *
+     * @return Text que hi ha en el camp del username.
      */
     public String getUsername() {
         return jtfName.getText();
     }
 
     /**
-     * Mètode que retorna l'edat de l'usuari
-     * @return: String Edat
+     * Getter de l'edat de l'usuari.
+     *
+     * @return Text que hi ha en el camp d'edat.
      */
     public String getAge() {
         return jtfAge.getText();
     }
 
     /**
-     * Mètode que retorna el mail
-     * @return: String mail
+     * Getter del mail de l'usuari.
+     *
+     * @return Text que hi ha en el camp del mail.
      */
     public String getMail() {
         return jtfMail.getText();
     }
 
     /**
-     * Mètode que retorna la password
-     * @return
+     * Getter de la password de l'usuari.
+     *
+     * @return Text que hi ha en el camp de la password.
      */
     public String getPassword() {
         return String.valueOf(jpfPassword.getPassword());
     }
 
     /**
-     * Mètode que mostra dos OptionPane en funció de si el login és correcte
-     * @param ok: paràmetre que indica si el sign up és correcte
+     * Metode que mostra dos OptionPane en funcio de si el login es correcte
+     *
+     * @param ok boolean que indica si el sign up és correcte
      */
     public void showMessage(boolean ok) {
         if(ok) {
             JOptionPane.showMessageDialog(this, "Sign-Up Successful!", "Minder", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, "At least one field(s) contain errors!", "Minder", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     /**
-     * Mètode que retorna l'edat mínima de la JComboBox
-     * @return: Int edat min
+     * Getter de l'edat minima del filtre per edat.
+     *
+     * @return Edat minima del filtre per edat seleccionada per l'usuari.
      */
     public int getMinimumAge() {
         return (int) jcbMinAgeFilter.getSelectedItem();
     }
 
     /**
-     * Mètode que retorna l'edat màxima de la JComboBox
-     * @return: Int edat max
+     * Getter de l'edat maxima del filtre per edat.
+     *
+     * @return Edat maxima del filtre per edat seleccionada per l'usuari.
      */
     public int getMaximumAge() {
         return (int) jcbMaxAgeFilter.getSelectedItem();
     }
 
     /**
-     * Mètode que reseteja les combobox i la posa per defecte a 18/18
+     * Metode que reseteja les combobox i les posa per defecte a 18.
      */
     public void resetJComboBox() {
         jcbMinAgeFilter.setSelectedIndex(0);
@@ -280,8 +280,9 @@ public class JRegister extends JPanel {
     }
 
     /**
-     * Mètode que comprova si l'usuari vol ser premium o no
-     * @return
+     * Getter del camp premium.
+     *
+     * @return True si l'usuari es premium, false altrament.
      */
     public boolean isPremium() {
         if(jrbPremium.getText().equals("Yes")) {
@@ -291,8 +292,9 @@ public class JRegister extends JPanel {
     }
 
     /**
-     * Mètode que registra la vista al controlador
-     * @param controller: Controlador de la vista del server
+     * Metode que registra la vista al controlador.
+     *
+     * @param controller Controlador de la vista del server.
      */
     public void registerController(ControllerRegister controller) {
         jbRegister.addActionListener(controller);
@@ -306,24 +308,21 @@ public class JRegister extends JPanel {
     }
 
     /**
-     * Mètode que canvia d'amagar-se a mostrar-se la password i viceversa
+     * Metode que amaga o mostra la password.
      */
     public void changeViewPassword() {
         if(jcbViewPassword.isSelected()){
-
             jpfPassword.setEchoChar((char) 0);
             jpfPassword2.setEchoChar((char) 0);
-
-        }else{
-
+        } else {
             jpfPassword.setEchoChar((ecoChar));
             jpfPassword2.setEchoChar((ecoChar));
-
         }
     }
     /**
-     * Funcio que retorna la contrassenya de confirmacio
-     * @return retorna la contrassenya
+     * Getter de la confirmacio de password.
+     *
+     * @return Text que hi ha en el camp de la confirmacio de password.
      */
     public String getConfirmPassword() {
         return String.valueOf(jpfPassword2.getPassword());

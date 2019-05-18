@@ -196,6 +196,7 @@ public class User implements Serializable {
     /**
      * Setter de l'edat minima que ha seleccionat l'usuari per al filtre d'edat
      *
+     * @param minAge Nova edat mínima del filtre per edat.
      */
     public void setMinAge(int minAge) {
         this.minAge = minAge;
@@ -213,6 +214,7 @@ public class User implements Serializable {
     /**
      * Setter de l'edat maxima que ha seleccionat l'usuari per al filtre d'edat
      *
+     * @param maxAge Nova edat maxima del filtre per edat.
      */
     public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
@@ -329,6 +331,7 @@ public class User implements Serializable {
     /**
      * Metode encarregat de reconstruir una imatge a partir d'un String.
      *
+     * @param destination Ruta on es guardara l'arxiu.
      * @param username String que definira el nom de la imatge a descarregar.
      */
     public void base64ToImage(String destination, String username) {

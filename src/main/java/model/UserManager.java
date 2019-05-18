@@ -6,9 +6,9 @@ import javax.swing.*;
 
 public class UserManager {
     /**
-     * Funció que s'encarrega de comprovar si l'usuari és major d'edat o no.
+     * Funcio que s'encarrega de comprovar si l'usuari és major d'edat o no.
      *
-     * @return Retorna true si es major d'edat, false sino.
+     * @param age Edat de l'usuari.
      *
      * @throws InvalidFormatException Es tira si el format de les dades no es correcte.
      */
@@ -25,6 +25,8 @@ public class UserManager {
 
     /**
      * Metode que s'encarrega de comprovar si el format del mail es correcte o no.
+     *
+     * @param mail Mail del qual es vol comprovar el format.
      *
      * @throws InvalidFormatException Es tira si el format de les dades no es correcte.
      */
@@ -98,6 +100,8 @@ public class UserManager {
 
     /**
      * Getter de l'edat de l'usuari.
+     *
+     * @param age Edat de l'usuari en format string.
      *
      * @return Retorna un int que conte l'edat de l'usuari.
      */

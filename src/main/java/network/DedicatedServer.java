@@ -39,7 +39,6 @@ public class DedicatedServer extends Thread {
     private LinkedList<DedicatedServer> clients;
     private String clientUser;
     private Server server;
-
     private Controller controlador;
 
     /**
@@ -48,6 +47,7 @@ public class DedicatedServer extends Thread {
      * @param sClient Socket que connecta amb el client.
      * @param clients Llista de connexions (tantes connexions com clients connectants simultàneament).
      * @param server Servidor que controla els threads.
+     * @param controlador Controlador de la vista.
      */
     public DedicatedServer(Socket sClient, LinkedList<DedicatedServer> clients, Server server, Controller controlador) {
         this.isOn = false;

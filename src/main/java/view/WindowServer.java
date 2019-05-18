@@ -66,6 +66,7 @@ public class WindowServer extends JFrame{
 
     /**
      * Funcio que actualitza la finestra del servidor
+     *
      * @param week array de matches de l'ultima setmana
      * @param month array de matches de l'ultim mes
      * @param day array de matches de l'ultim dia
@@ -78,6 +79,7 @@ public class WindowServer extends JFrame{
 
     /**
      * Getter el panell de registre
+     *
      * @return retorna el JRegister
      */
     public JRegister getRegister(){
@@ -86,7 +88,8 @@ public class WindowServer extends JFrame{
 
     /**
      * Funcio que enregistra el controlador a la vista
-     * @param c controlador
+     *
+     * @param c controlador encarregat de controlar la vista
      */
     public void registerController(Controller c) {
         jRegister.registerController(c.getCr());
