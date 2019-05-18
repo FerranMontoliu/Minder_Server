@@ -253,6 +253,8 @@ public class DedicatedServer extends Thread {
         String source = dataInput.readUTF();
         String disliked = dataInput.readUTF();
         likeDAO.addDislike(source, disliked);
+        controlador.updateBars();
+
     }
 
     /**
@@ -270,6 +272,7 @@ public class DedicatedServer extends Thread {
 
         boolean isMatch = matchDAO.isMatch(liked, sender);
         dataOutput.writeBoolean(isMatch);
+        controlador.updateBars();
     }
 
     /**

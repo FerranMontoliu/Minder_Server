@@ -100,5 +100,6 @@ public class WindowServer extends JFrame{
      */
     public void updateBars(int numberOfViews, int numberOfLikes) {
        jAcceptats.redrawGraphs(numberOfViews, numberOfLikes);
+       jAcceptats.repaint();
     }
 }
